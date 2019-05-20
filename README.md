@@ -18,7 +18,7 @@ to begin you require
 
 ## Dependencies
 
-After the above tools are installed, they can be used to install all further dependencies. Navigate to the project folder, and run
+After the above tools are installed, pull the git repository. The tools can be used to install all further dependencies. Navigate to the project folder, and run
 
 ```
 npm install
@@ -30,7 +30,7 @@ You will also need to install some Python dependencies used by Django. To do so,
 pip install -r requirments.txt
 ```
 
-to run the server use the next line
+to run the server use the next line, the server should be located at 127.0.0.1:8000
 
 ```
 npm run server
