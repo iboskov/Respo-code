@@ -12,8 +12,8 @@ RESPO->backend (where all the analytics files are gonna be located and the conne
 ## Requirments
 to begin you require
 
-* Python3 (i recommend pycharm)
-* Django
+* [python3](https://www.python.org/)
+* [Django](https://www.djangoproject.com/) (it should also install django with npm install see Dependencies below)
 * npm
 
 ## Dependencies
