@@ -33,9 +33,9 @@ pip install -r requirments.txt
 to run the server use the next line
 
 ```
-python manage.py runserver --settings="Respo.settings"
+npm run server
 ```
 
-For more information check the files in Frontend and backend
+For more information check the files in frontend and backend
 
 

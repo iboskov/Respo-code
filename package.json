@@ -1,0 +1,16 @@
+{
+  "name": "PKP_Respo_projekt",
+  "version": "0.0.1",
+  "description": "Competency editing tool",
+  "scripts": {
+    "server": "python manage.py runserver --settings=Respo.settings"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CheBato/Respo-code.git"
+  },
+  "private": true,
+  "dependencies": {
+    "npm": "^6.4.1"
+  }
+}
