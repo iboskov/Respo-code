@@ -1,7 +1,9 @@
 from django.shortcuts import render
 
 
-"""This is the views.py file where we will direct html/css/javascript code from templates"""
+"""
+This is the views.py file where we will direct html/css/javascript code from templates
+"""
 
 
 # Create your views here.

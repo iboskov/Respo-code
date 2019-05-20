@@ -16,7 +16,9 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import include,path
 
-"""This is the main url file for admin/main pages the main pages are received from frontend.urls"""
+"""
+This is the main url file for admin/main pages the main pages are received from frontend.urls
+"""
 
 urlpatterns = [
     path('',include('frontend.urls')),
