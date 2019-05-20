@@ -7,16 +7,16 @@ RESPO->backend (where all the analytics files are gonna be located and the conne
      ->Respo (Initialization folder with settings)
 
 
-#Setup
+# Setup
 
-##Requirments
+## Requirments
 to begin you require
 
 * Python3 (i recommend pycharm)
 * Django
 * npm
 
-##Dependencies
+## Dependencies
 
 After the above tools are installed, they can be used to install all further dependencies. Navigate to the project folder, and run
 
