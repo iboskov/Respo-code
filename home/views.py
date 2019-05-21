@@ -20,4 +20,4 @@ def index(request):
 
 
 def login(request):
-    return render(request,'html\login.html')
+    return render(request,'html/login.html')
