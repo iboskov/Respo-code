@@ -1,10 +1,11 @@
 RESPO PROJECT STRUCTURE
 
-RESPO->backend (where all the analytics files are gonna be located and the connection with the database)
-    |
-     ->frontend (where all the frontend files are located)
-    |
-     ->Respo (Initialization folder with settings)
+RESPO
+- home/backend (where all the analytics files are gonna be located and the connection with the database)
+    
+- home/frontend (where all the frontend files are located)
+
+- Respo (Initialization folder with settings)
 
 
 # Setup
