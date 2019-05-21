@@ -12,13 +12,19 @@ Class-based views
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+
+
+This is the main url file for admin/main pages the main pages are received from home.urls we won't be changing them
 """
+
+
+
+
+
 from django.contrib import admin
 from django.urls import include,path
 
-"""
-This is the main url file for admin/main pages the main pages are received from home.urls
-"""
+
 
 urlpatterns = [
     path('',include('home.urls')),

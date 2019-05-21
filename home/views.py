@@ -1,9 +1,12 @@
+
+"""
+This is the views.py file where we will direct html and send objects from backend to the html code from templates
+login function atm is just an example of how it should be written.
+'html\login' is the location of the html file.
+"""
+
 from django.shortcuts import render
 
-
-"""
-This is the views.py file where we will direct html/css/javascript code from templates
-"""
 
 
 # Create your views here.
@@ -11,4 +14,10 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return HttpResponse("Hello, world. You're at main index.")
+
+
+
+
+def login(request):
+    return render(request,'html\login.html')
