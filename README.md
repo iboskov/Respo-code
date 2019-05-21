@@ -15,7 +15,8 @@ to begin you require
 
 * [python3](https://www.python.org/)
 * [Django](https://www.djangoproject.com/) (it should also install django with npm install see Dependencies below)
-* npm
+* [npm/nodeJs](https://nodejs.org/en/)
+
 
 ## Dependencies
 

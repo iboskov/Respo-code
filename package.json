@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
-    "npm": "^6.4.1"
+    "npm": "^6.4.1",
+    "jquery": "^3.3.1"
   }
 }
