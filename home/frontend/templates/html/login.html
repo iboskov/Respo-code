@@ -1,5 +1,10 @@
+{% extends "html\base.html" %} <!-- is used to receive all imports (css,js,jquery,...) and should be used in all html files -->
+{% load static %} <!-- load static is to load the static folder -->
+
+
+{% block content %} <!-- everything below this tag will become block content and will be inserted in the base html -->
 <!DOCTYPE html>
-<html lang="en">
+<html lang="sl">
 <head>
     <meta charset="UTF-8">
     <title>Login</title>
@@ -8,3 +13,4 @@
 <h1>This is the login page</h1>
 </body>
 </html>
+{% endblock %}
