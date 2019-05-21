@@ -20,7 +20,8 @@ to begin you require
 
 ## Dependencies
 
-After the above tools are installed, pull the git repository. The tools can be used to install all further dependencies. Navigate to the project folder, and run
+After the above tools are installed, pull the git repository. The tools can be used to install all further dependencies. 
+Navigate to the project folder which is where manage.py is located, and run
 
 ```
 npm install
