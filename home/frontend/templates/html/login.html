@@ -11,8 +11,28 @@
     <title>Login</title>
 </head>
 <body>
-<h1>LOGIN PAGE</h1>
 <div class="login-container">
+    <div class="container login-content">
+        <div id="login-row">
+            <div class="login-respo-container rounded shadow">
+                <h1 class="first-title">RESPO</h1>
+                <br>
+                <form id="login-form" method="post" action="{%url 'login' %}">
+                    {% csrf_token %}
+                    <input class="inputs" type="text" placeholder="username or phone" name="usrName" required>
+                    <input class="inputs" type="password" placeholder="password" name="usrPass" required>
+                    <div class = "login-input"></div>
+                    <div class="borders">
+                        <a>Forgot email or password?</a>
+                    </div>
+                    <div class="borders">
+                        <a>Create account</a>
+                        <input id="submit-btn" type="submit" value="SIGN IN" class="rounded">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
 </div>
 </body>
