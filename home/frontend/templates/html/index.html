@@ -1,0 +1,82 @@
+{% extends "html/base.html" %}
+{% load static %}
+
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main</title>
+</head>
+<body>
+    {% block header %}
+    <header>
+        <div class="header">
+            <h1 id="header">Respo</h1>
+        </div>
+    </header>
+    {% endblock %}
+    <!-- main container -->
+    <div class="main-container">
+        <!--nav container -->
+        <div class="nav-container">
+            <h1>HELLO WORLD</h1>
+
+            <div class="profile-container">
+
+            </div>
+            <nav id="sidebar">
+                <div class="sidebar-container">
+                    <ul class="list-unstyled components">
+                        <li>
+                            <div class="nav-border">
+                                <a>Upload</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>Employees</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>History</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>Options</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>Competencies</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>Trainings</a>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="nav-border">
+                                <a>Status of Employees</a>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+
+        <!-- submain -->
+        <div class="submain-container">
+            {% block submain-content %}{% endblock %}
+        </div>
+    </div>
+
+
+</body>
+</html>
+
+{% endblock %}

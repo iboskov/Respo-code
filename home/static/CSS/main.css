@@ -1,0 +1,103 @@
+/* This is the main css file for the project */
+
+
+
+/* LOGIN */
+
+.login-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+.login-content{
+  flex: 1 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  flex-direction: row;
+}
+
+#login-row .login-input input {
+  font-size: 0.85rem;
+  width: 96%;
+  margin: auto;
+  margin-bottom: auto;
+  margin-bottom: 5px;
+  border-radius: 0.9rem;
+  border-style:groove;
+}
+
+.login-respo-container{
+    width:100%;
+    height:100%;
+    padding:30px;
+}
+
+.inputs{
+    width:100%;
+    margin-bottom:45px;
+    border-style:none;
+    border-bottom-style:groove;
+}
+.first-title{
+    text-align:center;
+    margin-top: -20px;
+    color:#2A6695;
+    font-size:30px;
+    font-weight:bold;
+    margin-bottom:45px;
+}
+.borders{
+    width:100%;
+    margin-bottom:20px;
+
+}
+#submit-btn{
+    margin-left:130px;
+    background-color:#2A6695;
+    color:white;
+}
+
+/* index */
+.header{
+    border-style:groove;
+    background-color:#2A6695;
+}
+.main-container{
+    border-style:groove;
+    display:flex;
+    height:auto;
+    min-height:100%;
+    width:100%;
+}
+#header{
+    color:white;
+}
+
+.nav-container{
+    width:20%;
+    border-style:groove;
+    background-color:black;
+}
+.submain-container{
+    width:80%;
+    border-style:groove;
+}
+.profile-container{
+    width:100%;
+    border-style:groove;
+}
+.sidebar-container{
+    width:100%;
+    border-style:groove;
+}
+
+.nav-border{
+    margin-bottom:1px;
+    background-color:rgb(55,73,81);
+    color:white;
+    padding:8px;
+
+}
