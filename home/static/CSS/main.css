@@ -9,6 +9,7 @@
   flex-direction: column;
   min-height: 100vh;
   overflow-x: hidden;
+
 }
 
 .login-content{
@@ -44,7 +45,7 @@
 .first-title{
     text-align:center;
     margin-top: -20px;
-    color:#2A6695;
+    color:#005797;
     font-size:30px;
     font-weight:bold;
     margin-bottom:45px;
@@ -55,43 +56,112 @@
 
 }
 #submit-btn{
-    margin-left:130px;
-    background-color:#2A6695;
+    margin-left:140px;
+    height:35px;
+    width:90px;
+    background-color:#005797;
     color:white;
+    border:none;
 }
 
 /* index */
 .header{
-    border-style:groove;
-    background-color:#2A6695;
+    width:100%;
+    background-color:#005797;
+    float:left;
 }
 .main-container{
-    border-style:groove;
-    display:flex;
-    height:auto;
-    min-height:100%;
-    width:100%;
+  flex: 1 0 auto;
+  float:left;
+  display: flex;
+  flex-direction: row;
+
 }
 #header{
     color:white;
+    width:100%;
+    float:left;
+
 }
 
-.nav-container{
+#nav-container{
+    width:10%;
+    background-color:#222D33;
+    flex: 1 0 auto;
+    flex:display;
+
+
+}
+#title-container{
     width:20%;
-    border-style:groove;
-    background-color:black;
+    float:left;
+
+}
+#icon-container{
+    width:79%;
+    float:left;
+    margin-top:7px;
+}
+.icons-respo{
+    width:40px;
+    height:40px;
+    float:right;
+    margin-left:7px;
+    margin-right:7px;
+}
+#icon-mail{
+    margin-top:10px;
+    width:25px;
+    height:20px;
+}
+#icon-notification{
+    margin-top:5px;
+    width:30px;
+    height:30px;
 }
 .submain-container{
     width:80%;
-    border-style:groove;
+    flex: 1 0 auto;
+    flex:display;
 }
 .profile-container{
     width:100%;
-    border-style:groove;
+    float:left;
+    margin-bottom:30px;
+}
+#profile{
+    margin-top:30px;
+    width:40%;
+    float:left;
+    margin-left:6px;
+}
+#username-container{
+    width:57%;
+    float:left;
+    margin-top:40px;
+    color:white;
+}
+a{
+    color:white;
+}
+
+#user-label{
+    width:100%;
+    margin-bottom:-5px;
+}
+#position-label{
+    width:100%;
+    font-size:12px;
+}
+
+#second-profile{
+    height:70px;
+    width:70px;
+    float:left;
 }
 .sidebar-container{
     width:100%;
-    border-style:groove;
+    float:left;
 }
 
 .nav-border{
@@ -99,5 +169,22 @@
     background-color:rgb(55,73,81);
     color:white;
     padding:8px;
+    width:100%;
+    float:left;
 
+}
+:root{
+    --mainColor:#005797;
+}
+a:hover {
+    color:white;
+    text-decoration:none;
+    width:100%;
+    background:
+     linear-gradient(
+       to right,
+       var(--mainColor) 0%,
+       var(--mainColor) 5px,
+       transparent
+     );
 }

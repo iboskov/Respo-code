@@ -3,80 +3,65 @@
 
 
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main</title>
-</head>
-<body>
-    {% block header %}
-    <header>
-        <div class="header">
+<div class="login-container">
+    <div class="header">
+        <div id="title-container">
             <h1 id="header">Respo</h1>
         </div>
-    </header>
-    {% endblock %}
+        <div id="icon-container">
+            <img class="icons-respo" src="{% static 'img/user_icon.png' %}">
+            <img class="icons-respo" id="icon-mail" src="{% static 'img/mail_icon.png' %}">
+            <img class="icons-respo" id="icon-notification" src="{% static 'img/notification_icon.png' %}">
+        </div>
+    </div>
     <!-- main container -->
     <div class="main-container">
         <!--nav container -->
-        <div class="nav-container">
-            <h1>HELLO WORLD</h1>
-
+        <div id="nav-container">
             <div class="profile-container">
-
+                <div id="profile">
+                    <img class="icons-respo" id="second-profile" src="{% static 'img/user_icon.png' %}">
+                </div>
+                <div id="username-container">
+                    <label id="user-label">Adem Kikaj</label>
+                    <label id="position-label">Admin</label>
+                </div>
             </div>
             <nav id="sidebar">
                 <div class="sidebar-container">
                     <ul class="list-unstyled components">
                         <li>
-                            <div class="nav-border">
-                                <a>Upload</a>
-                            </div>
+                            <a href="#" class="nav-border">Upload</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>Employees</a>
-                            </div>
+                            <a href="#" class="nav-border">Employees</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>History</a>
-                            </div>
+                            <a href="#" class="nav-border">History</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>Options</a>
-                            </div>
+                            <a href="#" class="nav-border">Options</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>Competencies</a>
-                            </div>
+                            <a href="#" class="nav-border">Competencies</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>Trainings</a>
-                            </div>
+                            <a href="#" class="nav-border">Trainings</a>
                         </li>
                         <li>
-                            <div class="nav-border">
-                                <a>Status of Employees</a>
-                            </div>
+                            <a href="#" class="nav-border">Status of Employees</a>
                         </li>
                     </ul>
                 </div>
             </nav>
         </div>
-
-        <!-- submain -->
+             <!-- submain -->
         <div class="submain-container">
-            {% block submain-content %}{% endblock %}
+            {% block main %}{% endblock %}
         </div>
     </div>
 
 
-</body>
-</html>
+</div>
 
 {% endblock %}
