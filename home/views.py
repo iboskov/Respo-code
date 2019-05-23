@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at main index.")
+    return render(request,'html/index.html')
 
 
 

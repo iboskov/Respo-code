@@ -1,5 +1,7 @@
 /* This is the main css file for the project */
 
+
+
 /* LOGIN */
 
 .login-container {
@@ -56,4 +58,46 @@
     margin-left:130px;
     background-color:#2A6695;
     color:white;
+}
+
+/* index */
+.header{
+    border-style:groove;
+    background-color:#2A6695;
+}
+.main-container{
+    border-style:groove;
+    display:flex;
+    height:auto;
+    min-height:100%;
+    width:100%;
+}
+#header{
+    color:white;
+}
+
+.nav-container{
+    width:20%;
+    border-style:groove;
+    background-color:black;
+}
+.submain-container{
+    width:80%;
+    border-style:groove;
+}
+.profile-container{
+    width:100%;
+    border-style:groove;
+}
+.sidebar-container{
+    width:100%;
+    border-style:groove;
+}
+
+.nav-border{
+    margin-bottom:1px;
+    background-color:rgb(55,73,81);
+    color:white;
+    padding:8px;
+
 }
