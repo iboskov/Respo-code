@@ -21,3 +21,6 @@ def index(request):
 
 def login(request):
     return render(request,'html/login.html')
+
+def upload(request):
+    return render(request,'html/upload.html')

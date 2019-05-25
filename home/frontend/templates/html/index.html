@@ -31,7 +31,7 @@
                 <div class="sidebar-container">
                     <ul class="list-unstyled components">
                         <li>
-                            <a href="#" class="nav-border">Upload</a>
+                            <a href="upload" class="nav-border">Upload</a>
                         </li>
                         <li>
                             <a href="#" class="nav-border">Employees</a>
@@ -57,11 +57,12 @@
         </div>
              <!-- submain -->
         <div class="submain-container">
-            {% block main %}{% endblock %}
+            {% block child %}
+            {% endblock child %}
         </div>
     </div>
 
 
 </div>
 
-{% endblock %}
+{% endblock content %}

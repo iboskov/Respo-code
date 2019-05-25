@@ -18,6 +18,7 @@ from . import views
 
 urlpatterns = [
     url('login', views.login, name='login'),
+    url('upload', views.upload, name='upload'),
     url('', views.index, name='index'),
 
 ]
