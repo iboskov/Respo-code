@@ -1,6 +1,6 @@
+<!DOCTYPE html>
 {% load static %}
 
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -13,6 +13,9 @@
     {% endblock %}
 </head>
 <body>
+
+
+
     <main>
         {% block content %}{% endblock %}
     </main>
@@ -25,9 +28,9 @@
     <script src="{% static 'bootstrap/js/bootstrap.min.js'  %}"></script>
     <script src="{% static 'bootstrap/js/fileinput.min.js'  %}"></script>
 
+    <script src="{% static 'javascript/scripts.js' %}"></script>
 
 
-    {% block javascript %}
-    {% endblock %}
+
 </body>
 </html>

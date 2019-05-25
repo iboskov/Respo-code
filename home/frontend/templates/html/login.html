@@ -17,7 +17,7 @@
             <div class="login-respo-container rounded shadow">
                 <h1 class="first-title">RESPO</h1>
                 <br>
-                <form id="login-form" method="post" action="{%url 'login' %}">
+                <form id="login-form" method="post" action="{%url 'upload' %}">
                     {% csrf_token %}
                     <input class="inputs" type="text" placeholder="username or phone" name="usrName" required>
                     <input class="inputs" type="password" placeholder="password" name="usrPass" required>

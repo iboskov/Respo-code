@@ -23,4 +23,20 @@ def login(request):
     return render(request,'html/login.html')
 
 def upload(request):
-    return render(request,'html/upload.html')
+    main_pick = "upload"
+    return render(request,'html/upload.html',{"main_pick":main_pick})
+
+def employee(request):
+    picked = 'add'
+    main_pick = "employee"
+    return render(request,'html/employee.html',{"picked": picked,"main_pick": main_pick})
+
+def employee_employees(request):
+    picked = 'employee'
+    main_pick='employee'
+    return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick})
+
+def employee_history(request):
+    picked = 'history'
+    main_pick='employee'
+    return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick})

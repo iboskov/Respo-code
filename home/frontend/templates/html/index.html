@@ -31,25 +31,53 @@
                 <div class="sidebar-container">
                     <ul class="list-unstyled components">
                         <li>
-                            <a href="upload" class="nav-border">Upload</a>
+                            {% if main_pick == "upload" %}
+                                <a href="" class=" a-style nav-border-selected">Upload</a>
+                            {% else %}
+                                <a href="{%url 'upload'%}" class="a-style nav-border">Upload</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">Employees</a>
+                            {% if main_pick == "employee" %}
+                                <a href="" class="a-style nav-border-selected">Employees</a>
+                            {% else %}
+                                <a href="employee/add" class="a-style nav-border">Employees</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">History</a>
+                            {% if main_pick == "history" %}
+                                <a href="#" class="a-style nav-border-selected">History</a>
+                            {% else %}
+                                <a href="#" class="a-style nav-border">History</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">Options</a>
+                            {% if main_pick == "options" %}
+                                <a href="#" class="a-style nav-border-selected">Options</a>
+                            {% else %}
+                                <a href="#" class="a-style nav-border">Options</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">Competencies</a>
+                            {% if main_pick == "competencies" %}
+                                <a href="#" class="a-style nav-border-selected">Competencies</a>
+                            {% else %}
+                                <a href="#" class="a-style nav-border">Competencies</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">Trainings</a>
+                            {% if main_pick == "trainings" %}
+                                <a href="#" class="a-style nav-border-selected">Trainings</a>
+                            {% else %}
+                                <a href="#" class="a-style nav-border">Trainings</a>
+                            {% endif %}
                         </li>
                         <li>
-                            <a href="#" class="nav-border">Status of Employees</a>
+                            {% if main_pick == "status" %}
+                                <a href="#" class="a-style nav-border-selected">Status of Employees</a>
+                            {% else %}
+                                <a href="#" class="a-style nav-border">Status of Employees</a>
+                            {% endif %}
                         </li>
                     </ul>
                 </div>

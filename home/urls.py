@@ -19,6 +19,9 @@ from . import views
 urlpatterns = [
     url('login', views.login, name='login'),
     url('upload', views.upload, name='upload'),
+    url('employee/add', views.employee, name='employee'),
+    url('employee/employees',views.employee_employees,name='employees'),
+    url('employee/history',views.employee_history,name='employee_history'),
     url('', views.index, name='index'),
 
 ]

@@ -177,7 +177,22 @@ a{
 :root{
     --mainColor:#005797;
 }
-a:hover, a:active {
+.nav-border-selected{
+    margin-bottom:1px;
+    color:white;
+    padding:8px;
+    width:100%;
+    float:left;
+    text-decoration:none;
+    background:
+     linear-gradient(
+       to right,
+       var(--mainColor) 0%,
+       var(--mainColor) 5px,
+       transparent
+     );
+}
+.a-style:hover, .a-style:active {
     color:white;
     text-decoration:none;
     width:100%;
@@ -192,13 +207,13 @@ a:hover, a:active {
 
 /* **subpages** */
 
-/* Upload */
-#title{
+/* *Upload* */
+.title{
     margin-top:20px;
     width:100%;
     float:left;
     margin-left:20px;
-    color:#005797;
+    color:#2198E6;
 }
 #fileUploadContainer{
     float:left;
@@ -220,4 +235,101 @@ a:hover, a:active {
     color:#005797;
     border:none;
     font-weight:bold;
+}
+/* *Employee* */
+.employee-tabs{
+    float:left;
+    width:100%;
+    margin-top:30px;
+    text-align:center;
+}
+.tabs{
+    border-bottom-style:solid;
+    float:left;
+    border-bottom-width:5px;
+    color:gray;
+    margin-left:20px;
+    width:20%;
+}
+.tabsColor{
+    border-bottom-style:solid;
+    border-bottom-color: #005797;
+    float:left;
+    border-bottom-width:5px;
+    color:#005797;
+    margin-left:20px;
+    width:20%;
+}
+.board{
+    margin-top:20px;
+    width:100%;
+    float:left;
+
+}
+/* Add */
+.block-add{
+    margin-top:30px;
+    margin-left:20px;
+    float:left;
+    width:30%;
+
+}
+#submit-btn3{
+    height:35px;
+    width:90px;
+    background-color:#005797;
+    color:white;
+    border:none;
+    float:right;
+}
+.form-label{
+    font-weight:bold;
+    color:#005797;
+}
+.inputs2{
+    width:100%;
+    margin-bottom:20px;
+    border-style:none;
+    border-bottom-style:groove;
+}
+.subtitle{
+    margin-top:20px;
+    width:100%;
+    float:left;
+    margin-left:20px;
+    color:#2198E6;
+}
+.none-style-link:hover{
+    text-decoration:none;
+    cursor: pointer;
+    color:gray;
+}
+.none-style-link{
+    color:gray;
+    text-decoration:none;
+
+}
+/* Employees */
+.block-add-employees{
+    margin-top:30px;
+    margin-left:20px;
+    float:left;
+    width:80%;
+}
+.thead-color{
+    background-color:#005797;
+    color:white;
+}
+
+/* history */
+#search_bar{
+    width:40%;
+    border:none;
+    height:50px;
+    text-indent:10px;
+
+}
+#search_bar::placeholder{
+    opacity:0.5;
+    text-indent:20px;
 }
