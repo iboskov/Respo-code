@@ -37,7 +37,7 @@ def employee_add(request):
 def employee_employees(request):
     user = "admin"
     picked = 'employee'
-    main_pick='employee'
+    main_pick = 'employee'
     return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick, "user":user})
 
 def employee_history(request):
@@ -57,4 +57,31 @@ def competence_competencies(request):
     picked = 'competence'
     main_pick = 'competencies'
     return render(request,'html/competencies.html', {"picked": picked, "main_pick": main_pick, "user":user})
+
+def options(request):
+    user = "admin"
+    main_pick = 'options'
+    return render(request, 'html/options.html', {"main_pick": main_pick, "user":user})
+
+def history(request):
+    user = "admin"
+    main_pick = "history"
+    return render(request, 'html/history.html', {"main_pick": main_pick, "user": user})
+
+def trainings(request):
+    user = "admin"
+    picked = "add"
+    main_pick = "trainings"
+    return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+
+def trainings_training(request):
+    user = "admin"
+    picked = "trainings"
+    main_pick = "trainings"
+    return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+
+def status(request):
+    user = "admin"
+    main_pick = "status"
+    return render(request, 'html/status.html', {"main_pick": main_pick, "user": user})
 

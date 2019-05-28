@@ -49,14 +49,14 @@
                             {% if main_pick == "history" %}
                                 <a href="#" class="a-style nav-border-selected">History</a>
                             {% else %}
-                                <a href="#" class="a-style nav-border">History</a>
+                                <a href="{%url 'history' %}" class="a-style nav-border">History</a>
                             {% endif %}
                         </li>
                         <li>
                             {% if main_pick == "options" %}
-                                <a href="#" class="a-style nav-border-selected">Options</a>
+                                <a href="" class="a-style nav-border-selected">Options</a>
                             {% else %}
-                                <a href="#" class="a-style nav-border">Options</a>
+                                <a href="{%url 'options' %}" class="a-style nav-border">Options</a>
                             {% endif %}
                         </li>
                         <li>
@@ -68,16 +68,16 @@
                         </li>
                         <li>
                             {% if main_pick == "trainings" %}
-                                <a href="#" class="a-style nav-border-selected">Trainings</a>
+                                <a href="" class="a-style nav-border-selected">Trainings</a>
                             {% else %}
-                                <a href="#" class="a-style nav-border">Trainings</a>
+                                <a href="{% url 'trainings' %}" class="a-style nav-border">Trainings</a>
                             {% endif %}
                         </li>
                         <li>
                             {% if main_pick == "status" %}
-                                <a href="#" class="a-style nav-border-selected">Status of Employees</a>
+                                <a href="" class="a-style nav-border-selected">Status of Employees</a>
                             {% else %}
-                                <a href="#" class="a-style nav-border">Status of Employees</a>
+                                <a href="{% url 'status' %}" class="a-style nav-border">Status of Employees</a>
                             {% endif %}
                         </li>
                     </ul>
