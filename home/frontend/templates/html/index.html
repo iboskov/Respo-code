@@ -41,7 +41,7 @@
                             {% if main_pick == "employee" %}
                                 <a href="" class="a-style nav-border-selected">Employees</a>
                             {% else %}
-                                <a href="employee/add" class="a-style nav-border">Employees</a>
+                                <a href="{% url 'employee' %}" class="a-style nav-border">Employees</a>
                             {% endif %}
                         </li>
                         <li>
@@ -60,9 +60,9 @@
                         </li>
                         <li>
                             {% if main_pick == "competencies" %}
-                                <a href="#" class="a-style nav-border-selected">Competencies</a>
+                                <a href="" class="a-style nav-border-selected">Competencies</a>
                             {% else %}
-                                <a href="#" class="a-style nav-border">Competencies</a>
+                                <a href="{% url 'competence/add' %}" class="a-style nav-border">Competencies</a>
                             {% endif %}
                         </li>
                         <li>

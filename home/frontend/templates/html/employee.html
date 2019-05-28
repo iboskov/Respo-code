@@ -14,7 +14,7 @@
         </div>
     {% else %}
         <div class="tabs">
-            <h4><a href="add" class="none-style-link">Add</a></h4>
+            <h4><a href="{% url 'employee' %}" class="none-style-link">Add</a></h4>
         </div>
     {% endif %}
     {% if picked == "employee" %}
@@ -23,7 +23,7 @@
         </div>
     {% else %}
         <div class="tabs">
-            <h4><a href="employees" class="none-style-link">Employees</a></h4>
+            <h4><a href="{% url 'employee/employees' %}" class="none-style-link">Employees</a></h4>
         </div>
     {% endif %}
     {% if picked == "history" %}
@@ -32,7 +32,7 @@
         </div>
     {% else %}
         <div class="tabs">
-            <h4><a href="history" class="none-style-link">History</a></h4>
+            <h4><a href="{% url 'employee/history' %}" class="none-style-link">History</a></h4>
         </div>
     {% endif %}
 </div>

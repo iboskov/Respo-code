@@ -333,3 +333,16 @@ a{
     opacity:0.5;
     text-indent:20px;
 }
+
+/* *Competencies* */
+.block-add-competencies{
+    margin-top:30px;
+    margin-left:20px;
+    float:left;
+    width:40%;
+    margin-right:60px;
+}
+.competenceTitle{
+    width:45.5%;
+    float:left;
+}

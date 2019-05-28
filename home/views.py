@@ -26,7 +26,7 @@ def upload(request):
     main_pick = "upload"
     return render(request,'html/upload.html',{"main_pick":main_pick})
 
-def employee(request):
+def employee_add(request):
     picked = 'add'
     main_pick = "employee"
     return render(request,'html/employee.html',{"picked": picked,"main_pick": main_pick})
@@ -40,3 +40,13 @@ def employee_history(request):
     picked = 'history'
     main_pick='employee'
     return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick})
+
+def competence_add(request):
+    picked = 'add'
+    main_pick = 'competencies'
+    return render(request, 'html/competencies.html', {"picked": picked, "main_pick": main_pick})
+
+def competence_competencies(request):
+    picked = 'competence'
+    main_pick = 'competencies'
+    return render(request,'html/competencies.html', {"picked": picked, "main_pick": main_pick})
