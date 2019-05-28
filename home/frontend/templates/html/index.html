@@ -29,6 +29,7 @@
             </div>
             <nav id="sidebar">
                 <div class="sidebar-container">
+                    {% if user == "admin" %}
                     <ul class="list-unstyled components">
                         <li>
                             {% if main_pick == "upload" %}
@@ -80,6 +81,7 @@
                             {% endif %}
                         </li>
                     </ul>
+                    {% endif %}
                 </div>
             </nav>
         </div>
