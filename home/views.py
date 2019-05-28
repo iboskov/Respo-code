@@ -50,3 +50,4 @@ def competence_competencies(request):
     picked = 'competence'
     main_pick = 'competencies'
     return render(request,'html/competencies.html', {"picked": picked, "main_pick": main_pick})
+

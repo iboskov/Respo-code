@@ -24,6 +24,7 @@ urlpatterns = [
     path('employee/history',views.employee_history,name='employee/history'),
     path('competence/add',views.competence_add, name='competence/add'),
     path('competence/competencies',views.competence_competencies, name='competencies'),
+    path('options',views.options, name='options'),
     url('', views.index, name='index'),
 
 ]
