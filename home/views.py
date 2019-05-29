@@ -85,3 +85,8 @@ def status(request):
     main_pick = "status"
     return render(request, 'html/status.html', {"main_pick": main_pick, "user": user})
 
+def history(request):
+    user = "user"
+    main_pick = "history"
+    return render(request, 'html/user/userTest.html', {"main_pick": main_pick, "user": user})
+

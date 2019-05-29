@@ -29,6 +29,10 @@ urlpatterns = [
     path('trainings', views.trainings, name='trainings'),
     path('trainings/training', views.trainings_training, name='training'),
     path('status', views.status, name='status'),
+    path('history', views.history, name='history'),
+    path('competencies', views.history, name='competencies'),
+    path('useroptions', views.history, name='useroptions'),
+    path('seminars', views.history, name='seminars'),
     url('', views.index, name='index'),
 
 ]

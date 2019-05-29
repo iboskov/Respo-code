@@ -81,6 +81,41 @@
                             {% endif %}
                         </li>
                     </ul>
+                    {% elif user == "user" %}
+                    <ul class="list-unstyled components">
+                        <!-- History -->
+                        <li>
+                            {% if main_pick == "history" %}
+                                <a href="" class=" a-style nav-border-selected">History</a>
+                            {% else %}
+                                <a href="{%url 'history'%}" class="a-style nav-border">History</a>
+                            {% endif %}
+                        </li>
+                        <!-- Competencies -->
+                        <li>
+                            {% if main_pick == "competencies" %}
+                                <a href="" class="a-style nav-border-selected">Competencies</a>
+                            {% else %}
+                                <a href="{% url 'competencies' %}" class="a-style nav-border">Competencies</a>
+                            {% endif %}
+                        </li>
+                        <!-- Options -->
+                        <li>
+                            {% if main_pick == "options" %}
+                                <a href="#" class="a-style nav-border-selected">Options</a>
+                            {% else %}
+                                <a href="{%url 'useroptions ' %}" class="a-style nav-border">Options</a>
+                            {% endif %}
+                        </li>
+                        <!-- Seminars -->
+                        <li>
+                            {% if main_pick == "seminars" %}
+                                <a href="" class="a-style nav-border-selected">Seminars</a>
+                            {% else %}
+                                <a href="{%url 'seminars' %}" class="a-style nav-border">Seminars</a>
+                            {% endif %}
+                        </li>S
+                    </ul>
                     {% endif %}
                 </div>
             </nav>
