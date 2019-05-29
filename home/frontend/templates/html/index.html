@@ -85,10 +85,10 @@
                     <ul class="list-unstyled components">
                         <!-- History -->
                         <li>
-                            {% if main_pick == "history" %}
+                            {% if main_pick == "user_history" %}
                                 <a href="" class=" a-style nav-border-selected">History</a>
                             {% else %}
-                                <a href="{%url 'history'%}" class="a-style nav-border">History</a>
+                                <a href="{%url 'user_history'%}" class="a-style nav-border">History</a>
                             {% endif %}
                         </li>
                         <!-- Competencies -->
@@ -101,13 +101,13 @@
                         </li>
                         <!-- Options -->
                         <li>
-                            {% if main_pick == "options" %}
+                            {% if main_pick == "user_options" %}
                                 <a href="#" class="a-style nav-border-selected">Options</a>
                             {% else %}
-                                <a href="{%url 'useroptions ' %}" class="a-style nav-border">Options</a>
+                                <a href="{%url 'user_options' %}" class="a-style nav-border">Options</a>
                             {% endif %}
                         </li>
-                        <!-- Seminars -->
+                        <!-- Seminars-->
                         <li>
                             {% if main_pick == "seminars" %}
                                 <a href="" class="a-style nav-border-selected">Seminars</a>

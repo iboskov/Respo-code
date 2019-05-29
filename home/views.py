@@ -85,8 +85,36 @@ def status(request):
     main_pick = "status"
     return render(request, 'html/status.html', {"main_pick": main_pick, "user": user})
 
-def history(request):
+
+# user views
+def user_history_recent(request):
     user = "user"
-    main_pick = "history"
-    return render(request, 'html/user/userTest.html', {"main_pick": main_pick, "user": user})
+    main_pick = "user_history"
+    picked = "recent"
+    return render(request, 'html/user/history.html', {"main_pick": main_pick, "user": user, "picked": picked})
+
+
+def user_history_timeline(request):
+    user = "user"
+    main_pick = "user_history"
+    picked = "timeline"
+    return render(request, 'html/user/history.html', {"main_pick": main_pick, "user": user, "picked": picked})
+
+
+def competencies(request):
+    user = "user"
+    main_pick = "competencies"
+    return render(request, 'html/user/competencies.html', {"main_pick": main_pick, "user": user})
+
+
+def user_options(request):
+    user = "user"
+    main_pick = "user_options"
+    return render(request, 'html/user/user_options.html', {"main_pick": main_pick, "user": user})
+
+
+def seminars(request):
+    user = "user"
+    main_pick = "seminars"
+    return render(request, 'html/user/seminars.html', {"main_pick": main_pick, "user": user})
 

@@ -1,0 +1,57 @@
+{% extends "html/index.html" %}
+{% load static %}
+
+{% block child %}
+<div class="title">
+    <h3>History</h3>
+</div>
+<div class="history-tabs">
+    {% if picked == "recent" %}
+        <div class="tabsColor">
+            <h4>Recent</h4>
+        </div>
+    {% else %}
+        <div class="tabs">
+            <h4><a href="{% url 'user_history' %}" class="none-style-link">Recent</a></h4>
+        </div>
+    {% endif %}
+    {% if picked == "timeline" %}
+        <div class="tabsColor">
+            <h4>Timeline</h4>
+        </div>
+    {% else %}
+        <div class="tabs">
+            <h4><a href="{% url 'user_history/timeline' %}" class="none-style-link">Timeline</a></h4>
+        </div>
+    {% endif %}
+</div>
+
+<div class="board">
+    {% if picked == "recent" %}
+
+        <div class="subtitle">
+            <h3>Recent history</h3>
+        </div>
+            <h2>Graphs</h2>
+        </div>
+
+    {% endif %}
+
+    {% if picked == "timeline" %}
+
+        <div class="subtitle">
+            <h3>Timeline</h3>
+        </div>
+        <div class="block-add">
+            <div class="d-flex flex-column">
+                <div class="border">Test</div>
+            </div>
+        </div>
+
+
+
+    {% endif %}
+</div>
+
+
+{% endblock child %}
