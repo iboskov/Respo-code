@@ -12,7 +12,7 @@
                 <div class="card-body">
                     <h3 class="card-title text-primary text-center">RESPO</h3>
                     <form id="login-form" method="post" action="{%url 'upload' %}">
-
+                    {% csrf_token %}
                     <div class="form-group mt-4">
                         <label for="usrName">Username or phone</label>
                         <input type="text" class="form-control" name="usrName" id="usrName" placeholder="username or phone" required>
