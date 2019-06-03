@@ -192,6 +192,7 @@ a{
        transparent
      );
 }
+/*
 .a-style:hover, .a-style:active {
     color:white;
     text-decoration:none;
@@ -203,7 +204,7 @@ a{
        var(--mainColor) 5px,
        transparent
      );
-}
+}*/
 
 /* **subpages** */
 

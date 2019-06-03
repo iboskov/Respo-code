@@ -2,33 +2,31 @@
 {% load static %}
 
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- bootstrap bootstrap -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css'  %}" rel="stylesheet">
-    <link href="{% static 'CSS/main.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+<!--    <link href="{% static 'CSS/main.css' %}" rel="stylesheet">-->
     <link href="{% static 'bootstrap/css/fileinput.min.css' %}" rel="stylesheet">
     {% block styles %}
     {% endblock %}
 </head>
 <body>
 
+{% block content %}{% endblock %}
 
 
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-<!-- this is the base html file where the basic structure is going to be (mostly imports of bootstrap and js). All other htmls should inherit this one -->
+<!-- this is the base html file where the basic structure is going to be (mostly imports of bootstrap and js). All other html files should inherit this one -->
 
-    <!-- jquery -->
-    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
-
-    <!-- bootstrap js -->
-    <script src="{% static 'bootstrap/js/bootstrap.min.js'  %}"></script>
-    <script src="{% static 'bootstrap/js/fileinput.min.js'  %}"></script>
-
-    <script src="{% static 'javascript/scripts.js' %}"></script>
+<!-- jquery -->
+<script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
+<!-- bootstrap js -->
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/fileinput.min.js' %}"></script>
+<script src="{% static 'javascript/scripts.js' %}"></script>
 
 
 

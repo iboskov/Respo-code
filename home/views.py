@@ -15,18 +15,19 @@ from django.http import HttpResponse
 
 def index(request):
     user = "admin"
-    return render(request,'html/index.html',{"user": user})
-
-
+    return render(request, 'html/index.html', {"user": user})
 
 
 def login(request):
-    return render(request,'html/login.html')
+    title = "Login"
+    return render(request, 'html/login.html', {"title": title})
+
 
 def upload(request):
     user = "admin"
     main_pick = "upload"
     return render(request,'html/upload.html',{"main_pick":main_pick, "user":user})
+
 
 def employee_add(request):
     picked = 'add'
@@ -34,11 +35,13 @@ def employee_add(request):
     main_pick = "employee"
     return render(request,'html/employee.html',{"picked": picked,"main_pick": main_pick, "user":user})
 
+
 def employee_employees(request):
     user = "admin"
     picked = 'employee'
     main_pick = 'employee'
     return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick, "user":user})
+
 
 def employee_history(request):
     picked = 'history'
@@ -46,11 +49,13 @@ def employee_history(request):
     user = "admin"
     return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick, "user":user})
 
+
 def competence_add(request):
     user = "admin"
     picked = 'add'
     main_pick = 'competencies'
     return render(request, 'html/competencies.html', {"picked": picked, "main_pick": main_pick, "user":user})
+
 
 def competence_competencies(request):
     user = "admin"
@@ -58,15 +63,18 @@ def competence_competencies(request):
     main_pick = 'competencies'
     return render(request,'html/competencies.html', {"picked": picked, "main_pick": main_pick, "user":user})
 
+
 def options(request):
     user = "admin"
     main_pick = 'options'
     return render(request, 'html/options.html', {"main_pick": main_pick, "user":user})
 
+
 def history(request):
     user = "admin"
     main_pick = "history"
     return render(request, 'html/history.html', {"main_pick": main_pick, "user": user})
+
 
 def trainings(request):
     user = "admin"
@@ -74,11 +82,13 @@ def trainings(request):
     main_pick = "trainings"
     return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
 
+
 def trainings_training(request):
     user = "admin"
     picked = "trainings"
     main_pick = "trainings"
     return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+
 
 def status(request):
     user = "admin"
