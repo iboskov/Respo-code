@@ -18,27 +18,43 @@
             </div>
         </a>
         <hr class="sidebar-divider">
-        <li class="nav-item active">
-            <a class="nav-link" href="index.html"><i class="fas fa-fw fa-tachometer-alt"></i> <span>Home</span></a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Charts</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Charts</span>
-            </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" href="#">
-              <i class="fas fa-fw fa-chart-area"></i>
-              <span>Charts</span>
-            </a>
-        </li>
+        {% if user == "admin" %}
+            <li class="nav-item {% if main_pick == 'upload' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'upload'%}" ><i class="fas fa-upload"></i> <span>Upload</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'employees' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'employees'%}" ><i class="fas fa-users"></i> <span>Employees</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'history' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'history'%}" ><i class="fas fa-history"></i> <span>History</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'options' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'options'%}" ><i class="fas fa-filter"></i> <span>Options</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'competencies' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'competencies'%}" ><i class="fas fa-table"></i> <span>Competencies</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'trainings' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'trainings'%}" ><i class="far fa-calendar-check"></i> <span>Trainings</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'status' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'status'%}" ><i class="fas fa-tasks"></i> <span>Status</span></a>
+            </li>
+        {% elif user == "user" %}
+            <li class="nav-item {% if main_pick == 'user_history' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_history'%}" ><i class="fas fa-history"></i> <span>History</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_competencies' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_competencies'%}" ><i class="fas fa-table"></i> <span>Competencies</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_options' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_options'%}" ><i class="fas fa-filter"></i>  <span>Options</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_trainings' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_trainings'%}" ><i class="far fa-calendar-check"></i> <span>Trainings</span></a>
+            </li>
+        {% endif %}
+
         <hr class="sidebar-divider">
         <div class="text-center pt-2 d-none d-md-block">
             <span id="sidebarToggle" style="color:white; cursor: pointer;">
@@ -60,19 +76,15 @@
                 </div>
             </div>
         </nav>
+
         <div class="container-fluid">
-            <div class="row">
-                <div class="col">
-                    Test
-                </div>
-                <div class="col">
-                    Test1
-                </div>
-            </div>
+            {% block main_content%}{% endblock %}
         </div>
     </div>
 </div>
 {% endblock content %}
+
+
 
 {% block scripts %}
 <script>

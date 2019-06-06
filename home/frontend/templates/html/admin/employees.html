@@ -1,49 +1,17 @@
 {% extends "html/index.html" %}
 {% load static %}
 
-
-{% block child %}
+{% block main_content %}
 
 <div class="title">
     <h3>Employees</h3>
 </div>
-<div class="employee-tabs">
-    {% if picked == "add" %}
-        <div class="tabsColor">
-            <h4>Add</h4>
-        </div>
-    {% else %}
-        <div class="tabs">
-            <h4><a href="{% url 'employee' %}" class="none-style-link">Add</a></h4>
-        </div>
-    {% endif %}
-    {% if picked == "employee" %}
-        <div class="tabsColor">
-            <h4>Employees</h4>
-        </div>
-    {% else %}
-        <div class="tabs">
-            <h4><a href="{% url 'employee/employees' %}" class="none-style-link">Employees</a></h4>
-        </div>
-    {% endif %}
-    {% if picked == "history" %}
-        <div class="tabsColor">
-            <h4>History</h4>
-        </div>
-    {% else %}
-        <div class="tabs">
-            <h4><a href="{% url 'employee/history' %}" class="none-style-link">History</a></h4>
-        </div>
-    {% endif %}
-</div>
 <div class="board">
-    {% if picked == "add" %}
-
         <div class="subtitle">
             <h3>Add employee</h3>
         </div>
             <div class="block-add">
-                <form id="add-employee-form" method="post" action="{% url 'employee' %}">
+                <form id="add-employee-form" method="post" action="{% url 'employees' %}">
                     <label class="form-label">First name</label>
                     <input class="inputs2" type="text" name="employee-name" required>
                     <label class="form-label">Last name</label>
@@ -62,9 +30,6 @@
                 </form>
             </div>
         </div>
-
-    {% endif %}
-    {% if picked == 'employee' %}
         <div class="subtitle">
             <h3>All employees</h3>
         </div>
@@ -102,14 +67,11 @@
 
             </div>
 
-    {% endif %}
-    {% if picked == 'history' %}
         <div class="subtitle">
             <h3>History</h3>
         </div>
         <div class="block-add-employees">
             <input id="search_bar" type="text" placeholder="Search Employee..." class="rounded shadow">
         </div>
-    {% endif %}
 </div>
-{% endblock child %}
+{% endblock main_content %}

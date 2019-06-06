@@ -2,11 +2,19 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b8fee480-a70b-400c-a832-8a86095a6cee" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/home/static/CSS/sidebar.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/base.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/base.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/competencies.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/competencies.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/employee.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/employees.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/history.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/history.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/login.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/options.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/options.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/status.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/status.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/trainings.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/trainings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/admin/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/frontend/templates/html/user/seminars.html" beforeDir="false" afterPath="$PROJECT_DIR$/home/frontend/templates/html/user/trainings.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/home/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/home/views.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,8 +27,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/base.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="323">
-              <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
+            <state relative-caret-position="136">
+              <caret line="8" column="81" selection-start-line="8" selection-start-column="81" selection-end-line="8" selection-end-column="81" />
             </state>
           </provider>
         </entry>
@@ -28,45 +36,18 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/index.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="21" column="104" selection-start-line="21" selection-start-column="104" selection-end-line="21" selection-end-column="104" />
+            <state relative-caret-position="757">
+              <caret line="80" column="33" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="33" />
               <folding>
                 <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#0;n#!!top" expanded="true" />
-                <element signature="n#div#0;n#div#0;n#!!top" />
                 <element signature="n#style#0;n#span#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#0;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#a#0;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#1;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#span#0;n#a#1;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
                 <element signature="n#style#0;n#a#2;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+                <element signature="n#script#0;n#!!top" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/home/static/CSS/sidebar.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="51">
-              <caret line="3" column="31" selection-start-line="3" selection-start-column="31" selection-end-line="3" selection-end-column="31" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/home/views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="13" selection-start-line="13" selection-end-line="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/home/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -96,21 +77,22 @@
         <option value="$PROJECT_DIR$/home/frontend/templates/html/user/seminars.html" />
         <option value="$PROJECT_DIR$/home/frontend/templates/html/user/useroptions.html" />
         <option value="$PROJECT_DIR$/home/frontend/templates/html/user/competencies.html" />
-        <option value="$PROJECT_DIR$/home/urls.py" />
         <option value="$PROJECT_DIR$/home/frontend/templates/html/user/history.html" />
         <option value="$PROJECT_DIR$/home/static/CSS/main.css" />
-        <option value="$PROJECT_DIR$/home/views.py" />
         <option value="$PROJECT_DIR$/home/frontend/templates/html/login.html" />
-        <option value="$PROJECT_DIR$/home/frontend/templates/html/base.html" />
         <option value="$PROJECT_DIR$/home/static/CSS/sidebar.css" />
+        <option value="$PROJECT_DIR$/home/frontend/templates/html/admin/competencies.html" />
+        <option value="$PROJECT_DIR$/home/views.py" />
+        <option value="$PROJECT_DIR$/home/urls.py" />
         <option value="$PROJECT_DIR$/home/frontend/templates/html/index.html" />
+        <option value="$PROJECT_DIR$/home/frontend/templates/html/base.html" />
+        <option value="$PROJECT_DIR$/home/frontend/templates/html/admin/employees.html" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
-    <option name="width" value="1278" />
+    <option name="x" value="-7" />
+    <option name="width" value="1294" />
     <option name="height" value="1407" />
   </component>
   <component name="ProjectLevelVcsManager">
@@ -121,6 +103,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -161,19 +144,12 @@
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
               <item name="templates" type="462c0819:PsiDirectoryNode" />
               <item name="html" type="462c0819:PsiDirectoryNode" />
-              <item name="user" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="Respo-code" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Respo-code" type="462c0819:PsiDirectoryNode" />
-              <item name="home" type="462c0819:PsiDirectoryNode" />
-              <item name="static" type="462c0819:PsiDirectoryNode" />
+              <item name="admin" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -181,6 +157,11 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Adem\Desktop\Respo-code\home\frontend\templates\html\admin" />
+    </key>
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -218,13 +199,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="2576" height="1416" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11623325" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
-      <window_info anchor="bottom" id="Find" order="1" weight="0.32953465" />
+      <window_info anchor="bottom" id="Find" order="1" weight="0.3289166" />
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
@@ -233,7 +213,7 @@
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.16056119" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
-      <window_info anchor="bottom" id="Python Console" order="10" />
+      <window_info anchor="bottom" id="Python Console" order="10" weight="0.32969603" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
@@ -243,7 +223,7 @@
     <option featureType="com.intellij.fileTypeFactory" implementationName="*.css" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/user/seminars.html">
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/user/trainings.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="85">
           <caret line="5" column="16" selection-end-line="8" selection-end-column="20" />
@@ -264,18 +244,8 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/history.html">
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/admin/history.html">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/employee.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret selection-end-line="4" selection-end-column="17" />
-          <folding>
-            <element signature="n#div#1;n#!!top" />
-          </folding>
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/user/history.html">
       <provider selected="true" editor-type-id="text-editor">
@@ -301,37 +271,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/competencies.html">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="13" selection-start-line="13" selection-end-line="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/urls.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="20" column="13" selection-start-line="20" selection-start-column="13" selection-end-line="20" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/static/CSS/sb-admin-2.min.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="328">
-          <caret line="9" column="183058" selection-start-line="9" selection-start-column="183051" selection-end-line="9" selection-end-column="183058" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/base.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="19" column="65" selection-start-line="19" selection-start-column="65" selection-end-line="19" selection-end-column="65" />
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/home/static/CSS/sb-admin-2.min.css" />
     <entry file="file://$PROJECT_DIR$/home/static/CSS/sidebar.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -339,19 +279,65 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/index.html">
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/admin/competencies.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="711">
+          <caret line="79" column="20" lean-forward="true" selection-start-line="79" selection-start-column="20" selection-end-line="79" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/urls.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="21" column="19" selection-start-line="21" selection-start-column="19" selection-end-line="21" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/views.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="357">
-          <caret line="21" column="104" selection-start-line="21" selection-start-column="104" selection-end-line="21" selection-end-column="104" />
+          <caret line="104" column="11" lean-forward="true" selection-start-line="104" selection-start-column="11" selection-end-line="104" selection-end-column="11" />
+          <folding>
+            <element signature="e#549#569#0" />
+            <element signature="e#576#698#0" />
+            <element signature="e#732#895#0" />
+            <element signature="e#1567#1747#0" />
+            <element signature="e#1776#1903#0" />
+            <element signature="e#1932#2060#0" />
+            <element signature="e#2091#2260#0" />
+            <element signature="e#2503#2629#0" />
+            <element signature="e#2676#2695#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/base.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="81" selection-start-line="8" selection-start-column="81" selection-end-line="8" selection-end-column="81" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/admin/employees.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="6" lean-forward="true" selection-start-line="7" selection-start-column="6" selection-end-line="7" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/home/frontend/templates/html/index.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="757">
+          <caret line="80" column="33" selection-start-line="80" selection-start-column="21" selection-end-line="80" selection-end-column="33" />
           <folding>
             <element signature="n#style#0;n#span#0;n#div#0;n#ul#0;n#div#0;n#!!top" expanded="true" />
-            <element signature="n#div#0;n#div#0;n#!!top" />
             <element signature="n#style#0;n#span#0;n#div#0;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#0;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#a#0;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#1;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#span#0;n#a#1;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
             <element signature="n#style#0;n#a#2;n#div#0;n#div#1;n#nav#0;n#div#0;n#div#0;n#!!top" expanded="true" />
+            <element signature="n#script#0;n#!!top" />
           </folding>
         </state>
       </provider>

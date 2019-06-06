@@ -8,47 +8,7 @@
     <h3>Competencies</h3>
 </div>
 
-<div class="employee-tabs">
-    {% if picked == "add" %}
-        <div class="tabsColor">
-            <h4>Add</h4>
-        </div>
-    {% else %}
-        <div class="tabs">
-            <h4><a href="add" class="none-style-link">Add</a></h4>
-        </div>
-    {% endif %}
-    {% if picked == "competence" %}
-        <div class="tabsColor">
-            <h4>Competencies</h4>
-        </div>
-    {% else %}
-        <div class="tabs">
-            <h4><a href="competencies" class="none-style-link">Competencies</a></h4>
-        </div>
-    {% endif %}
-</div>
 <div class="board">
-    {% if picked == "add" %}
-
-        <div class="subtitle">
-            <h3>Add Competence</h3>
-        </div>
-            <div class="block-add">
-                <form id="add-employee-form" method="post" action="{% url 'competencies' %}">
-                    <label class="form-label">Competence type</label>
-                    <input class="inputs2" type="text" name="employee-name" required>
-                    <label class="form-label">Competence name</label>
-                    <input class="inputs2" type="text" name="employee-lastName" required>
-                    <label class="form-label">Description</label>
-                    <input class="inputs2" type="text" name="employee-phone" required>
-                    <input type="submit" id="submit-btn3" value="Add" class="rounded">
-                </form>
-            </div>
-        </div>
-
-    {% endif %}
-    {% if picked == 'competence' %}
         <div class="subtitle">
             <h3 class="competenceTitle">Competencies type</h3>
             <h3 class="competenceTitle">Competencies</h3>
@@ -117,5 +77,4 @@
                   </tbody>
                 </table>
             </div>
-    {% endif %}
 {% endblock child %}
