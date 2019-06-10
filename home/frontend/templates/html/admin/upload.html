@@ -3,19 +3,41 @@
 {% load static %}
 
 
-{% block child %}
-<div class="title">
-    <h3>Upload excel files</h3>
+{% block main_content %}
+
+<div class="container-fluid mt-2">
+    <div class="row">
+        <div class="col-xl-6 mt-2">
+            <h2 class="text-primary">Upload Excel Files</h2>
+            <form id="uploaderForm" class="" method="post" action="{%url 'upload' %}">
+                {% csrf_token %}
+                <div class="custom-file mt-4">
+                    <input type="file" class="custom-file-input" id="excelOne">
+                    <label class="custom-file-label" for="excelOne">Excel one - Employees</label>
+                </div>
+                <div class="custom-file mt-4">
+                    <input type="file" class="custom-file-input" id="excelTwo">
+                    <label class="custom-file-label" for="excelTwo">Excel two - Work Places</label>
+                </div>
+                <div class="custom-file mt-4">
+                    <input type="file" class="custom-file-input" id="excelThree">
+                    <label class="custom-file-label" for="excelThree">Excel three - Competencies</label>
+                </div>
+                <div class="text-right mt-4">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
-<form id="uploaderForm" method="post" action="{%url 'upload' %}">
-    {% csrf_token %}
-    <div id="fileUploadContainer">
-        <input id="input-id" type="file" class="file" data-preview-file-type="text" >
-    </div>
-    <div id="button-container">
-        <input id="submit-btn2" type="submit" value="Upload" class="rounded shadow-lg">
-    </div>
+
+<!--    <div id="fileUploadContainer">-->
+<!--        <input id="input-id" type="file" class="file" data-preview-file-type="text" >-->
+<!--    </div>-->
+<!--    <div id="button-container">-->
+<!--        <input id="submit-btn2" type="submit" value="Upload" class="rounded shadow-lg">-->
+<!--    </div>-->
 </form>
 
-{% endblock child %}
+{% endblock main_content %}

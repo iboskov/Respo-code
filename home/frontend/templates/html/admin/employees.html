@@ -1,77 +1,212 @@
 {% extends "html/index.html" %}
 {% load static %}
+{% block pagestyle %}
+<style>
+    .editIconModal, .deleteIconModal{
+        cursor: pointer;
+    }
+    .editIconModal:hover{
+        color: #00dd00 !important;
+    }
+    .deleteIconModal:hover{
+        color: #ff0000 !important;
+    }
+</style>
+{% endblock %}
 
 {% block main_content %}
 
-<div class="title">
-    <h3>Employees</h3>
-</div>
-<div class="board">
-        <div class="subtitle">
-            <h3>Add employee</h3>
-        </div>
-            <div class="block-add">
-                <form id="add-employee-form" method="post" action="{% url 'employees' %}">
-                    <label class="form-label">First name</label>
-                    <input class="inputs2" type="text" name="employee-name" required>
-                    <label class="form-label">Last name</label>
-                    <input class="inputs2" type="text" name="employee-lastName" required>
-                    <label class="form-label">Phone</label>
-                    <input class="inputs2" type="text" name="employee-phone" required>
-                    <label class="form-label">City</label>
-                    <input class="inputs2" type="text" name="employee-city" required>
-                    <label class="form-label">Country</label>
-                    <input class="inputs2" type="text" name="employee-country" required>
-                    <label class="form-label">Email</label>
-                    <input class="inputs2" type="text" name="employee-email" required>
-                    <label class="form-label">Position</label>
-                    <input class="inputs2" type="text" name="employee-position" required>
-                    <input type="submit" id="submit-btn3" value="Add" class="rounded">
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col">
+            <h2 class="text-primary">Employees</h2>
+            <ul class="nav nav-tabs nav-fill mt-4" id="employee-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="add-employee-tab" data-toggle="tab" href="#addEmployee" role="tab">Add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="show-employee-tab" data-toggle="tab" href="#showEmployee" role="tab">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="history-employee-tab" data-toggle="tab" href="#historyEmployee" role="tab">History</a>
+                </li>
+            </ul>
+            <div class="tab-content m-2" id="myTabContent">
+                <div class="tab-pane fade show active" id="addEmployee" role="tabpanel">
+                    <form id="add-employee-form" method="post" action="{% url 'employees' %}">
+                        <h4 class="text-primary">Add employee</h4>
+                        <div class="form-group">
+                            <label for="employee-name">First Name:</label>
+                            <input type="text" class="form-control" id="employee-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-lastname">Last Name:</label>
+                            <input type="text" class="form-control" id="employee-lastname" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-Phone">Phone:</label>
+                            <input type="text" class="form-control" id="employee-Phone" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-city">City:</label>
+                            <input type="text" class="form-control" id="employee-city" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-country">Country:</label>
+                            <input type="text" class="form-control" id="employee-country" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-email">Email:</label>
+                            <input type="text" class="form-control" id="employee-email" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-username">Username:</label>
+                            <input type="text" class="form-control" id="employee-username" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="employee-type">Type:</label>
+                            <input type="text" class="form-control" id="employee-type" required>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-primary">Add</button>
+                        </div>
                 </form>
+                </div>
+                <div class="tab-pane mt-2" id="showEmployee" role="tabpanel" aria-labelledby="profile-tab">
+                    <h4 class="text-primary">All employees</h4>
+                    <div class="table-responsive mt-4">
+                    <table class="table table-hover table-sm">
+                        <thead class="thead-color">
+                            <tr>
+                              <th scope="col">#</th>
+                              <th scope="col">Name</th>
+                              <th scope="col">Type</th>
+                              <th scope="col" class="text-center">Edit / Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                              <th scope="row">1</th>
+                              <td>Mark</td>
+                              <td>IT-department</td>
+                              <td class="text-center">
+                                  <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>Adem Kikaj</td>
+                                <td>IT-department</td>
+                                <td class="text-center">
+                                  <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal"></i>
+                              </td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>Jure</td>
+                                <td>Finance</td>
+                                <td class="text-center">
+                                  <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal"></i>
+                              </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+                <div class="tab-pane" id="historyEmployee" role="tabpanel" aria-labelledby="contact-tab">
+                    <h4 class="text-primary">Employee History</h4>
+                    <div class="form-group">
+                        <label for="historyLabel">Search employee</label>
+                        <input type="text" class="form-control" id="historyLabel" placeholder="Enter employee name or username">
+                    </div>
+                    <div class="col-xl-6 text-center">
+                        <canvas id="myChart"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="subtitle">
-            <h3>All employees</h3>
-        </div>
-            <div class="block-add-employees">
-                <table class="table">
-                  <thead class="thead-color">
-                    <tr>
-                      <th scope="col">#</th>
-                      <th scope="col">Name</th>
-                      <th scope="col">Type</th>
-                      <th scope="col">Edit/delete</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <th scope="row">1</th>
-                      <td>Mark</td>
-                      <td>IT-department</td>
-                      <td>Edit/delete</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">2</th>
-                      <td>Adem Kikaj</td>
-                      <td>IT-department</td>
-                      <td>Edit/delete</td>
-                    </tr>
-                    <tr>
-                      <th scope="row">3</th>
-                      <td>Jure</td>
-                      <td>Finance</td>
-                      <td>Edit/delete</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-            </div>
-
-        <div class="subtitle">
-            <h3>History</h3>
-        </div>
-        <div class="block-add-employees">
-            <input id="search_bar" type="text" placeholder="Search Employee..." class="rounded shadow">
-        </div>
+    </div>
 </div>
+
+<!-- Modal Edit-->
+<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Edit employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+            <form id="edit-employee-form" method="post" action="{% url 'employees' %}">
+                <h6 class="text-primary">Edit employee</h6>
+                <div class="form-group">
+                    <label for="edit-employee-name">First Name:</label>
+                    <input type="text" class="form-control" id="edit-employee-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-lastname">Last Name:</label>
+                    <input type="text" class="form-control" id="edit-employee-lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-Phone">Phone:</label>
+                    <input type="text" class="form-control" id="edit-employee-Phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-city">City:</label>
+                    <input type="text" class="form-control" id="edit-employee-city" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-country">Country:</label>
+                    <input type="text" class="form-control" id="edit-employee-country" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-email">Email:</label>
+                    <input type="text" class="form-control" id="edit-employee-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-username">Username:</label>
+                    <input type="text" class="form-control" id="edit-employee-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-employee-type">Type:</label>
+                    <input type="text" class="form-control" id="edit-employee-type" required>
+                </div>
+            </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
 {% endblock main_content %}
+{% block scripts %}
+<script>
+var ctx = document.getElementById('myChart');
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Competence 1', 'Competence 2', 'Competence 3', 'Competence 4', 'Competence 5', 'Competence 6', 'Competence 7'],
+        datasets: [{
+            label: 'Before Training',
+            backgroundColor: 'rgba(255, 0, 0, 1)',
+            borderColor: 'rgba(255, 0, 0, 1)',
+            data: [4, 3, 2, 5, 2, 6, 8],
+            fill: false,
+        }, {
+            label: 'After Training',
+            fill: false,
+            backgroundColor: 'rgba(0, 0, 255, 1)',
+            borderColor: 'rgba(0, 0, 255, 1)',
+            data: [7, 5, 5, 8, 3, 7, 10],
+            fill: false
+        }]
+    }
+});
+</script>
+{% endblock %}

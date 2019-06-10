@@ -9,7 +9,9 @@
     <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/fileinput.min.css' %}" rel="stylesheet">
     <link href="{% static 'CSS/icons.css' %}" rel="stylesheet">
-    {% block styles %}
+    <link href="{% static 'CSS/sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'CSS/Chart.min.css' %}" rel="stylesheet">
+    {% block pagestyle %}
     {% endblock %}
 </head>
 <body>
@@ -22,6 +24,8 @@
 <script src="{% static 'bootstrap/js/fileinput.min.js' %}"></script>
 <script src="{% static 'javascript/icons.js' %}"></script>
 <script src="{% static 'javascript/scripts.js' %}"></script>
+<script src="{% static 'javascript/Chart.min.js' %}"></script>
+<script src="{% static 'javascript/sidebar.js' %}"></script>
 {% block scripts %}
 {% endblock %}
 </body>

@@ -1,10 +1,6 @@
 {% extends "html/base.html" %}
 {% load static %}
 
-{% block styles %}
-    <link href="{% static 'CSS/sidebar.css' %}" rel="stylesheet">
-{% endblock styles %}
-
 {% block content %}
 <div class="d-flex flex-row">
     <ul class="navbar-nav bg-primary sidebar min-vh-100 d-md-block">
@@ -83,24 +79,3 @@
     </div>
 </div>
 {% endblock content %}
-
-
-
-{% block scripts %}
-<script>
-    $("#sidebarToggle").on("click", function(){
-        $(".sidebar").toggleClass("sidebarCollapsed");
-        if($("#sidebarToggle").find(".leftA").length==1){
-            $("#sidebarToggle").empty();
-            $("#sidebarToggle").append('<span class="rightA"><i class="far fa-arrow-alt-circle-right fa-2x"></i></span>');
-        }else if($("#sidebarToggle").find(".rightA").length==1){
-            $("#sidebarToggle").empty();
-            $("#sidebarToggle").append('<span class="leftA"><i class="far fa-arrow-alt-circle-left fa-2x"></i></span>');
-        }
-    });
-
-    $("#sidebarToggleTop").on("click", function(){
-        $(".sidebar").toggleClass("d-none");
-    });
-</script>
-{% endblock scripts %}
