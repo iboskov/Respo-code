@@ -17,13 +17,14 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    url('login', views.login, name='login'),
-    url('upload', views.upload, name='upload'),
+    path('login', views.login, name='login'),
+    path('upload', views.upload, name='upload'),
     path("employees", views.employees, name="employees"),
     path('competencies', views.competencies, name='competencies'),
     path('options', views.options, name='options'),
     path('history', views.history, name='history'),
     path('trainings', views.trainings, name='trainings'),
+    path('analytics', views.analytics, name='analytics'),
     path('status', views.status, name='status'),
     path('user_history', views.user_history_recent, name='user_history'),
     path('user_history/timeline', views.user_history_timeline, name='user_history/timeline'),

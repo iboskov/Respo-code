@@ -57,9 +57,13 @@ def history(request):
 
 def trainings(request):
     user = "admin"
-    picked = "add"
     main_pick = "trainings"
-    return render(request, 'html/admin/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user})
+
+def analytics(request):
+    user = "admin"
+    main_pick = "analytics"
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user})
 
 
 def status(request):

@@ -1,0 +1,9 @@
+.editIconModal, .deleteIconModal{
+    cursor: pointer;
+}
+.editIconModal:hover{
+    color: #00dd00 !important;
+}
+.deleteIconModal:hover{
+    color: #ff0000 !important;
+}
