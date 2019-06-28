@@ -5,8 +5,61 @@
 {% block main_content %}
 <div class="container-fluid">
     <div class="row">
-        <div class="col">
-            <h4 class="text-primary">Status of employee</h4>
+        <div class="col mt-2">
+            <h2 class="text-primary">Status</h2>
+            <ul class="nav nav-tabs mt-4" id="status-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="show-employees-tab" data-toggle="tab" href="#employees" role="tab">Employees</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="show-trainings-tab" data-toggle="tab" href="#trainings" role="tab">Trainings</a>
+                </li>
+            </ul>
+             <div class="tab-content m-2" id="myTabContent">
+                <div class="tab-pane show active" id="employees" role="tabpanel">
+                    <div class="row">
+                        <div class="col col-xl-8">
+                            <input type="text" class="form-control" id="searchEmployee" placeholder="Enter employee name or username">
+                            <div class="table-responsive mt-2">
+                                                <table class="table table-hover">
+                                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">NAME</th>
+                                                            <th scope="col" style="width:50%;">DESCRIPTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td><a href="#">Strokovne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td><a href="#">Socialne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td><a href="#">Posolvne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tab-pane" id="trainings" role="tabpanel">
+                    <div class="row">
+                        <div class="col col-xl-6">
+                            <input type="text" class="form-control" id="searchTraining" placeholder="Enter training name">
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

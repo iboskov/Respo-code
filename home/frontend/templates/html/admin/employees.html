@@ -3,8 +3,8 @@
 
 {% block main_content %}
 <div class="container-fluid">
-    <div class="row mt-2">
-        <div class="col">
+    <div class="row">
+        <div class="col mt-2">
             <h2 class="text-primary">Employees</h2>
             <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
                 <li class="nav-item">
@@ -64,117 +64,125 @@
                 </div>
                 <div class="tab-pane" id="showEmployee" role="tabpanel" aria-labelledby="profile-tab">
                     <div class="row">
-                        <div class="col-xl-6">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5 class="card-title">All Employees</h5>
-                                    <input type="text" class="form-control mt-2 mb-2" id="searchEmployee" placeholder="Search employee">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                  <th scope="col">#</th>
-                                                  <th scope="col">NAME</th>
-                                                  <th scope="col">TYPE</th>
-                                                  <th scope="col" class="text-center">EDIT / DELETE</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td><a href="#">Mark</a></td>
-                                                    <td>IT-department</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td><a href="#">Adem Kikaj</a></td>
-                                                    <td>IT-department</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td><a href="#">Jure</a></td>
-                                                    <td>Finance</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                            <div class="col-xl-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5 class="card-title text-primary">All Employees</h5>
+                                        <input type="text" class="form-control mt-2 mb-2" id="searchEmployee" placeholder="Search employee">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                    <tr>
+                                                      <th scope="col">#</th>
+                                                      <th scope="col">NAME</th>
+                                                      <th scope="col">TYPE</th>
+                                                      <th scope="col" class="text-center">EDIT / DELETE</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                    <tr>
+                                                        <th scope="row">1</th>
+                                                        <td><a href="#">Mark</a></td>
+                                                        <td>IT-department</td>
+                                                        <td class="text-center">
+                                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">2</th>
+                                                        <td><a href="#">Adem Kikaj</a></td>
+                                                        <td>IT-department</td>
+                                                        <td class="text-center">
+                                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th scope="row">3</th>
+                                                        <td><a href="#">Jure</a></td>
+                                                        <td>Finance</td>
+                                                        <td class="text-center">
+                                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-xl-6">
-                            <div class="card">
-                                <div class="card-body">
-                                <h5 class="card-title">Add Competencies</h5>
-                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetenceType" placeholder="Search Competence Type">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">NAME</th>
-                                                    <th scope="col" style="width:50%;">DESCRIPTION</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td><a href="#">Strokovne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td><a href="#">Socialne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td><a href="#">Posolvne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                            <div class="col-xl-6">
+                                <form id="add-employee-competencies-form" method="post" action="{% url 'employees' %}">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title text-primary">Competencies</h5>
+                                            <input type="text" class="form-control mt-2 mb-2" id="searchCompetenceType" placeholder="Search Competence Type">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">NAME</th>
+                                                            <th scope="col" style="width:50%;">DESCRIPTION</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td><a href="#">Strokovne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td><a href="#">Socialne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td><a href="#">Posolvne</a></td>
+                                                            <td>Lorem</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <hr>
+                                            <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" placeholder="Search Competence">
+                                            <div class="table-responsive">
+                                                <table class="table table-hover">
+                                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                        <tr>
+                                                            <th scope="col">#</th>
+                                                            <th scope="col">NAME</th>
+                                                            <th scope="col" style="width:50%;">SCORE</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                        <tr>
+                                                            <th scope="row">1</th>
+                                                            <td>Prikazuje znanje o...</td>
+                                                            <td><input type="text" class="form-control" id="firstCompScore" placeholder="Score"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">2</th>
+                                                            <td>Usposobljen za tehnično...</td>
+                                                            <td><input type="text" class="form-control" id="secCompScore" placeholder="Score"></td>
+                                                        </tr>
+                                                        <tr>
+                                                            <th scope="row">3</th>
+                                                            <td>Usposobljen za ko...</td>
+                                                            <td><input type="text" class="form-control" id="thirdCompScore" placeholder="Score"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <hr>
+                                            <div class="col text-right">
+                                                <input class="btn btn-primary mr-1" type="submit" value="Submit">
+                                                <input class="btn btn-primary" type="reset" value="Reset">
+                                            </div>
+                                        </div>
                                     </div>
-                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" placeholder="Search Competence">
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">NAME</th>
-                                                    <th scope="col" style="width:50%;">SCORE</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Prikazuje znanje o...</td>
-                                                    <td><input type="text" class="form-control" id="firstCompScore" placeholder="Score"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Usposobljen za tehnično...</td>
-                                                    <td><input type="text" class="form-control" id="secCompScore" placeholder="Score"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Usposobljen za ko...</td>
-                                                    <td><input type="text" class="form-control" id="thirdCompScore" placeholder="Score"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                </form>
                             </div>
-                        </div>
                     </div>
                 </div>
                 <div class="tab-pane" id="historyEmployee" role="tabpanel" aria-labelledby="contact-tab">
