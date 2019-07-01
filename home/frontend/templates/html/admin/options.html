@@ -3,9 +3,90 @@
 
 {% block main_content %}
 <div class="container-fluid">
-    <div class="row">
+    <div class="row mt-2">
         <div class="col">
-            <h4 class="text-primary">Admin Options</h4>
+            <h2 class="text-primary">Options</h2>
+            <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link" id="users-tab" data-toggle="tab" href="#users" role="tab">Users</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" id="messages-tab" data-toggle="tab" href="#messages" role="tab">Messages</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="excel-tab" data-toggle="tab" href="#excel" role="tab">Excel</a>
+                </li>
+            </ul>
+             <div class="tab-content m-2" id="myTabContent">
+                <div class="tab-pane" id="users" role="tabpanel">
+                    <div class="row">
+                        <div class="col col-xl-6">
+                            <input type="text" class="form-control mb-2" id="searchEmployee" placeholder="Enter employee name or username">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                        <tr>
+                                            <th scope="col" width="1%">#</th>
+                                            <th scope="col" width="50%">USER</th>
+                                            <th scope="col" width="50%">PASSWORD</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>ademkikaj</td>
+                                            <td><a href="#" class="badge badge-primary">Reset</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane show active" id="messages" role="tabpanel">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <img src="{% static 'img/user.png' %}" class="img-thumbnail rounded-circle p-0 mb-1" width="50">
+                                        </div>
+                                        <div class="col pl-2">
+                                            <span>Adem Kikaj</span><br>
+                                            <small>Message about...</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-auto">
+                                            <img src="{% static 'img/user_icon.png' %}" class="img-thumbnail rounded-circle p-0 mb-1" width="50">
+                                        </div>
+                                        <div class="col pl-2">
+                                            <span>John Doe</span><br>
+                                            <small>Message 2...</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-9">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Adem Kikaj</h5>
+                                    <p>Message about something here will appear.</p>
+                                    <input type="text" class="form-control mb-2" id="sentMessage" placeholder="Enter message">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane" id="excel" role="tabpanel">
+                </div>
+             </div>
         </div>
     </div>
 </div>
