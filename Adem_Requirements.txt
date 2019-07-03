@@ -1,0 +1,17 @@
+Status
+    > Search - By Seminar or by employee = FINISHED
+    > By Trainings - Show all employees status of specific seminar - possible resend = FINISHED
+    > By employees - Show all seminars of specific employee = FINISHED
+
+Options
+    > Search employee - Reset password and resend email
+    > Export Excel 
+    > Messages
+    > Notifications 
+
+Employees
+    > History - By Employee, 
+                By Training, and 
+                By Competence 
+
+Add PDF button to Employees list, Competencies Type, Competencies Only, Trainings, Status of Employees, Chart
