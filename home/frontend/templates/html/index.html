@@ -1,133 +1,81 @@
 {% extends "html/base.html" %}
 {% load static %}
 
-
 {% block content %}
-<div class="login-container">
-    <div class="header">
-        <div id="title-container">
-            <h1 id="header">Respo</h1>
+<div class="d-flex flex-row">
+    <ul class="navbar-nav bg-primary sidebar min-vh-100 d-md-block">
+        <a class="sidebar-brand d-flex flex-row align-items-center" href="index.html">
+            <div>
+                <img src="{% static 'img/user.png' %}" class="img-thumbnail rounded-circle p-0 mb-1" width="50">
+            </div>
+            <div class="pl-2 sidebar-brand-text">
+                <span>Adem Kikaj</span><br>
+                <small>Admin</small>
+            </div>
+        </a>
+        <hr class="sidebar-divider">
+        {% if user == "admin" %}
+            <li class="nav-item {% if main_pick == 'upload' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'upload'%}" ><i class="fas fa-upload"></i> <span>Upload</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'employees' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'employees'%}" ><i class="fas fa-users"></i> <span>Employees</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'competencies' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'competencies'%}" ><i class="fas fa-table"></i> <span>Competencies</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'trainings' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'trainings'%}" ><i class="far fa-calendar-check"></i> <span>Trainings</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'analytics' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'analytics'%}" ><i class="fas fa-terminal"></i> <span>Analytics</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'status' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'status'%}" ><i class="fas fa-tasks"></i> <span>Status</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'options' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'options'%}" ><i class="fas fa-filter"></i> <span>Options</span></a>
+            </li>
+            {% elif user == "user" %}
+            <li class="nav-item {% if main_pick == 'user_history' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_history'%}" ><i class="fas fa-history"></i> <span>History</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_competencies' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_competencies'%}" ><i class="fas fa-table"></i> <span>Competencies</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_trainings' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_trainings'%}" ><i class="far fa-calendar-check"></i> <span>Trainings</span></a>
+            </li>
+            <li class="nav-item {% if main_pick == 'user_options' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_options'%}" ><i class="fas fa-filter"></i>  <span>Options</span></a>
+            </li>
+        {% endif %}
+
+        <hr class="sidebar-divider">
+        <div class="text-center pt-2 d-none d-md-block">
+            <span id="sidebarToggle" style="color:white; cursor: pointer;">
+                <span class="leftA"><i class="far fa-arrow-alt-circle-left fa-2x"></i></span>
+            </span>
         </div>
-        <div id="icon-container">
-            <img class="icons-respo" src="{% static 'img/user_icon.png' %}">
-            <img class="icons-respo" id="icon-mail" src="{% static 'img/mail_icon.png' %}">
-            <img class="icons-respo" id="icon-notification" src="{% static 'img/notification_icon.png' %}">
-        </div>
-    </div>
-    <!-- main container -->
-    <div class="main-container">
-        <!--nav container -->
-        <div id="nav-container">
-            <div class="profile-container">
-                <div id="profile">
-                    <img class="icons-respo" id="second-profile" src="{% static 'img/user_icon.png' %}">
-                </div>
-                <div id="username-container">
-                    <label id="user-label">Adem Kikaj</label>
-                    <label id="position-label">Admin</label>
+    </ul>
+    <div class="d-flex flex-column flex-grow-1">
+        <nav class="navbar navbar-expand-sm navbar-light bg-dark">
+            <div class="d-md-none">
+                <span id="sidebarToggleTop" style="cursor: pointer;"><i class="fa fa-bars"></i></span>
+            </div>
+            <span class="navbar-toggler" data-toggle="collapse" data-target="#topNavbar"><i class="fa fa-bars"></i></span>
+            <div class="collapse navbar-collapse" id="topNavbar">
+                <div class="navbar-nav ml-auto">
+                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">2</span></a>
+                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="far fa-envelope fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">5</span></a>
+                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="fas fa-sign-out-alt fa-lg"></i></a>
                 </div>
             </div>
-            <nav id="sidebar">
-                <div class="sidebar-container">
-                    {% if user == "admin" %}
-                    <ul class="list-unstyled components">
-                        <li>
-                            {% if main_pick == "upload" %}
-                                <a href="" class=" a-style nav-border-selected">Upload</a>
-                            {% else %}
-                                <a href="{%url 'upload'%}" class="a-style nav-border">Upload</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "employee" %}
-                                <a href="" class="a-style nav-border-selected">Employees</a>
-                            {% else %}
-                                <a href="{% url 'employee' %}" class="a-style nav-border">Employees</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "history" %}
-                                <a href="#" class="a-style nav-border-selected">History</a>
-                            {% else %}
-                                <a href="{%url 'history' %}" class="a-style nav-border">History</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "options" %}
-                                <a href="" class="a-style nav-border-selected">Options</a>
-                            {% else %}
-                                <a href="{%url 'options' %}" class="a-style nav-border">Options</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "competencies" %}
-                                <a href="" class="a-style nav-border-selected">Competencies</a>
-                            {% else %}
-                                <a href="{% url 'competence/add' %}" class="a-style nav-border">Competencies</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "trainings" %}
-                                <a href="" class="a-style nav-border-selected">Trainings</a>
-                            {% else %}
-                                <a href="{% url 'trainings' %}" class="a-style nav-border">Trainings</a>
-                            {% endif %}
-                        </li>
-                        <li>
-                            {% if main_pick == "status" %}
-                                <a href="" class="a-style nav-border-selected">Status of Employees</a>
-                            {% else %}
-                                <a href="{% url 'status' %}" class="a-style nav-border">Status of Employees</a>
-                            {% endif %}
-                        </li>
-                    </ul>
-                    {% elif user == "user" %}
-                    <ul class="list-unstyled components">
-                        <!-- History -->
-                        <li>
-                            {% if main_pick == "user_history" %}
-                                <a href="" class=" a-style nav-border-selected">History</a>
-                            {% else %}
-                                <a href="{%url 'user_history'%}" class="a-style nav-border">History</a>
-                            {% endif %}
-                        </li>
-                        <!-- Competencies -->
-                        <li>
-                            {% if main_pick == "competencies" %}
-                                <a href="" class="a-style nav-border-selected">Competencies</a>
-                            {% else %}
-                                <a href="{% url 'competencies' %}" class="a-style nav-border">Competencies</a>
-                            {% endif %}
-                        </li>
-                        <!-- Options -->
-                        <li>
-                            {% if main_pick == "user_options" %}
-                                <a href="#" class="a-style nav-border-selected">Options</a>
-                            {% else %}
-                                <a href="{%url 'user_options' %}" class="a-style nav-border">Options</a>
-                            {% endif %}
-                        </li>
-                        <!-- Seminars-->
-                        <li>
-                            {% if main_pick == "seminars" %}
-                                <a href="" class="a-style nav-border-selected">Seminars</a>
-                            {% else %}
-                                <a href="{%url 'seminars' %}" class="a-style nav-border">Seminars</a>
-                            {% endif %}
-                        </li>S
-                    </ul>
-                    {% endif %}
-                </div>
-            </nav>
-        </div>
-             <!-- submain -->
-        <div class="submain-container">
-            {% block child %}
-            {% endblock child %}
+        </nav>
+
+        <div class="container-fluid">
+            {% block main_content%}{% endblock %}
         </div>
     </div>
-
-
 </div>
-
 {% endblock content %}

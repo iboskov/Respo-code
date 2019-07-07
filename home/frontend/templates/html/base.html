@@ -1,36 +1,33 @@
 <!DOCTYPE html>
 {% load static %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
-    <!-- bootstrap bootstrap -->
-    <link href="{% static 'bootstrap/css/bootstrap.min.css'  %}" rel="stylesheet">
-    <link href="{% static 'CSS/main.css' %}" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    <!-- bootstrap -->
+    <link href="{% static 'bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
     <link href="{% static 'bootstrap/css/fileinput.min.css' %}" rel="stylesheet">
-    {% block styles %}
+    <link href="{% static 'CSS/icons.css' %}" rel="stylesheet">
+    <link href="{% static 'CSS/sidebar.css' %}" rel="stylesheet">
+    <link href="{% static 'CSS/Chart.min.css' %}" rel="stylesheet">
+    <link href="{% static 'CSS/general.css' %}" rel="stylesheet">
+    {% block pagestyle %}
     {% endblock %}
 </head>
 <body>
-
-
-
-    <main>
-        {% block content %}{% endblock %}
-    </main>
-<!-- this is the base html file where the basic structure is going to be (mostly imports of bootstrap and js). All other htmls should inherit this one -->
-
-    <!-- jquery -->
-    <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
-
-    <!-- bootstrap js -->
-    <script src="{% static 'bootstrap/js/bootstrap.min.js'  %}"></script>
-    <script src="{% static 'bootstrap/js/fileinput.min.js'  %}"></script>
-
-    <script src="{% static 'javascript/scripts.js' %}"></script>
-
-
-
+{% block content %}{% endblock %}
+<!-- this is the base html file where the basic structure is going to be (mostly imports of bootstrap and js). All other html files should inherit this one -->
+<!-- jquery -->
+<script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
+<!-- bootstrap js -->
+<script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
+<script src="{% static 'bootstrap/js/fileinput.min.js' %}"></script>
+<script src="{% static 'javascript/icons.js' %}"></script>
+<script src="{% static 'javascript/scripts.js' %}"></script>
+<script src="{% static 'javascript/Chart.min.js' %}"></script>
+<script src="{% static 'javascript/sidebar.js' %}"></script>
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

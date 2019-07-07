@@ -15,78 +15,66 @@ from django.http import HttpResponse
 
 def index(request):
     user = "admin"
-    return render(request,'html/index.html',{"user": user})
-
-
+    return render(request, 'html/index.html', {"user": user})
 
 
 def login(request):
-    return render(request,'html/login.html')
+    title = "Login"
+    return render(request, 'html/login.html', {"title": title})
+
+# region admin_views
+
 
 def upload(request):
     user = "admin"
     main_pick = "upload"
-    return render(request,'html/upload.html',{"main_pick":main_pick, "user":user})
+    return render(request, 'html/admin/upload.html', {"main_pick": main_pick, "user": user})
 
-def employee_add(request):
-    picked = 'add'
-    user = "admin"
-    main_pick = "employee"
-    return render(request,'html/employee.html',{"picked": picked,"main_pick": main_pick, "user":user})
 
-def employee_employees(request):
+def employees(request):
     user = "admin"
-    picked = 'employee'
-    main_pick = 'employee'
-    return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick, "user":user})
+    main_pick = "employees"
+    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user})
 
-def employee_history(request):
-    picked = 'history'
-    main_pick='employee'
-    user = "admin"
-    return render(request, 'html/employee.html', {"picked": picked, "main_pick": main_pick, "user":user})
 
-def competence_add(request):
+def competencies(request):
     user = "admin"
-    picked = 'add'
     main_pick = 'competencies'
-    return render(request, 'html/competencies.html', {"picked": picked, "main_pick": main_pick, "user":user})
+    return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user})
 
-def competence_competencies(request):
-    user = "admin"
-    picked = 'competence'
-    main_pick = 'competencies'
-    return render(request,'html/competencies.html', {"picked": picked, "main_pick": main_pick, "user":user})
 
 def options(request):
     user = "admin"
     main_pick = 'options'
-    return render(request, 'html/options.html', {"main_pick": main_pick, "user":user})
+    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user})
+
 
 def history(request):
     user = "admin"
     main_pick = "history"
-    return render(request, 'html/history.html', {"main_pick": main_pick, "user": user})
+    return render(request, 'html/admin/history.html', {"main_pick": main_pick, "user": user})
+
 
 def trainings(request):
     user = "admin"
-    picked = "add"
     main_pick = "trainings"
-    return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user})
 
-def trainings_training(request):
+def analytics(request):
     user = "admin"
-    picked = "trainings"
-    main_pick = "trainings"
-    return render(request, 'html/trainings.html', {"picked": picked, "main_pick": main_pick, "user": user})
+    main_pick = "analytics"
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user})
+
 
 def status(request):
     user = "admin"
     main_pick = "status"
-    return render(request, 'html/status.html', {"main_pick": main_pick, "user": user})
+    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user})
+# endregion
+
+# region user_views
 
 
-# user views
 def user_history_recent(request):
     user = "user"
     main_pick = "user_history"
@@ -101,9 +89,9 @@ def user_history_timeline(request):
     return render(request, 'html/user/history.html', {"main_pick": main_pick, "user": user, "picked": picked})
 
 
-def competencies(request):
+def user_competencies(request):
     user = "user"
-    main_pick = "competencies"
+    main_pick = "user_competencies"
     return render(request, 'html/user/competencies.html', {"main_pick": main_pick, "user": user})
 
 
@@ -113,8 +101,9 @@ def user_options(request):
     return render(request, 'html/user/user_options.html', {"main_pick": main_pick, "user": user})
 
 
-def seminars(request):
+def user_trainings(request):
     user = "user"
-    main_pick = "seminars"
-    return render(request, 'html/user/seminars.html', {"main_pick": main_pick, "user": user})
+    main_pick = "user_trainings"
+    return render(request, 'html/user/trainings.html', {"main_pick": main_pick, "user": user})
 
+# endregion
