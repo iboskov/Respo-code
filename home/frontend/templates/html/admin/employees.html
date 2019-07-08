@@ -21,39 +21,40 @@
                 <div class="tab-pane show active" id="addEmployee" role="tabpanel">
                     <div class="row">
                         <div class="col col-xl-6">
-                            <form id="add-employee-form" method="post" action="{% url 'employees' %}">
+                            <form id="add-employee-form" method="POST" action="employees/add">
+                                {% csrf_token %}
                                 <h4 class="text-primary">Employee Details</h4>
                                 <div class="form-group">
                                     <label for="employee-name">First Name:</label>
-                                    <input type="text" class="form-control" id="employee-name" required>
+                                    <input type="text" class="form-control" name="employee_name" id="employee-name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-lastname">Last Name:</label>
-                                    <input type="text" class="form-control" id="employee-lastname" required>
+                                    <input type="text" class="form-control" name="employee_lastname" id="employee-lastname" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-Phone">Phone:</label>
-                                    <input type="text" class="form-control" id="employee-Phone" required>
+                                    <input type="text" class="form-control" name="employee_phone" id="employee-Phone" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-city">City:</label>
-                                    <input type="text" class="form-control" id="employee-city" required>
+                                    <input type="text" class="form-control" name="employee_city" id="employee-city" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-country">Country:</label>
-                                    <input type="text" class="form-control" id="employee-country" required>
+                                    <input type="text" class="form-control" name="employee_country" id="employee-country" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-email">Email:</label>
-                                    <input type="text" class="form-control" id="employee-email" required>
+                                    <input type="text" class="form-control" name="employee_email" id="employee-email" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-username">Username:</label>
-                                    <input type="text" class="form-control" id="employee-username" required>
+                                    <input type="text" class="form-control" name="employee_username" id="employee-username" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="employee-type">Workplace:</label>
-                                    <input type="text" class="form-control" id="employee-type" required>
+                                    <input type="text" class="form-control" name="employee_type" id="employee-type" required>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Add</button>
@@ -80,30 +81,16 @@
                                                 </tr>
                                             </thead>
                                             <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                            {% for obj in employees %}
                                                 <tr>
-                                                    <th scope="row">1</th>
-                                                    <td><a href="#">Mark</a></td>
-                                                    <td>IT-department</td>
+                                                    <th scope="row">{{ obj.id_employee }}</th>
+                                                    <td><a href="#">{{ obj.first_name }} {{ obj.last_name }}</a></td>
+                                                    <td>{{obj.id_workplace.name}}</td>
                                                     <td class="text-center">
                                                         <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
                                                     </td>
                                                 </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td><a href="#">Adem Kikaj</a></td>
-                                                    <td>IT-department</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td><a href="#">Jure</a></td>
-                                                    <td>Finance</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
+                                            {% endfor %}
                                             </tbody>
                                         </table>
                                     </div>

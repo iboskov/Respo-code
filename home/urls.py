@@ -26,11 +26,16 @@ urlpatterns = [
     path('trainings', views.trainings, name='trainings'),
     path('analytics', views.analytics, name='analytics'),
     path('status', views.status, name='status'),
+    #API
+    path('employees/add', views.employeeAdd, name="add"),
+    path('competencies/add', views.competencyAdd, name="competencyAdd"),
+    path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
     path('user_history', views.user_history_recent, name='user_history'),
     path('user_history/timeline', views.user_history_timeline, name='user_history/timeline'),
     path('user_competencies', views.user_competencies, name='user_competencies'),
     path('user_options', views.user_options, name='user_options'),
     path('user_trainings', views.user_trainings, name='user_trainings'),
     url('', views.index, name='index'),
+
 
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = 'f(-ydi@+d@1&=a=g^_7a#d=3gv_+m@42jvx7e_a@u&l&^d@n1-'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'home.apps.HomeConfig',
 ]
 
 MIDDLEWARE = [
@@ -68,15 +69,21 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'Respo.wsgi.application'
-
+MIGRATION_MODULES = [
+    {'respo': 'Respo.home.backend.models'}
+]
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'respo_admin',
+        'USER': 'respo_admin_user',
+        'PASSWORD': 'admin',
+        'HOST': 'localhost',
+        'PORT': '',
     }
 }
 

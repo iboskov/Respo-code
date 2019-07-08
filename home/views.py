@@ -6,7 +6,7 @@ login function atm is just an example of how it should be written.
 """
 
 from django.shortcuts import render
-
+from home.API import *
 
 
 # Create your views here.
@@ -34,13 +34,17 @@ def upload(request):
 def employees(request):
     user = "admin"
     main_pick = "employees"
-    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user})
+    employees = getEmployees()
+    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
 
 
 def competencies(request):
     user = "admin"
     main_pick = 'competencies'
-    return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user})
+    competency = getCompetencies()
+    competency_type = getCompetencies_type()
+    return render(request, 'html/admin/competencies.html',
+                  {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type})
 
 
 def options(request):
@@ -58,7 +62,9 @@ def history(request):
 def trainings(request):
     user = "admin"
     main_pick = "trainings"
-    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user})
+    competency = getCompetencies()
+    trainings = getTrainings()
+    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user,"competency":competency,"trainings":trainings})
 
 def analytics(request):
     user = "admin"
@@ -107,3 +113,40 @@ def user_trainings(request):
     return render(request, 'html/user/trainings.html', {"main_pick": main_pick, "user": user})
 
 # endregion
+
+#API
+#TODO SEND CONFIRMATION
+def employeeAdd(request):
+    user = "admin"
+    main_pick = "employees"
+    if addEmployee(request):
+        employees = getEmployees()
+        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
+    else:
+        employees = getEmployees()
+        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
+
+def competencyAdd(request):
+    user = "admin"
+    main_pick = 'competencies'
+    if addCompetencies(request):
+        competency = getCompetencies()
+        competency_type = getCompetencies_type()
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type})
+    else:
+        competency = getCompetencies()
+        competency_type = getCompetencies_type()
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type})
+
+def trainingsAdd(request):
+    user = "admin"
+    main_pick = "trainings"
+    competency = getCompetencies()
+    if addTrainings(request):
+        trainings = getTrainings()
+        return render(request, 'html/admin/trainings.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})
+    else:
+        trainings = getTrainings()
+        return render(request, 'html/admin/trainings.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})

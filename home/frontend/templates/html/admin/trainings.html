@@ -18,19 +18,24 @@
                 <div class="tab-pane fade show active" id="addtraining" role="tabpanel">
                     <div class="row">
                         <div class="col col-xl-6">
-                            <form id="add-training-form" method="post" action="{% url 'upload' %}">
+                            <form id="add-training-form" method="post" action="trainings/add">
+                                {% csrf_token %}
                                 <h4 class="text-primary">Add training</h4>
                                 <div class="form-group">
                                     <label for="training-name">Training Name:</label>
-                                    <input type="text" class="form-control" id="training-name" required>
+                                    <input type="text" class="form-control" name="training_name" id="training-name" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="training-desc">Training description:</label>
-                                    <input type="text" class="form-control" id="training-desc" required>
+                                    <input type="text" class="form-control" name="training_desc" id="training-desc" required>
                                 </div>
                                 <div class="form-group">
                                     <label for="target-comp">Target competence:</label>
-                                    <input type="text" class="form-control" id="target-comp" required>
+                                    <select class="form-control" name="training_competence" id="target-comp" required>
+                                        {% for obj in competency %}
+                                        <option>({{ obj.id_competence }}) {{ obj.name }}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Add</button>
@@ -54,30 +59,16 @@
                                         </tr>
                                     </thead>
                                     <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    {% for obj in trainings %}
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>English 1</td>
-                                            <td>Lorem</td>
+                                            <th scope="row">{{ obj.id_education }}</th>
+                                            <td>{{ obj.name }}</td>
+                                            <td>{{ obj.desc }}</td>
                                             <td class="text-center">
                                                 <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>English 2</td>
-                                            <td>Lorem</td>
-                                            <td class="text-center">
-                                                <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>German 1</td>
-                                            <td>Lorem</td>
-                                            <td class="text-center">
-                                                <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                            </td>
-                                        </tr>
+                                    {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
