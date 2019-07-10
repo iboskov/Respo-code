@@ -75,6 +75,18 @@ And exit the Postgres console with
 \q
 ```
 
+After that navigate to the project folder and type in the following commands:
+
+```
+python manage.py makemigrations --settings=Respo.settings
+
+python manage.py migrate --settings=Respo.settings
+```
+
+The command makemigrations is used when there are changes to the tables of the database and migrate to push those changes onto the database in postgres
+
+## Running the server
+
 to run the server use the next line, the server should be located at 127.0.0.1:8000
 
 ```
