@@ -25,7 +25,9 @@ def addEmployee(request):
 def getEmployees():
     return employee.objects.all()
 
-
+def deleteEmployee(id):
+    employee.objects.filter(id=id).delete()
+    return True
 
 ###COMPETENCIES###
 def addCompetencies(request):
