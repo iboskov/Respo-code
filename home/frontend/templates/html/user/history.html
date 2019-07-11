@@ -5,30 +5,50 @@
 <div class="row mt-2">
     <div class="col">
         <h2 class="text-primary">History</h2>
-        <ul class="nav nav-tabs mt-4" id="history-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" id="competence-tab" data-toggle="tab" href="#competence" role="tab">Competence</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" id="timeline-tab" data-toggle="tab" href="#timeline" role="tab">Timeline</a>
-            </li>
-        </ul>
-        <div class="tab-content m-2" id="myTabContent">
-             <div class="tab-pane fade show active" id="competence" role="tabpanel">
-                <div class="row">
-                    <div class="col col-xl-6">
-                        Competence
-                    </div>
-                </div>
-             </div>
-            <div class="tab-pane fade" id="timeline" role="tabpanel">
-                <div class="row">
-                    <div class="col col-xl-6">
-                        timeline
-                    </div>
-                </div>
-             </div>
-        </div>
     </div>
 </div>
+<div class="row">
+        <div class="col-xl-4">
+            <form id="form-from-to" method="post" action="#">
+                <div class="form-group">
+                    <label for="fromInput">From:</label>
+                    <input type="date" class="form-control" id="fromInput">
+                </div>
+                <div class="form-group">
+                    <label for="toInput">To:</label>
+                    <input type="date" class="form-control" id="toInput">
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-xl-8 text-center">
+            <canvas id="myChart"></canvas>
+        </div>
+</div>
 {% endblock main_content %}
+
+{% block scripts %}
+<script>
+var ctx = document.getElementById('myChart');
+var myLineChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: ['Competence 1', 'Competence 2', 'Competence 3', 'Competence 4', 'Competence 5', 'Competence 6', 'Competence 7'],
+        datasets: [{
+            label: 'Before Training',
+            backgroundColor: 'rgba(255, 0, 0, 1)',
+            borderColor: 'rgba(255, 0, 0, 1)',
+            data: [4, 3, 2, 5, 2, 6, 8],
+            fill: false,
+        }, {
+            label: 'After Training',
+            fill: false,
+            backgroundColor: 'rgba(0, 0, 255, 1)',
+            borderColor: 'rgba(0, 0, 255, 1)',
+            data: [7, 5, 5, 8, 3, 7, 10],
+            fill: false
+        }]
+    }
+});
+</script>
+{% endblock %}

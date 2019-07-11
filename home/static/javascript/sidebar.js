@@ -12,3 +12,7 @@ $("#sidebarToggle").on("click", function(){
 $("#sidebarToggleTop").on("click", function(){
     $(".sidebar").toggleClass("d-none");
 });
+
+$(function () {
+  $('[data-toggle="popover"]').popover()
+})

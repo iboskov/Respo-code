@@ -1,9 +1,55 @@
 {% extends "html/index.html" %}
 {% load static %}
 
-{% block child %}
-<div class="title">
-    <h3>Seminars</h3>
+{% block main_content %}
+
+<div class="row mt-2">
+    <div class="col">
+        <h2 class="text-primary">Trainings</h2>
+    </div>
 </div>
 
-{% endblock child %}
+<div class="row">
+    <div class="col col-xl-8">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                    <tr>
+                        <th scope="col" style="width:1%;">#</th>
+                        <th scope="col"  style="width:30%;">NAME</th>
+                        <th scope="col"  style="width:30%;">DESCRIPTION</th>
+                        <th scope="col"  style="width:10%;">FROM</th>
+                        <th scope="col"  style="width:10%;">TO</th>
+                        <th scope="col"  style="width:20%;">RESPONSE</th>
+                    </tr>
+                </thead>
+                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                    <tr>
+                        <th scope="row">1</th>
+                        <td>English 1</td>
+                        <td>English Training Description</td>
+                        <td>10/02/2019</td>
+                        <td>30/02/2019</td>
+                        <td>
+                            <a href="#" class="badge badge-primary">ACCEPT</a>
+                            <a href="#" class="badge badge-primary">DECLINE</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th scope="row">2</th>
+                        <td>English 2</td>
+                        <td>English 2 Training Description</td>
+                        <td>15/02/2019</td>
+                        <td>05/03/2019</td>
+                        <td>
+                            <a href="#" class="badge badge-primary">ACCEPT</a>
+                            <a href="#" class="badge badge-primary">DECLINE</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock main_content %}

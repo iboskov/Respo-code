@@ -1,0 +1,53 @@
+{% extends "html/index.html" %}
+{% load static %}
+
+{% block main_content %}
+
+<div class="row mt-2">
+    <div class="col">
+        <h2 class="text-primary">Status</h2>
+        <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="trainings-status-tab" data-toggle="tab" href="#trainingsStatus" role="tab">Trainings</a>
+            </li>
+        </ul>
+        <div class="tab-content m-2" id="myTabContent">
+            <div class="tab-pane show active" id="trainingsStatus" role="tabpanel">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="bg-primary text-white" style="font-size: .65rem;">
+                            <tr>
+                                <th scope="col" width="1%">#</th>
+                                <th scope="col" width="30%">TRAINING</th>
+                                <th scope="col" width="30%">STATUS</th>
+                                <th scope="col" width="30%">CANCEL</th>
+                            </tr>
+                        </thead>
+                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                            <tr>
+                                <th scope="row">1</th>
+                                <td>English 1</td>
+                                <td>Finished</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">2</th>
+                                <td>English 2</td>
+                                <td>Ongoing</td>
+                                <td><a href="#" class="badge badge-primary">CANCEL</a></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">3</th>
+                                <td>German 1</td>
+                                <td>Canceled</td>
+                                <td><a href="#" class="badge badge-primary">RESEND</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock main_content %}

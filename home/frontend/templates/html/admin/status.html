@@ -3,157 +3,155 @@
 {% load static %}
 
 {% block main_content %}
-<div class="container-fluid">
-    <div class="row mt-2">
-        <div class="col">
-            <h2 class="text-primary">Status</h2>
-            <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
-                <li class="nav-item">
-                    <a class="nav-link active" id="trainings-status-tab" data-toggle="tab" href="#trainingsStatus" role="tab">Trainings</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" id="employee-status-tab" data-toggle="tab" href="#employeesStatus" role="tab">Employees</a>
-                </li>
-            </ul>
-            <div class="tab-content m-2" id="myTabContent">
-                <div class="tab-pane show active" id="trainingsStatus" role="tabpanel">
-                    <div class="row mt-2">
-                        <div class="col">
-                            <input type="text" class="form-control mb-2" id="searchTraining" placeholder="Search training">
-                            <div class="card mt-2">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            English 1 <span class="badge badge-success">ONGOING</span>
-                                        </div>
-                                        <div class="col text-right">
-                                            <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
-                                        </div>
+<div class="row mt-2">
+    <div class="col">
+        <h2 class="text-primary">Status</h2>
+        <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
+            <li class="nav-item">
+                <a class="nav-link active" id="trainings-status-tab" data-toggle="tab" href="#trainingsStatus" role="tab">Trainings</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" id="employee-status-tab" data-toggle="tab" href="#employeesStatus" role="tab">Employees</a>
+            </li>
+        </ul>
+        <div class="tab-content m-2" id="myTabContent">
+            <div class="tab-pane show active" id="trainingsStatus" role="tabpanel">
+                <div class="row mt-2">
+                    <div class="col">
+                        <input type="text" class="form-control mb-2" id="searchTraining" placeholder="Search training">
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        English 1 <span class="badge badge-success">ONGOING</span>
                                     </div>
-                                </div>
-                                <div class="card-body">
-                                    <p class="card-text">Description of the Training: Lorem ipsum</p>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                    <th scope="col" width="1%">#</th>
-                                                    <th scope="col" width="30%">EMPLOYEE</th>
-                                                    <th scope="col" width="30%">STATUS</th>
-                                                    <th scope="col" width="30%">RESEND</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Mark</td>
-                                                    <td>Accepted</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Adem Kikaj</td>
-                                                    <td>Declined</td>
-                                                    <td><a href="#" class="badge badge-primary">Resend</a></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                    <div class="col text-right">
+                                        <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card mt-2">
-                                <div class="card-header">
-                                    <div class="row align-items-center">
-                                        <div class="col">
-                                            English 2 <span class="badge badge-success">ONGOING</span>
-                                        </div>
-                                        <div class="col text-right">
-                                            <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
-                                        </div>
+                            <div class="card-body">
+                                <p class="card-text">Description of the Training: Lorem ipsum</p>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                            <tr>
+                                                <th scope="col" width="1%">#</th>
+                                                <th scope="col" width="30%">EMPLOYEE</th>
+                                                <th scope="col" width="30%">STATUS</th>
+                                                <th scope="col" width="30%">RESEND</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Mark</td>
+                                                <td>Accepted</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Adem Kikaj</td>
+                                                <td>Declined</td>
+                                                <td><a href="#" class="badge badge-primary">Resend</a></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card mt-2">
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        English 2 <span class="badge badge-success">ONGOING</span>
+                                    </div>
+                                    <div class="col text-right">
+                                        <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
                                     </div>
                                 </div>
-                                <div class="card-body">
-                                    <p class="card-text">Description of the Training: Lorem ipsum</p>
-                                    <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                    <th scope="col" width="1%">#</th>
-                                                    <th scope="col" width="30%">EMPLOYEE</th>
-                                                    <th scope="col" width="30%">STATUS</th>
-                                                    <th scope="col" width="30%">RESEND</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Jure</td>
-                                                    <td>Accepted</td>
-                                                    <td>-</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Adem Kikaj</td>
-                                                    <td>Waiting</td>
-                                                    <td>-</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-text">Description of the Training: Lorem ipsum</p>
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                            <tr>
+                                                <th scope="col" width="1%">#</th>
+                                                <th scope="col" width="30%">EMPLOYEE</th>
+                                                <th scope="col" width="30%">STATUS</th>
+                                                <th scope="col" width="30%">RESEND</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                            <tr>
+                                                <th scope="row">1</th>
+                                                <td>Jure</td>
+                                                <td>Accepted</td>
+                                                <td>-</td>
+                                            </tr>
+                                            <tr>
+                                                <th scope="row">2</th>
+                                                <td>Adem Kikaj</td>
+                                                <td>Waiting</td>
+                                                <td>-</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="tab-pane" id="employeesStatus" role="tabpanel" aria-labelledby="profile-tab">
-                    <div class="row mt-2">
-                        <div class="col">
-                            <div class="row align-items-center">
-                                <div class="col">
-                                    <input type="text" class="form-control mb-2" id="searchEmployee" placeholder="Enter employee name or username">
-                                </div>
-                                <div class="col-auto"><a class="btn btn-primary btn-sm mb-2" href="#" role="button"><i class="fas fa-file-pdf"></i> PDF</a></div>
+            </div>
+            <div class="tab-pane" id="employeesStatus" role="tabpanel" aria-labelledby="profile-tab">
+                <div class="row mt-2">
+                    <div class="col">
+                        <div class="row align-items-center">
+                            <div class="col">
+                                <input type="text" class="form-control mb-2" id="searchEmployee" placeholder="Enter employee name or username">
                             </div>
-                            <div class="table-responsive">
-                                <table class="table table-hover">
-                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                        <tr>
-                                            <th scope="col" width="1%">#</th>
-                                            <th scope="col" width="20%">Training</th>
-                                            <th scope="col" width="20%">FROM</th>
-                                            <th scope="col" width="20%">TO</th>
-                                            <th scope="col" width="20%">STATUS</th>
-                                            <th scope="col" width="20%">RESEND</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>English 1</td>
-                                            <td>10.05.2019</td>
-                                            <td>30.05.2019</td>
-                                            <td>Finished</td>
-                                            <td>-</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>English 2</td>
-                                            <td>-</td>
-                                            <td>-</td>
-                                            <td>Declined</td>
-                                            <td><a href="#" class="badge badge-primary">Resend</a></td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>German 1</td>
-                                            <td>15.06.2019</td>
-                                            <td>-</td>
-                                            <td>Accepted</td>
-                                            <td>-</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                            <div class="col-auto"><a class="btn btn-primary btn-sm mb-2" href="#" role="button"><i class="fas fa-file-pdf"></i> PDF</a></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                    <tr>
+                                        <th scope="col" width="1%">#</th>
+                                        <th scope="col" width="20%">Training</th>
+                                        <th scope="col" width="20%">FROM</th>
+                                        <th scope="col" width="20%">TO</th>
+                                        <th scope="col" width="20%">STATUS</th>
+                                        <th scope="col" width="20%">RESEND</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>English 1</td>
+                                        <td>10.05.2019</td>
+                                        <td>30.05.2019</td>
+                                        <td>Finished</td>
+                                        <td>-</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>English 2</td>
+                                        <td>-</td>
+                                        <td>-</td>
+                                        <td>Declined</td>
+                                        <td><a href="#" class="badge badge-primary">Resend</a></td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">3</th>
+                                        <td>German 1</td>
+                                        <td>15.06.2019</td>
+                                        <td>-</td>
+                                        <td>Accepted</td>
+                                        <td>-</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                     </div>
                 </div>
