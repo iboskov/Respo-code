@@ -81,6 +81,7 @@ class employee_competence(models.Model):
 class participation(models.Model):
     id_participation = models.AutoField(primary_key=True)
     participated = models.BooleanField(default=False)
+    status = models.CharField(max_length=100, blank=False,default="")
     id_employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     id_education = models.ForeignKey(education, on_delete=models.CASCADE)
 
@@ -90,9 +91,19 @@ class participation(models.Model):
 #Users for login
 class user(models.Model):
     id_user = models.AutoField(primary_key=True)
+    user_name = models.CharField(max_length=100,blank=False,unique=True)
     email = models.CharField(max_length=100,blank=False)
     password = models.CharField(max_length=500, blank=False)
     user_image = models.ImageField(max_length=100, default=0)
-
     def __str__(self):
         return self.email
+
+class notifications(models.Model):
+    id_notification = models.AutoField(primary_key=True)
+    for_user = models.ForeignKey(user,on_delete=models.CASCADE)
+    seen = models.BooleanField(default=False)
+    id_education = models.ForeignKey(education, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.id_notification
+
