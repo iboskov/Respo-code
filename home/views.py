@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    user = "admin"
+    user = "user"
     return render(request, 'html/index.html', {"user": user})
 
 
