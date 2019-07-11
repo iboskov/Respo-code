@@ -14,7 +14,7 @@ from django.http import HttpResponse
 
 
 def index(request):
-    user = "user"
+    user = "admin"
     return render(request, 'html/index.html', {"user": user})
 
 
@@ -101,10 +101,10 @@ def user_competencies(request):
     return render(request, 'html/user/competencies.html', {"main_pick": main_pick, "user": user})
 
 
-def user_options(request):
+def user_status(request):
     user = "user"
-    main_pick = "user_options"
-    return render(request, 'html/user/user_options.html', {"main_pick": main_pick, "user": user})
+    main_pick = "user_status"
+    return render(request, 'html/user/user_status.html', {"main_pick": main_pick, "user": user})
 
 
 def user_trainings(request):

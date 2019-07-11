@@ -18,9 +18,8 @@
 <body>
 {% block content %}{% endblock %}
 <!-- this is the base html file where the basic structure is going to be (mostly imports of bootstrap and js). All other html files should inherit this one -->
-<!-- jquery -->
 <script src="{% static 'jquery/jquery-3.4.1.min.js' %}"></script>
-<!-- bootstrap js -->
+<script src="{% static 'javascript/popper.js' %}"></script>
 <script src="{% static 'bootstrap/js/bootstrap.min.js' %}"></script>
 <script src="{% static 'bootstrap/js/fileinput.min.js' %}"></script>
 <script src="{% static 'javascript/icons.js' %}"></script>

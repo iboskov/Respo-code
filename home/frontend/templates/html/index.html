@@ -46,8 +46,8 @@
             <li class="nav-item {% if main_pick == 'user_trainings' %} active{% endif %}">
                 <a class="nav-link" href="{%url 'user_trainings'%}" ><i class="far fa-calendar-check"></i> <span>Trainings</span></a>
             </li>
-            <li class="nav-item {% if main_pick == 'user_options' %} active{% endif %}">
-                <a class="nav-link" href="{%url 'user_options'%}" ><i class="fas fa-filter"></i>  <span>Options</span></a>
+            <li class="nav-item {% if main_pick == 'user_status' %} active{% endif %}">
+                <a class="nav-link" href="{%url 'user_status'%}" ><i class="fas fa-filter"></i>  <span>Status</span></a>
             </li>
         {% endif %}
 
@@ -66,8 +66,10 @@
             <span class="navbar-toggler" data-toggle="collapse" data-target="#topNavbar"><i class="fa fa-bars"></i></span>
             <div class="collapse navbar-collapse" id="topNavbar">
                 <div class="navbar-nav ml-auto">
-                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">2</span></a>
-                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="far fa-envelope fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">5</span></a>
+                    <a class="nav-item nav-link" href="#" style="color:white;" data-container="body" data-html="true" data-toggle="popover" data-placement="left"
+                       data-content="You have new training to attend. <hr> Your training <i>English 1</i> has finished.">
+                        <i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">2</span>
+                    </a>
                     <a class="nav-item nav-link" href="#" style="color:white;"><i class="fas fa-sign-out-alt fa-lg"></i></a>
                 </div>
             </div>
