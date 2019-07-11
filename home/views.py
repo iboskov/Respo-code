@@ -114,7 +114,7 @@ def user_trainings(request):
 
 # endregion
 
-#API
+#***API***
 #TODO SEND CONFIRMATION
 def employeeAdd(request):
     user = "admin"

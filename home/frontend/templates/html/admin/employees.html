@@ -87,7 +87,7 @@
                                                     <td><a href="#">{{ obj.first_name }} {{ obj.last_name }}</a></td>
                                                     <td>{{obj.id_workplace.name}}</td>
                                                     <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" name={{obj.id_employee}} data-target="#deleteModal"></i>
                                                     </td>
                                                 </tr>
                                             {% endfor %}

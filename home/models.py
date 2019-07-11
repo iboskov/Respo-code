@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils.timezone import now
 import json
 from django.db import transaction
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
@@ -38,7 +39,9 @@ class competence_type(models.Model):
 
 class competence(models.Model):
     id_competence = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100,blank=False, unique=True)
+    hoegen_id = models.IntegerField(blank=False,default=0)
+    slo_name = models.CharField(max_length=100,blank=False, unique=True)
+    eng_name = models.CharField(max_length=100,blank=True)
     desc = models.CharField(max_length=500,blank=True, default="")
     id_competence_type = models.ForeignKey(competence_type, on_delete=models.CASCADE)
 
@@ -48,6 +51,7 @@ class competence(models.Model):
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)
     competence_weight = models.IntegerField(blank=False)
+    minimum_required = models.IntegerField(blank=False,default=0)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
     id_workplace = models.ForeignKey(workplace, on_delete=models.CASCADE)
 
@@ -58,6 +62,8 @@ class education(models.Model):
     id_education = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100, blank=False)
     desc = models.CharField(max_length=500, blank=True)
+    date_from = models.DateField(default=now)
+    date_to = models.DateField(default=now)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
 
     def __str__(self):
@@ -74,7 +80,7 @@ class employee_competence(models.Model):
 
 class participation(models.Model):
     id_participation = models.AutoField(primary_key=True)
-    time = models.DateField()
+    participated = models.BooleanField(default=False)
     id_employee = models.ForeignKey(employee, on_delete=models.CASCADE)
     id_education = models.ForeignKey(education, on_delete=models.CASCADE)
 
