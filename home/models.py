@@ -11,7 +11,7 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 
 class workplace(models.Model):
     id_workplace = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100,blank=False)
+    name = models.CharField(max_length=100,blank=False,unique=True)
 
     def __str__(self):
         return self.name
@@ -95,8 +95,9 @@ class user(models.Model):
     email = models.CharField(max_length=100,blank=False)
     password = models.CharField(max_length=500, blank=False)
     user_image = models.ImageField(max_length=100, default=0)
+    type=models.CharField(max_length=10, blank=False, default="user")
     def __str__(self):
-        return self.email
+        return self.user_name
 
 class notifications(models.Model):
     id_notification = models.AutoField(primary_key=True)

@@ -39,7 +39,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="target-comp">Target competence:</label>
-                                    <select class="form-control" name="training_competence" id="target-comp" required>
+                                    <select class="js-example-basic-multiple js-states form-control" name="training_competence" id="target-comp" multiple="multiple" required>
                                         {% for obj in competency %}
                                         <option>({{ obj.id_competence }}) {{ obj.name }}</option>
                                         {% endfor %}
@@ -143,3 +143,12 @@
   </div>
 </div>
 {% endblock main_content %}
+
+{% block scripts %}
+<script>
+
+var data = [];
+
+$(".js-example-basic-multiple").select2({data: data});
+</script>
+{% endblock %}

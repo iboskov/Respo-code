@@ -35,7 +35,8 @@ def employees(request):
     user = "admin"
     main_pick = "employees"
     employees = getEmployees()
-    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
+    workplaces = getWorkplaces()
+    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees,"workplaces":workplaces})
 
 
 def competencies(request):

@@ -1,8 +1,23 @@
-from home.models import *
+from django.core.mail import send_mail
+from django.utils.crypto import get_random_string
+from django.conf import settings
 import json
 from django.http import JsonResponse
 from django.http.request import HttpRequest
+from home.models import *
 
+
+###USER###
+def createUser(username,email,type):
+    password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?')
+    new_user = user(user_name=username,email=email,password=password,type=type)
+    new_user.save()
+    #send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
+    subject = 'Account on Respo project app'
+    message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application\n \n Username: '+username+'\n password: '+password+'\n \n best wishes the Respo team'
+    from_email = settings.EMAIL_HOST_USER
+    to_list = [email]
+    send_mail(subject,message,from_email,to_list,fail_silently=True)
 
 ###EMPLOYEE###
 def addEmployee(request):
@@ -20,8 +35,7 @@ def addEmployee(request):
     new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
     new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country, email=email, username=username,id_workplace=new_workplace)
     new_employee.save()
-    new_user = user(username=username,email=email,password="RANDOMATFIRST")
-    new_user.save()
+    createUser(username,email,'user')
     return True
 
 def getEmployees():
@@ -66,3 +80,8 @@ def addTrainings(request):
 
 def getTrainings():
     return education.objects.all()
+
+###WORKPLACE###
+def getWorkplaces():
+    return workplace.objects.all()
+

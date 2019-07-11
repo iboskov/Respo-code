@@ -83,7 +83,7 @@
                                 <table class="table table-hover">
                                     <thead class="bg-primary text-white" style="font-size: .65rem;">
                                         <tr>
-                                            <th scope="col">#</th>
+                                            <th scope="col">#Hoegen ID</th>
                                             <th scope="col">NAME</th>
                                             <th scope="col">TYPE</th>
                                             <th scope="col">DESCRIPTION</th>
@@ -93,8 +93,8 @@
                                     <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                                     {% for obj in competency %}
                                         <tr>
-                                            <th scope="row">1</th>
-                                            <td>{{ obj.name }}</td>
+                                            <th scope="row">{{obj.hoegen_id}}</th>
+                                            <td>{{ obj.slo_name }}</td>
                                             <td>{{ obj.id_competence_type.name}}</td>
                                             <td>{{ obj.desc }}</td>
                                             <td class="text-center">
