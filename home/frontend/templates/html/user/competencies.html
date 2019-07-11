@@ -1,9 +1,70 @@
 {% extends "html/index.html" %}
 {% load static %}
 
-{% block child %}
-<div class="title">
-    <h3>Competencies</h3>
+{% block main_content %}
+<div class="row mt-2">
+    <div class="col">
+        <h2 class="text-primary">Competencies</h2>
+    </div>
 </div>
-
-{% endblock child %}
+<div class="row">
+    <input type="text" class="form-control mt-2 mb-2" id="searchCompetenceType" placeholder="Search Competence Type">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">NAME</th>
+                                                    <th scope="col" style="width:50%;">DESCRIPTION</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td><a href="#">Strokovne</a></td>
+                                                    <td>Lorem</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">2</th>
+                                                    <td><a href="#">Socialne</a></td>
+                                                    <td>Lorem</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">3</th>
+                                                    <td><a href="#">Posolvne</a></td>
+                                                    <td>Lorem</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" placeholder="Search Competence">
+                                    <div class="table-responsive">
+                                        <table class="table table-hover">
+                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">NAME</th>
+                                                    <th scope="col" style="width:50%;">SCORE</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                                <tr>
+                                                    <th scope="row">1</th>
+                                                    <td>Prikazuje znanje o...</td>
+                                                    <td><input type="text" class="form-control" id="firstCompScore" placeholder="Score"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">2</th>
+                                                    <td>Usposobljen za tehnično...</td>
+                                                    <td><input type="text" class="form-control" id="secCompScore" placeholder="Score"></td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row">3</th>
+                                                    <td>Usposobljen za ko...</td>
+                                                    <td><input type="text" class="form-control" id="thirdCompScore" placeholder="Score"></td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+</div>
+{% endblock main_content %}
