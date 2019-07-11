@@ -53,8 +53,8 @@
                                     <input type="text" class="form-control" name="employee_username" id="employee-username" required>
                                 </div>
                                 <div class="form-group">
-                                    <label for="employee-type">Workplace:</label>
-                                    <input type="text" class="form-control" name="employee_type" id="employee-type" required>
+                                    <label for="employee-workplace">Workplace:</label>
+                                    <select class="js-example-basic-multiple js-states form-control" name="employee-workplace" id="employee-workplace" multiple="multiple"></select>
                                 </div>
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Add</button>
@@ -260,6 +260,11 @@
 
 {% block scripts %}
 <script>
+
+var data = [{id: 0,text: 'Workplace 0'},{id: 1,text: 'Workplace 1'},{id: 2,text: 'Workplace 2'},{id: 3,text: 'Workplace 3'},{id: 4,text: 'Workplace 4'}];
+
+$(".js-example-basic-multiple").select2({data: data});
+
 var ctx = document.getElementById('myChart');
 var myLineChart = new Chart(ctx, {
     type: 'line',
