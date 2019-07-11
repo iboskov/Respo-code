@@ -47,6 +47,12 @@ def competencies(request):
                   {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type})
 
 
+def workplaces(request):
+    user = "admin"
+    main_pick = 'workplaces'
+    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user})
+
+
 def options(request):
     user = "admin"
     main_pick = 'options'

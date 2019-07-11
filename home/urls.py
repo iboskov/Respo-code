@@ -21,6 +21,7 @@ urlpatterns = [
     path('upload', views.upload, name='upload'),
     path("employees", views.employees, name="employees"),
     path('competencies', views.competencies, name='competencies'),
+    path('workplaces', views.workplaces, name='workplaces'),
     path('options', views.options, name='options'),
     path('history', views.history, name='history'),
     path('trainings', views.trainings, name='trainings'),
