@@ -12,6 +12,7 @@ from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
 class workplace(models.Model):
     id_workplace = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100,blank=False,unique=True)
+    desc = models.CharField(max_length=500, blank=False,default="")
 
     def __str__(self):
         return self.name

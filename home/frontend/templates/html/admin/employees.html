@@ -268,7 +268,6 @@
 
 {% block scripts %}
 <script>
-
 var data = [];
 
 $(".js-example-basic-multiple").select2({data: data});
@@ -294,11 +293,11 @@ var myLineChart = new Chart(ctx, {
         }]
     }
 });
-
+</script>
+<script>
 $(document).on("click",".deleteIconModal", function(){
-    var id = $(this).data('id');
-    $(".btn-danger).data('id').val(id);
+  var id = $(this).data('id');
+  $(".btn-danger).data('id').val(id);
 });
-
 </script>
 {% endblock %}
