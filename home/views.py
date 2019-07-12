@@ -7,8 +7,10 @@ login function atm is just an example of how it should be written.
 
 from django.shortcuts import render
 from home.API import *
-
-
+import json
+from django.http import JsonResponse
+from django.template.loader import render_to_string
+from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.http import HttpResponse
 
@@ -36,14 +38,15 @@ def employees(request):
     main_pick = "employees"
     employees = getEmployees()
     workplaces = getWorkplaces()
-    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees,"workplaces":workplaces})
+    competence_types = getCompetenceTypes()
+    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees,"workplaces":workplaces,"competence_types":competence_types})
 
 
 def competencies(request):
     user = "admin"
     main_pick = 'competencies'
     competency = getCompetencies()
-    competency_type = getCompetencies_type()
+    competency_type = getAllCompetencies_type()
     return render(request, 'html/admin/competencies.html',
                   {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type})
 
@@ -138,7 +141,7 @@ def competencyAdd(request):
     main_pick = 'competencies'
     if addCompetencies(request):
         competency = getCompetencies()
-        competency_type = getCompetencies_type()
+        competency_type = getAllCompetencies_type()
         return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type})
     else:
         competency = getCompetencies()
@@ -157,3 +160,62 @@ def trainingsAdd(request):
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
                       {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})
+
+
+
+###AJAX###
+def findEmployees(request):
+    user = request.GET.get('username',None)
+    foundUsers = getEmployeesByName(user)
+    html = render_to_string(
+        template_name="html/admin/partial_table.html",
+        context={"employees":foundUsers}
+    )
+    data_dict = {"html_from_view": html}
+    return JsonResponse(data = data_dict,safe=False)
+
+def findCompetenceType(request):
+    value = request.GET.get('types',None)
+    foundTypes = getCompetenceType(value)
+    html = render_to_string(
+        template_name="html/admin/partial_table_competence.html",
+        context={"competence_types":foundTypes}
+    )
+    data_dict = {"html_from_view": html}
+    return JsonResponse(data=data_dict, safe=False)
+
+def findCompetencesByType(request):
+    value = request.GET.get('types', None)
+    getCompetencies = getCompetenciesByType(value)
+    html = render_to_string(
+        template_name="html/admin/partial_table_competence_values.html",
+        context={"competences":getCompetencies}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+def findCompetencesByTwo(request):
+    value = request.GET.get('value',None)
+    type = request.GET.get('types', None)
+    getCompetencies = getCompetenciesByTwo(value,type)
+
+    html = render_to_string(
+        template_name="html/admin/partial_table_competence_values.html",
+        context={"competences":getCompetencies}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+def addCompetenciesToUser(request):
+    value = request.GET
+    employee = request.GET.get('employee',None)
+    for i in value:
+        if i == 'employee':
+            continue
+        id_of_competence = i.split('[')
+        print(id_of_competence)
+        true_id = id_of_competence[1].split(']')[0]
+        print(true_id)
+        saveEmployeeCompetence(true_id,employee,value[i])
+
+    return JsonResponse(True,safe=False)

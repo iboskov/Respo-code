@@ -84,17 +84,8 @@
                                                   <th scope="col" class="text-center">EDIT / DELETE</th>
                                                 </tr>
                                             </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                            {% for obj in employees %}
-                                                <tr>
-                                                    <th scope="row">{{ obj.id_employee }}</th>
-                                                    <td><a href="#">{{ obj.first_name }} {{ obj.last_name }}</a></td>
-                                                    <td>{{obj.id_workplace.name}}</td>
-                                                    <td class="text-center">
-                                                        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-id={{obj.id_employee}} data-target="#deleteModal"></i>
-                                                    </td>
-                                                </tr>
-                                            {% endfor %}
+                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="bodyofEmployees">
+                                            {% include 'html/admin/partial_table.html' %}
                                             </tbody>
                                         </table>
                                     </div>
@@ -102,9 +93,9 @@
                             </div>
                         </div>
                         <div class="col-xl-6">
-                            <div class="card">
+                            <div class="card" id="hideComp" hidden="True">
                                 <div class="card-body">
-                                <h5 class="card-title">Add Competencies</h5>
+                                <h5 class="card-title" id="hiddenComp">Add Competencies</h5>
                                     <input type="text" class="form-control mt-2 mb-2" id="searchCompetenceType" placeholder="Search Competence Type">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
@@ -112,58 +103,30 @@
                                                 <tr>
                                                     <th scope="col">#</th>
                                                     <th scope="col">NAME</th>
-                                                    <th scope="col" style="width:50%;">DESCRIPTION</th>
                                                 </tr>
                                             </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td><a href="#">Strokovne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td><a href="#">Socialne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td><a href="#">Posolvne</a></td>
-                                                    <td>Lorem</td>
-                                                </tr>
+                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="bodyOfCompetence">
+                                            {% include 'html/admin/partial_table_competence.html' %}
                                             </tbody>
                                         </table>
                                     </div>
-                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" placeholder="Search Competence">
+                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" name="" placeholder="Search Competence">
                                     <div class="table-responsive">
-                                        <table class="table table-hover">
-                                            <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                                <tr>
-                                                    <th scope="col">#</th>
-                                                    <th scope="col">NAME</th>
-                                                    <th scope="col" style="width:50%;">SCORE</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                                <tr>
-                                                    <th scope="row">1</th>
-                                                    <td>Prikazuje znanje o...</td>
-                                                    <td><input type="text" class="form-control" id="firstCompScore" placeholder="Score"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">2</th>
-                                                    <td>Usposobljen za tehnično...</td>
-                                                    <td><input type="text" class="form-control" id="secCompScore" placeholder="Score"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">3</th>
-                                                    <td>Usposobljen za ko...</td>
-                                                    <td><input type="text" class="form-control" id="thirdCompScore" placeholder="Score"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
+                                            <table class="table table-hover">
+                                                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                                    <tr>
+                                                        <th scope="col">#</th>
+                                                        <th scope="col">NAME</th>
+                                                        <th scope="col" style="width:50%;">SCORE</th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="bodyOfRealCompetence">
+                                                {% include 'html/admin/partial_table_competence_values.html' %}
+                                                </tbody>
+                                            </table>
                                     </div>
-                                    <input class="btn btn-primary" type="submit" id="saveEmployee" value="Save">
+                                    <input class="btn btn-primary" type="submit" id="saveEmployee" name="" value="Save">
                                 </div>
                             </div>
                         </div>
@@ -268,6 +231,94 @@
 
 {% block scripts %}
 <script>
+
+$('#searchEmployee').on('keyup',function(){
+    var user = $(this).val();
+    $.ajax({
+        url: '/ajax/findemployee/',
+        data:{
+        'username':user
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyofEmployees').html(data['html_from_view']);
+
+        }
+     });
+});
+
+$('#searchCompetenceType').on('keyup',function(){
+    var value = $(this).val();
+    $.ajax({
+        url: '/ajax/findCompetenceType/',
+        data:{
+            'types':value
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyOfCompetence').html(data['html_from_view']);
+        }
+    });
+});
+
+$('#clickableCompetenceType').on('click',function(){
+    var type = $(this).attr("name");
+    $('#searchCompetence').attr("name",type);
+    $.ajax({
+        url: '/ajax/findCompetences/',
+        data:{
+            'types':type
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyOfRealCompetence').html(data['html_from_view']);
+            }
+    });
+});
+$('#searchCompetence').on('keyup', function(){
+    var value = $(this).val();
+    var type = $(this).attr('name');
+    $.ajax({
+        url: '/ajax/findCompetencesSearch/',
+        data:{
+            'types':type,
+            'value':value
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyOfRealCompetence').html(data['html_from_view']);
+        }
+   });
+});
+$('#clickableEmployee').on('click', function(){
+    var employee = $(this).attr('name');
+    $('#hideComp').removeAttr('hidden');
+    $('#saveEmployee').attr('name', employee);
+    $('#hiddenComp').html("Add Competencies for employee "+employee);
+
+});
+
+$('#saveEmployee').on('click', function(){
+    var formData = {};
+    var employee = $(this).attr('name');
+    $('#bodyOfRealCompetence').find("th").each(function(){
+        console.log($(this).next());
+        formData[$(this).html()] = $(this).next('td').next('td').find('input').val();
+    });
+    console.log(formData);
+    $.ajax({
+        url: '/ajax/addCompetenciesUser/',
+        data:{
+            formData,
+            'employee':employee
+        },
+        dataType: 'json',
+        success: function(data){
+
+        }
+   });
+});
+
 var data = [];
 
 $(".js-example-basic-multiple").select2({data: data});
@@ -292,12 +343,6 @@ var myLineChart = new Chart(ctx, {
             fill: false
         }]
     }
-});
-</script>
-<script>
-$(document).on("click",".deleteIconModal", function(){
-  var id = $(this).data('id');
-  $(".btn-danger).data('id').val(id);
 });
 </script>
 {% endblock %}

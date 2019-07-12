@@ -1,0 +1,7 @@
+{% for obj in competences %}
+<tr>
+    <th scope="row">{{obj.hoegen_id}}</th>
+    <td>{{obj.slo_name}}</td>
+    <td><input type="text" class="form-control" id={{obj.slo_name}} placeholder="Score" required></td>
+</tr>
+{% endfor %}

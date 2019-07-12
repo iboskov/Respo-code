@@ -47,7 +47,7 @@ class competence(models.Model):
     id_competence_type = models.ForeignKey(competence_type, on_delete=models.CASCADE)
 
     def __str__(self):
-        return self.name
+        return self.slo_name
 
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)
@@ -65,7 +65,7 @@ class education(models.Model):
     desc = models.CharField(max_length=500, blank=True)
     date_from = models.DateField(default=now)
     date_to = models.DateField(default=now)
-    id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
+    id_competence = models.ManyToManyField(competence)
 
     def __str__(self):
         return self.name
@@ -74,7 +74,7 @@ class employee_competence(models.Model):
     id_employee_competence = models.AutoField(primary_key=True)
     level = models.IntegerField(blank=False)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
-    id_employeee = models.ForeignKey(employee, on_delete=models.CASCADE)
+    id_employee = models.ForeignKey(employee, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.id_employee_competence

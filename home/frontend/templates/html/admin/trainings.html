@@ -41,7 +41,7 @@
                                     <label for="target-comp">Target competence:</label>
                                     <select class="js-example-basic-multiple js-states form-control" name="training_competence" id="target-comp" multiple="multiple" required>
                                         {% for obj in competency %}
-                                        <option>({{ obj.id_competence }}) {{ obj.name }}</option>
+                                        <option>{{ obj.slo_name }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>

@@ -17,7 +17,7 @@ def createUser(username,email,type):
     message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application\n \n Username: '+username+'\n password: '+password+'\n \n best wishes the Respo team'
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
-    send_mail(subject,message,from_email,to_list,fail_silently=True)
+    send_mail(subject,message,from_email,to_list,fail_silently=False)
 
 ###EMPLOYEE###
 def addEmployee(request):
@@ -30,7 +30,7 @@ def addEmployee(request):
     country = worker.get("employee_country","")
     email = worker.get("employee_email","")
     username = worker.get("employee_username","")
-    worker_workplace = worker.get("employee_type","")
+    worker_workplace = worker.get("employee-workplace","")
     #TODO ERROR CODING IN CASE IT FAILS
     new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
     new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country, email=email, username=username,id_workplace=new_workplace)
@@ -39,7 +39,10 @@ def addEmployee(request):
     return True
 
 def getEmployees():
-    return employee.objects.all()
+    return employee.objects.all()[0:10]
+
+def getEmployeesByName(name):
+    return employee.objects.filter(first_name__icontains=name)
 
 def deleteEmployee(id):
     employee.objects.filter(id=id).delete()
@@ -61,21 +64,33 @@ def addCompetencies(request):
 def getCompetencies():
     return competence.objects.all()
 
-def getCompetencies_type():
-    return competence_type.objects.all()
+def getCompetenciesByType(id):
+    return competence.objects.filter(id_competence_type=id)[0:8]
 
+def getCompetenciesByName(name):
+    return competence.objects.filter(slo_name=name)[0:8]
+
+def getCompetenciesByTwo(value,type):
+    return competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
 
 ###TRAININGS###
 def addTrainings(request):
     training = request.POST.copy()
+    competences = request.POST.getlist('training_competence')
     name = training.get("training_name")
     desc = training.get("training_desc")
     date_from = training.get("date_from")
     date_to = training.get("date_to")
-    competency = training.get("training_competence").split(" ")[1]
-    add_to_competence = competence.objects.filter(name=competency)[0]
-    new_education = education(name=name,date_from=date_from,date_to=date_to,desc=desc,id_competence=add_to_competence,)
+
+    print(competences)
+    new_education = education(name=name, date_from=date_from, date_to=date_to, desc=desc)
     new_education.save()
+    new_education = education.objects.filter(name=name)[0]
+    list_of_competences = []
+    for i in competences:
+        new_competence = competence.objects.filter(slo_name=i)[0]
+        list_of_competences.append(new_competence)
+    new_education.id_competence.set(list_of_competences)
     return True
 
 def getTrainings():
@@ -85,3 +100,26 @@ def getTrainings():
 def getWorkplaces():
     return workplace.objects.all()
 
+def findWorkplace(id):
+    return workplace.objects.filter(id_workplace=id).values('name')
+
+###COMPETENCE_TYPE###
+def getCompetenceType(value):
+    return competence_type.objects.filter(name__icontains=value)
+
+def getCompetenceTypes():
+    return competence_type.objects.all()[0:10]
+
+def getAllCompetencies_type():
+    return competence_type.objects.all()
+
+###EMPLOYEE_COMPETENCE###
+def saveEmployeeCompetence(id_competence,id_employee,score):
+    selected_employee = employee.objects.filter(id_employee=id_employee)[0]
+    selected_competence = competence.objects.filter(hoegen_id=id_competence)[0]
+    print(selected_competence)
+    print(selected_employee)
+    new_employee_competence = employee_competence(level=score,id_competence=selected_competence,id_employee=selected_employee)
+    new_employee_competence.save()
+
+    return True

@@ -1,0 +1,6 @@
+{% for obj in competence_types %}
+<tr>
+    <th scope="row">{{obj.id_competence_type}}</th>
+    <td><a href="#" id="clickableCompetenceType" name={{obj.id_competence_type}}>{{obj.name}}</a></td>
+</tr>
+{% endfor %}

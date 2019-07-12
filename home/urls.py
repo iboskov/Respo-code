@@ -36,6 +36,12 @@ urlpatterns = [
     path('user_competencies', views.user_competencies, name='user_competencies'),
     path('user_status', views.user_status, name='user_status'),
     path('user_trainings', views.user_trainings, name='user_trainings'),
+    #AJAX
+    url(r'^ajax/findemployee/$', views.findEmployees, name="findEmployees"),
+    url(r'^ajax/findCompetenceType/$', views.findCompetenceType, name="findCompetenceType"),
+    url(r'^ajax/findCompetences/$',views.findCompetencesByType, name="findCompetencesByType"),
+    url(r'^ajax/findCompetencesSearch/$', views.findCompetencesByTwo, name="findCompetencesByTwo"),
+    url(r'^ajax/addCompetenciesUser/$', views.addCompetenciesToUser, name="addCompetenciesForUser"),
     url('', views.index, name='index'),
 
 
