@@ -6,7 +6,104 @@
     <div class="row mt-2">
         <div class="col">
             <h2 class="text-primary">Workplaces</h2>
+             <ul class="nav nav-tabs mt-4" id="employee-tabs" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="add-workplaces-tab" data-toggle="tab" href="#addWorkplace" role="tab">Add</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="show-workplaces-tab" data-toggle="tab" href="#showWorkplaces" role="tab">Workplaces</a>
+                </li>
+             </ul>
+            <div class="tab-content m-2" id="myTabContent">
+                <div class="tab-pane show active" id="addWorkplace" role="tabpanel">
+
+                    <form id="add-workplace-form" method="POST" action="employees/add">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col col-xl-8">
+                                <h4 class="text-primary">Add Workplace</h4>
+                                <div class="form-group">
+                                    <label for="workplace_name">Name:</label>
+                                    <input type="text" class="form-control" name="workplace_name" id="workplace_name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="workplace_desc">Description:</label>
+                                    <input type="text" class="form-control" name="workplace_desc" id="workplace_desc" required>
+                                </div>
+                                <div class="form-group row align-items-center">
+                                    <div class="col-6">
+                                        <label for="workplace_desc">Add competencies and their relevance:</label>
+                                    </div>
+                                    <div class="col-6 text-right">
+                                        <span id="addCompReleField" style="cursor:pointer;" class="text-primary"><i class="fas fa-plus"></i></span>
+                                    </div>
+                                </div>
+                                <div class="comprele">
+                                    <div class="form-group row align-items-center">
+                                        <div class="col-6">
+                                            <select class="form-control" name="competence0" id="competence0"></select>
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="form-control" name="relevance0" id="relevance0" placeholder="Relevance" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="text-right">
+                                    <button type="submit" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="tab-pane" id="showWorkplaces" role="tabpanel">
+                    Show
+                </div>
+            </div>
         </div>
     </div>
 </div>
 {% endblock main_content %}
+
+{% block scripts %}
+<script>
+
+var data = [
+    {
+        id: 0,
+        text: 'Comp1'
+    },
+    {
+        id: 1,
+        text: 'Comp2'
+    },
+    {
+        id: 2,
+        text: 'Comp3'
+    },
+    {
+        id: 3,
+        text: 'Comp4'
+    },
+    {
+        id: 4,
+        text: 'Comp5'
+    }
+];
+
+$("#competence0").select2({data: data});
+
+var idCounter = 1;
+
+$("#addCompReleField").on("click", function(){
+    inputFieldsHtml = '<div class="form-group row align-items-center" id="'+idCounter+'"><div class="col-6"><select class="form-control" name="competence'+idCounter+'" id="competence'+idCounter+'"></select></div><div class="col-5"><input type="text" class="form-control" name="relevance'+idCounter+'" id="relevance'+idCounter+'" placeholder="Relevance" required></div><div class="col-1"><span class="deleteCompReleField text-danger" data-id="'+idCounter+'" style="cursor:pointer;"><i class="fas fa-minus"></i></span></div></div>';
+
+    $(".comprele").append(inputFieldsHtml);
+    $("#competence"+idCounter).select2({data: data});
+    idCounter++;
+});
+
+$(".comprele").on("click", ".deleteCompReleField", function(){
+    $("#"+$(this).data("id")).remove();
+});
+</script>
+{% endblock %}
