@@ -52,12 +52,12 @@ class competence(models.Model):
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)
     competence_weight = models.IntegerField(blank=False)
-    minimum_required = models.IntegerField(blank=False,default=0)
+    #minimum_required = models.IntegerField(blank=False,default=0)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
     id_workplace = models.ForeignKey(workplace, on_delete=models.CASCADE)
 
-    def __str__(self):
-        return self.id_competence_relevance
+    def __int__(self):
+        return self.competence_weight
 
 class education(models.Model):
     id_education = models.AutoField(primary_key=True)

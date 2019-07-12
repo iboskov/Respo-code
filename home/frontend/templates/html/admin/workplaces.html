@@ -17,7 +17,7 @@
             <div class="tab-content m-2" id="myTabContent">
                 <div class="tab-pane show active" id="addWorkplace" role="tabpanel">
 
-                    <form id="add-workplace-form" method="POST" action="employees/add">
+                    <form id="add-workplace-form" method="POST" action="workplace/add">
                         {% csrf_token %}
                         <div class="row">
                             <div class="col col-xl-8">
@@ -41,7 +41,11 @@
                                 <div class="comprele">
                                     <div class="form-group row align-items-center">
                                         <div class="col-6">
-                                            <select class="form-control" name="competence0" id="competence0"></select>
+                                            <select class="form-control" name="competence0" id="competence0">
+                                                {% for obj in competency %}
+                                                    <option>{{obj.slo_name}}</option>
+                                                {% endfor %}
+                                            </select>
                                         </div>
                                         <div class="col-6">
                                             <input type="text" class="form-control" name="relevance0" id="relevance0" placeholder="Relevance" required>
@@ -67,28 +71,7 @@
 {% block scripts %}
 <script>
 
-var data = [
-    {
-        id: 0,
-        text: 'Comp1'
-    },
-    {
-        id: 1,
-        text: 'Comp2'
-    },
-    {
-        id: 2,
-        text: 'Comp3'
-    },
-    {
-        id: 3,
-        text: 'Comp4'
-    },
-    {
-        id: 4,
-        text: 'Comp5'
-    }
-];
+var data = [];
 
 $("#competence0").select2({data: data});
 

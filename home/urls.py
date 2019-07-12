@@ -31,6 +31,8 @@ urlpatterns = [
     path('employees/add', views.employeeAdd, name="add"),
     path('competencies/add', views.competencyAdd, name="competencyAdd"),
     path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
+    path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
+    #User
     path('user_history', views.user_history_recent, name='user_history'),
     path('user_history/timeline', views.user_history_timeline, name='user_history/timeline'),
     path('user_competencies', views.user_competencies, name='user_competencies'),

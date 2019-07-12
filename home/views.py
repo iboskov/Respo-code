@@ -54,7 +54,8 @@ def competencies(request):
 def workplaces(request):
     user = "admin"
     main_pick = 'workplaces'
-    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user})
+    competency = getCompetencies()
+    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user,'competency':competency})
 
 
 def options(request):
@@ -161,6 +162,13 @@ def trainingsAdd(request):
         return render(request, 'html/admin/trainings.html',
                       {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})
 
+def workplaceAdd(request):
+    user = "admin"
+    main_pick = "workplaces"
+    if addWorkplace(request):
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency})
 
 
 ###AJAX###

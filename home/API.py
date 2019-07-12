@@ -97,6 +97,32 @@ def getTrainings():
     return education.objects.all()
 
 ###WORKPLACE###
+def addWorkplace(request):
+    workplaces = request.POST.copy()
+    print(workplaces)
+    name = workplaces.get('workplace_name')
+    desc = workplaces.get('workplace_desc')
+    i = 0
+    new_workplace = workplace(name=name,desc=desc)
+    new_workplace.save()
+    while i < 6:
+        competen = "competence"+str(i)
+        relevance = "relevance"+str(i)
+        comp = workplaces.get(competen,None)
+        relevant = workplaces.get(relevance,None)
+        if comp == None:
+
+            i = i+1
+            continue
+        get_competence = competence.objects.filter(slo_name=comp)[0]
+        new_comp_relevance = competence_relevance(competence_weight=relevant,id_competence=get_competence,id_workplace=new_workplace)
+        new_comp_relevance.save()
+        i = i+1
+
+
+    return True
+
+
 def getWorkplaces():
     return workplace.objects.all()
 
