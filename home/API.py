@@ -1,6 +1,7 @@
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
 from django.conf import settings
+from django.db.models import Q
 import json
 from django.http import JsonResponse
 from django.http.request import HttpRequest
@@ -64,15 +65,23 @@ def addCompetencies(request):
 def getCompetencies():
     return competence.objects.all()
 
-def getCompetenciesByType(id):
-    return competence.objects.filter(id_competence_type=id)[0:8]
+def getCompetenciesByType(id,new_list):
+    return competence.objects.filter(Q(id_competence_type=id) & ~Q(id_competence__in=new_list))[0:8]
 
 def getCompetenciesByName(name):
     return competence.objects.filter(slo_name=name)[0:8]
 
-def getCompetenciesByTwo(value,type):
-    return competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
+def getCompetenciesByTwo(value,type,new_list):
+    return competence.objects.filter(Q(id_competence_type=type,slo_name__icontains=value) & ~Q(id_competence__in=new_list))
 
+def getCompetenceByEmployee(id_employee,type):
+    return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
+def getCompetenceByEmployeePart(id_employee,type,value):
+    findCompetences = competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
+    listOfComp = []
+    for i in findCompetences:
+        listOfComp.append(i.id_competence)
+    return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type,id_competence__in=listOfComp)
 ###TRAININGS###
 def addTrainings(request):
     training = request.POST.copy()
@@ -143,9 +152,15 @@ def getAllCompetencies_type():
 def saveEmployeeCompetence(id_competence,id_employee,score):
     selected_employee = employee.objects.filter(id_employee=id_employee)[0]
     selected_competence = competence.objects.filter(hoegen_id=id_competence)[0]
+    selected_competence_type = competence_type.objects.filter(id_competence_type=selected_competence.id_competence_type.id_competence_type)[0]
     print(selected_competence)
     print(selected_employee)
-    new_employee_competence = employee_competence(level=score,id_competence=selected_competence,id_employee=selected_employee)
-    new_employee_competence.save()
+    if employee_competence.objects.filter(id_competence=selected_competence.id_competence,id_employee=selected_employee.id_employee).exists():
+        editCompetence = employee_competence.objects.filter(id_competence=selected_competence.id_competence,id_employee=selected_employee.id_employee)
+        editCompetence.update(level=score)
+
+    else:
+        new_employee_competence = employee_competence(level=score,id_competence=selected_competence,id_competence_type=selected_competence_type,id_employee=selected_employee)
+        new_employee_competence.save()
 
     return True

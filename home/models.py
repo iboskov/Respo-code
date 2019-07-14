@@ -73,6 +73,7 @@ class education(models.Model):
 class employee_competence(models.Model):
     id_employee_competence = models.AutoField(primary_key=True)
     level = models.IntegerField(blank=False)
+    id_competence_type = models.ForeignKey(competence_type, on_delete=models.CASCADE)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
     id_employee = models.ForeignKey(employee, on_delete=models.CASCADE)
 

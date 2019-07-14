@@ -95,7 +95,7 @@
                         <div class="col-xl-6">
                             <div class="card" id="hideComp" hidden="True">
                                 <div class="card-body">
-                                <h5 class="card-title" id="hiddenComp">Add Competencies</h5>
+                                <h5 class="card-title" data-id="" id="hiddenComp">Add Competencies</h5>
                                     <input type="text" class="form-control mt-2 mb-2" id="searchCompetenceType" placeholder="Search Competence Type">
                                     <div class="table-responsive">
                                         <table class="table table-hover">
@@ -232,6 +232,29 @@
 {% block scripts %}
 <script>
 
+$(document).on('click', '.deleteIconModal', function () {
+   id_employee = $(this).attr("data-id");
+   console.log(id_employee);
+   $('.btn-danger').attr('data-id',id_employee);
+});
+
+$(document).on('click', '.btn-danger', function(){
+    id_employee = $(this).attr("data-id");
+    $.ajax({
+        url: '/ajax/deleteEmployee/',
+        data: {
+            'employee':id_employee
+        },
+        dataType: 'json',
+        success: function(data){
+            console.log("success");
+            location.reload();
+        }
+    });
+
+});
+
+
 $('#searchEmployee').on('keyup',function(){
     var user = $(this).val();
     $.ajax({
@@ -264,10 +287,12 @@ $('#searchCompetenceType').on('keyup',function(){
 $('#clickableCompetenceType').on('click',function(){
     var type = $(this).attr("name");
     $('#searchCompetence').attr("name",type);
+    var id_employee = $('#hiddenComp').attr("data-id");
     $.ajax({
         url: '/ajax/findCompetences/',
         data:{
-            'types':type
+            'types':type,
+            'employee':id_employee
         },
         dataType: 'json',
         success: function(data){
@@ -278,11 +303,13 @@ $('#clickableCompetenceType').on('click',function(){
 $('#searchCompetence').on('keyup', function(){
     var value = $(this).val();
     var type = $(this).attr('name');
+    var employee = $('#hiddenComp').attr("data-id");
     $.ajax({
         url: '/ajax/findCompetencesSearch/',
         data:{
             'types':type,
-            'value':value
+            'value':value,
+            'employee':employee
         },
         dataType: 'json',
         success: function(data){
@@ -295,6 +322,7 @@ $('#clickableEmployee').on('click', function(){
     $('#hideComp').removeAttr('hidden');
     $('#saveEmployee').attr('name', employee);
     $('#hiddenComp').html("Add Competencies for employee "+employee);
+    $('#hiddenComp').attr('data-id',employee);
 
 });
 

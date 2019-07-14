@@ -4,7 +4,9 @@ This is the views.py file where we will direct html and send objects from backen
 login function atm is just an example of how it should be written.
 'html\login' is the location of the html file.
 """
-
+from django.core.files import File
+import pandas as pd
+from pandas import ExcelFile
 from django.shortcuts import render
 from home.API import *
 import json
@@ -194,10 +196,15 @@ def findCompetenceType(request):
 
 def findCompetencesByType(request):
     value = request.GET.get('types', None)
-    getCompetencies = getCompetenciesByType(value)
+    id_employee = request.GET.get('employee',None)
+    getCompetenceByRelevance = getCompetenceByEmployee(id_employee,value)
+    new_list = []
+    for i in getCompetenceByRelevance:
+        new_list.append(i.id_competence.id_competence)
+    getCompetencies = getCompetenciesByType(value,new_list)
     html = render_to_string(
         template_name="html/admin/partial_table_competence_values.html",
-        context={"competences":getCompetencies}
+        context={"competences":getCompetencies,"competence_values":getCompetenceByRelevance}
     )
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
@@ -205,11 +212,16 @@ def findCompetencesByType(request):
 def findCompetencesByTwo(request):
     value = request.GET.get('value',None)
     type = request.GET.get('types', None)
-    getCompetencies = getCompetenciesByTwo(value,type)
+    id_employee = request.GET.get('employee',None)
+    getCompetenceByRelevance = getCompetenceByEmployeePart(id_employee, type,value)
+    new_list = []
+    for i in getCompetenceByRelevance:
+        new_list.append(i.id_competence.id_competence)
+    getCompetencies = getCompetenciesByTwo(value,type,new_list)
 
     html = render_to_string(
         template_name="html/admin/partial_table_competence_values.html",
-        context={"competences":getCompetencies}
+        context={"competences":getCompetencies,"competence_values":getCompetenceByRelevance}
     )
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
@@ -227,3 +239,17 @@ def addCompetenciesToUser(request):
         saveEmployeeCompetence(true_id,employee,value[i])
 
     return JsonResponse(True,safe=False)
+
+def uploadFile(request):
+    file = File(request.GET.get('excel_competencies'))
+
+    excel = pd.read_excel(file,sheetname='Temida-kompetence')
+    print(excel.columns)
+    return JsonResponse(True, safe=False)
+
+def deleteEmployee(request):
+    id_employee = request.GET.get('employee',None)
+    if deleteEmployee(id_employee):
+        return JsonResponse(True,safe=False)
+    else:
+        return JsonResponse(False, safe=False)
