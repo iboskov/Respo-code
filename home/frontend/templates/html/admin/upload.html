@@ -5,29 +5,43 @@
 
 {% block main_content %}
 
-<div class="container-fluid mt-2">
-    <div class="row">
-        <div class="col-xl-6 mt-2">
-            <h2 class="text-primary">Upload Excel Files</h2>
-            <form id="uploaderForm" class="" method="post" action="file/upload">
-                {% csrf_token %}
-                <div class="custom-file mt-4">
-                    <input type="file" class="custom-file-input" id="excelOne">
-                    <label class="custom-file-label" for="excelOne">Excel one - Employees</label>
+<div class="row">
+    <div class="col mt-2">
+        <form id="uploaderForm" class="" method="post" action="file/upload">
+        {% csrf_token %}
+        <h2 class="text-primary">Upload Excel Files</h2>
+            <div class="form-row mt-4">
+                <div class="col">
+                    <label for="compTypeRP">Competence type - Row Position</label>
+                    <input type="number" class="form-control" id="compTypeRP" placeholder="Competence Type Row Position">
                 </div>
-                <div class="custom-file mt-4">
-                    <input type="file" class="custom-file-input" id="excelTwo">
-                    <label class="custom-file-label" for="excelTwo">Excel two - Work Places</label>
+                <div class="col">
+                    <label for="compTypeCP">Competence type - Column Position</label>
+                    <input type="number" class="form-control" id="compTypeCP" placeholder="Competence Type Column Position">
                 </div>
-                <div class="custom-file mt-4">
-                    <input type="file" name="excel_competencies" class="custom-file-input" id="excelThree">
-                    <label class="custom-file-label" for="excelThree">Excel three - Competencies</label>
+            </div>
+            <div class="form-row mt-4">
+                <div class="col">
+                    <label for="compTypeRP">Competencies - Row Position</label>
+                    <input type="number" class="form-control" id="compTypeRP" placeholder="Competence Type Row Position">
                 </div>
-                <div class="text-right mt-4">
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="col">
+                    <label for="compTypeCP">Competencies - Column Position</label>
+                    <input type="number" class="form-control" id="compTypeCP" placeholder="Competence Type Column Position">
                 </div>
-            </form>
-        </div>
+            </div>
+            <div class="custom-file mt-4">
+                <input type="file" class="custom-file-input" id="excelOne">
+                <label class="custom-file-label" for="excelOne">Excel one - Competencies</label>
+            </div>
+            <div class="custom-file mt-4">
+                <input type="file" class="custom-file-input" id="excelTwo">
+                <label class="custom-file-label" for="excelTwo">Excel two - Trainings</label>
+            </div>
+            <div class="text-right mt-4">
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+        </form>
     </div>
 </div>
 
@@ -38,6 +52,6 @@
 <!--    <div id="button-container">-->
 <!--        <input id="submit-btn2" type="submit" value="Upload" class="rounded shadow-lg">-->
 <!--    </div>-->
-</form>
+<!--</form>-->
 
 {% endblock main_content %}
