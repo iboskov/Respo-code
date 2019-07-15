@@ -16,13 +16,18 @@
                 <div class="row">
                     <div class="col">
                         <form id="analyze-form" method="POST" action="">
-                            <div class="form-group">
-                                <label for="employees">Select employee/s:</label>
-                                <select class="form-control" multiple name="employees" id="employees">
-                                    <option>Emp1</option>
-                                    <option>Emp2</option>
-                                    <option>Emp3</option>
-                                </select>
+                            <label for="employeesSelect">Select employee/s:</label>
+                            <div class="form-group row align-items-center">
+                                <div class="col">
+                                    <select class="form-control" multiple name="employeesSelect" id="employeesSelect">
+                                        <option>Emp1</option>
+                                        <option>Emp2</option>
+                                        <option>Emp3</option>
+                                    </select>
+                                </div>
+                                <div class="col-auto">
+                                    <button type="button" class="btn btn-primary" id="selectAllEmployees">SELECT ALL</button>
+                                </div>
                             </div>
                             <p>Select at least one of the Algorithms:</p>
                             <div class="form-check form-check-inline">
@@ -46,7 +51,7 @@
                                 <label class="form-check-label" for="algo5">Algorithm 5</label>
                             </div>
                             <div class="text-right">
-                                <button type="submit" class="btn btn-primary">Analyze</button>
+                                <button type="submit" class="btn btn-primary">ANALYZE</button>
                             </div>
                         </form>
                         <hr>
@@ -57,8 +62,8 @@
                                     <thead class="bg-primary text-white" style="font-size: .65rem;">
                                         <tr>
                                             <th scope="col" style="width: 1%;">#</th>
-                                            <th scope="col">Employee</th>
-                                            <th scope="col">Training</th>
+                                            <th scope="col">EMPLOYEE</th>
+                                            <th scope="col">TRAINING</th>
                                             <th scope="col">TARGET COMPETENCE</th>
                                             <th scope="col">SEND INVITATION</th>
                                         </tr>
@@ -93,7 +98,45 @@
                             </div>
                         <hr>
                         <p><strong>Algorithm 2</strong></p>
-                            <p>SomeResults</p>
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                        <tr>
+                                            <th scope="col" style="width: 1%;">#</th>
+                                            <th scope="col">EMPLOYEE</th>
+                                            <th scope="col">TRAINING</th>
+                                            <th scope="col">TARGET COMPETENCE</th>
+                                            <th scope="col">SEND INVITATION</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                        <tr>
+                                            <th scope="row">1</th>
+                                            <td>John Doe</td>
+                                            <td>English 1</td>
+                                            <td>English</td>
+                                            <td><a href="#" class="badge badge-primary">SEND</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">2</th>
+                                            <td>John Doe</td>
+                                            <td><a href="#" class="badge badge-primary">ADD TRAINING</a></td>
+                                            <td>German</td>
+                                            <td><a href="#" class="badge badge-primary">SEND</a></td>
+                                        </tr>
+                                        <tr>
+                                            <th scope="row">3</th>
+                                            <td>Matevz Ogrinc</td>
+                                            <td>English 1</td>
+                                            <td>English</td>
+                                            <td><a href="#" class="badge badge-primary">SEND</a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-right">
+                                <button type="submit" class="btn btn-primary btn-sm">SEND ALL</button>
+                            </div>
                         <hr>
                         <p><strong>Algorithm 3</strong></p>
                             <p>SomeResults</p>
@@ -118,6 +161,12 @@
 
 var data = [];
 
-$("#employees").select2({data: data});
+$("#employeesSelect").select2({data: data});
+
+//button event to select all employees using the select2
+$("#selectAllEmployees").on("click", function(){
+    $('#employeesSelect').select2('destroy').find('option').prop('selected', 'selected').end().select2();
+});
+
 </script>
 {% endblock scripts %}

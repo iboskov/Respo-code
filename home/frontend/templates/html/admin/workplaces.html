@@ -45,7 +45,10 @@
                                             {% endfor %}
                                         </select>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-3">
+                                        <input type="text" class="form-control" name="minReq0" id="minReq0" placeholder="Minimum required score" required>
+                                    </div>
+                                    <div class="col-3">
                                         <input type="text" class="form-control" name="relevance0" id="relevance0" placeholder="Relevance" required>
                                     </div>
                                 </div>
@@ -121,14 +124,32 @@
 {% block scripts %}
 <script>
 
+
 var data = [];
+
+$("#competence0 option").each(function(){
+    data.push($(this).val());
+});
 
 $("#competence0").select2({data: data});
 
 var idCounter = 1;
 
 $("#addCompReleField").on("click", function(){
-    inputFieldsHtml = '<div class="form-group row align-items-center" id="'+idCounter+'"><div class="col-6"><select class="form-control" name="competence'+idCounter+'" id="competence'+idCounter+'"></select></div><div class="col-5"><input type="text" class="form-control" name="relevance'+idCounter+'" id="relevance'+idCounter+'" placeholder="Relevance" required></div><div class="col-1"><span class="deleteCompReleField text-danger" data-id="'+idCounter+'" style="cursor:pointer;"><i class="fas fa-minus"></i></span></div></div>';
+    inputFieldsHtml = '<div class="form-group row align-items-center" id="'+idCounter+'">'+
+        '<div class="col-6">'+
+            '<select class="form-control" name="competence'+idCounter+'" id="competence'+idCounter+'"></select>'+
+        '</div>'+
+        '<div class="col-3">'+
+            '<input type="text" class="form-control" name="minReq'+idCounter+'" id="minReq'+idCounter+'" placeholder="Minimum required score" required>'+
+        '</div>'+
+        '<div class="col-2">'+
+            '<input type="text" class="form-control" name="relevance'+idCounter+'" id="relevance'+idCounter+'" placeholder="Relevance" required>'+
+        '</div>'+
+        '<div class="col-1 text-right">'+
+            '<span class="deleteCompReleField text-danger" data-id="'+idCounter+'" style="cursor:pointer;"><i class="fas fa-minus"></i></span>'+
+        '</div>'+
+    '</div>';
 
     $(".comprele").append(inputFieldsHtml);
     $("#competence"+idCounter).select2({data: data});
