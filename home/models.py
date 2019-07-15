@@ -52,7 +52,7 @@ class competence(models.Model):
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)
     competence_weight = models.IntegerField(blank=False)
-    #minimum_required = models.IntegerField(blank=False,default=0)
+    minimum_required = models.IntegerField(blank=False,default=0)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
     id_workplace = models.ForeignKey(workplace, on_delete=models.CASCADE)
 

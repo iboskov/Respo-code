@@ -12,6 +12,7 @@ from home.API import *
 import json
 from django.http import JsonResponse
 from django.template.loader import render_to_string
+import numpy as np
 from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.http import HttpResponse
@@ -82,7 +83,8 @@ def trainings(request):
 def analytics(request):
     user = "admin"
     main_pick = "analytics"
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user})
+    employees = getEmployees()
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees})
 
 
 def status(request):
@@ -253,3 +255,46 @@ def deleteEmployee(request):
         return JsonResponse(True,safe=False)
     else:
         return JsonResponse(False, safe=False)
+
+
+def analyticsCompute(request):
+    listOfEmployees = request.POST.getlist('employees',None)
+    print(listOfEmployees)
+    numberOfEmployees = len(listOfEmployees)
+    print(numberOfEmployees)
+
+    #start the calculation
+    for i in listOfEmployees:
+        devide = i.split(" ")
+        gottenEmployee = getEmployeeeByNameAndSurname(devide[0],devide[1])[0]
+        findAllOfHisCompetence = getAllEmployeeCompetence(gottenEmployee.id_employee)
+        getAllCompetenceRelevance = getAllCompetenceRelevanceForWorkplace(gottenEmployee.id_workplace.id_workplace)
+        print(getAllCompetenceRelevance)
+        lengthOfRelevance = len(getAllCompetenceRelevance)
+        print(lengthOfRelevance)
+        tableOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
+        tableOfScores = np.zeros(shape=(lengthOfRelevance,1))
+        iterator = 0
+        for i in getAllCompetenceRelevance:
+            value = 0
+            relevance = 0
+            for j in findAllOfHisCompetence:
+                if i.id_competence.id_competence == j.id_competence.id_competence:
+                    value = j.level
+                    relevance = i.minimum_required
+                    name = i.id_competence.slo_name
+            if len(name) == 0:
+                value = 0
+                relevance = i.minimum_required
+                name = i.id_competence.slo_name
+
+            tableOfRelevance[iterator][0] = relevance
+            tableOfScores[iterator][0] = value
+            iterator = iterator+1
+
+        print(tableOfRelevance)
+        print(tableOfScores)
+
+
+
+    return JsonResponse(True,safe=False)

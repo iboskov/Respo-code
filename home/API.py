@@ -49,6 +49,9 @@ def deleteEmployee(id):
     employee.objects.filter(id=id).delete()
     return True
 
+def getEmployeeeByNameAndSurname(first_name,last_name):
+    return employee.objects.filter(first_name=first_name,last_name=last_name)
+
 ###COMPETENCIES###
 def addCompetencies(request):
     comp = request.POST.copy()
@@ -76,6 +79,7 @@ def getCompetenciesByTwo(value,type,new_list):
 
 def getCompetenceByEmployee(id_employee,type):
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
+
 def getCompetenceByEmployeePart(id_employee,type,value):
     findCompetences = competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
     listOfComp = []
@@ -164,3 +168,10 @@ def saveEmployeeCompetence(id_competence,id_employee,score):
         new_employee_competence.save()
 
     return True
+def getAllEmployeeCompetence(id_employee):
+    return employee_competence.objects.filter(id_employee=id_employee)
+
+###COMPETENCE_RELEVANCE###
+def getAllCompetenceRelevanceForWorkplace(id_workplace):
+    print(id_workplace)
+    return competence_relevance.objects.filter(id_workplace=id_workplace)

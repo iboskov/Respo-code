@@ -33,6 +33,7 @@ urlpatterns = [
     path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
     path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
     path('file/upload', views.uploadFile, name='uploadFile'),
+    path('analytics/compute',views.analyticsCompute, name='analyticsCompute'),
     #User
     path('user_history', views.user_history_recent, name='user_history'),
     path('user_history/timeline', views.user_history_timeline, name='user_history/timeline'),
