@@ -1,0 +1,10 @@
+{% for obj in workplaces %}
+<tr>
+    <th scope="row">{{obj.id_workplace}}</th>
+    <td>{{obj.name}}</td>
+    <td>{{obj.desc}}</td>
+    <td class="text-center">
+        <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+    </td>
+</tr>
+{% endfor %}

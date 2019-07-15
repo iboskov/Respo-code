@@ -76,20 +76,13 @@
                                     </tr>
                                 </thead>
                                 <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Workplace 1</td>
-                                        <td>Description of the...</td>
-                                        <td class="text-center">
-                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                        </td>
-                                    </tr>
+                                    {% include 'html/admin/partial_table_workplaces.html' %}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                     <!-- Table of Competencies and their Relevance -->
-                    <div class="col-xl-6">
+                    <div class="col-xl-6" hidden>
                         <h4 class="text-primary">Competencies and Relevance</h4>
                         <div class="table-responsive">
                             <table class="table table-hover">
