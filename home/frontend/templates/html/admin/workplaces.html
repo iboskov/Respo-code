@@ -138,7 +138,7 @@ var idCounter = 1;
 $("#addCompReleField").on("click", function(){
     inputFieldsHtml = '<div class="form-group row align-items-center" id="'+idCounter+'">'+
         '<div class="col-6">'+
-            '<select class="form-control" name="competence'+idCounter+'" id="competence'+idCounter+'"></select>'+
+            '<select class="form-control" name="competence'+idCounter+'" id="competence'+idCounter+'">{% for obj in competency %}<option>{{obj.slo_name}}</option>{% endfor %}</select>'+
         '</div>'+
         '<div class="col-3">'+
             '<input type="text" class="form-control" name="minReq'+idCounter+'" id="minReq'+idCounter+'" placeholder="Minimum required score" required>'+

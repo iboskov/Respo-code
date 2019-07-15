@@ -121,14 +121,16 @@ def addWorkplace(request):
     while i < 6:
         competen = "competence"+str(i)
         relevance = "relevance"+str(i)
+        minimumVal = "minReq"+str(i)
         comp = workplaces.get(competen,None)
         relevant = workplaces.get(relevance,None)
+        minim = workplaces.get(minimumVal,None)
         if comp == None:
 
             i = i+1
             continue
         get_competence = competence.objects.filter(slo_name=comp)[0]
-        new_comp_relevance = competence_relevance(competence_weight=relevant,id_competence=get_competence,id_workplace=new_workplace)
+        new_comp_relevance = competence_relevance(competence_weight=relevant,id_competence=get_competence,id_workplace=new_workplace,minimum_required=minim)
         new_comp_relevance.save()
         i = i+1
 
@@ -173,5 +175,7 @@ def getAllEmployeeCompetence(id_employee):
 
 ###COMPETENCE_RELEVANCE###
 def getAllCompetenceRelevanceForWorkplace(id_workplace):
-    print(id_workplace)
     return competence_relevance.objects.filter(id_workplace=id_workplace)
+
+def getSpecificCompetenceOfRelevanceById(id_competence_relevance):
+    return competence_relevance.objects.filter(id_competence_relevance=id_competence_relevance)

@@ -314,7 +314,7 @@ $('#searchCompetence').on('keyup', function(){
         }
    });
 });
-$('#clickableEmployee').on('click', function(){
+$('.clickableEmployee').on('click', function(){
     var employee = $(this).attr('name');
     $('#hideComp').removeAttr('hidden');
     $('#saveEmployee').attr('name', employee);

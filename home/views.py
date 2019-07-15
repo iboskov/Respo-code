@@ -9,6 +9,7 @@ import pandas as pd
 from pandas import ExcelFile
 from django.shortcuts import render
 from home.API import *
+from home.Analytics import *
 import json
 from django.http import JsonResponse
 from django.template.loader import render_to_string
@@ -258,12 +259,22 @@ def deleteEmployee(request):
 
 
 def analyticsCompute(request):
-    listOfEmployees = request.POST.getlist('employees',None)
+    listOfEmployees = request.POST.getlist('employeesSelect',None)
+    postRequest = request.POST.copy()
+    algorithemSelect1 = postRequest.get('algo1',None)
+    algorithemSelect2 = postRequest.get('algo2', None)
+    algorithemSelect3 = postRequest.get('algo3', None)
+    algorithemSelect4 = postRequest.get('algo4', None)
+    print(algorithemSelect1)
     print(listOfEmployees)
     numberOfEmployees = len(listOfEmployees)
     print(numberOfEmployees)
-
+    view = 'pessimistic'
     #start the calculation
+    ALG1 = {}
+    ALG2 = {}
+    ALG3 = {}
+    ALG4 = {}
     for i in listOfEmployees:
         devide = i.split(" ")
         gottenEmployee = getEmployeeeByNameAndSurname(devide[0],devide[1])[0]
@@ -274,7 +285,10 @@ def analyticsCompute(request):
         print(lengthOfRelevance)
         tableOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
         tableOfScores = np.zeros(shape=(lengthOfRelevance,1))
+        tableOfImportance = np.zeros(shape=(lengthOfRelevance,1))
         iterator = 0
+        idsOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
+        tableOfResults = {}
         for i in getAllCompetenceRelevance:
             value = 0
             relevance = 0
@@ -283,18 +297,71 @@ def analyticsCompute(request):
                     value = j.level
                     relevance = i.minimum_required
                     name = i.id_competence.slo_name
+                    importance = i.competence_weight
+                    id = i.id_competence_relevance
             if len(name) == 0:
                 value = 0
                 relevance = i.minimum_required
                 name = i.id_competence.slo_name
-
-            tableOfRelevance[iterator][0] = relevance
-            tableOfScores[iterator][0] = value
+                importance = i.competence_weight
+                id = i.id_competence_relevance
+            tableOfRelevance[iterator][0] = int(relevance)
+            tableOfScores[iterator][0] = int(value)
+            tableOfImportance[iterator][0] = int(importance)
+            idsOfRelevance[iterator][0] = id
             iterator = iterator+1
 
         print(tableOfRelevance)
         print(tableOfScores)
+        #Now the analysis
+
+        alg1 = 0
+        alg2 = 0
+        alg3 = 0
+        alg4 = 0
+        print(tableOfImportance)
+        if algorithemSelect1 == 'on':
+            alg1 = maximal_absolute_lack(0,tableOfScores,tableOfRelevance,view)
+        if algorithemSelect2 == 'on':
+            alg2 = maximal_relative_lack(0,tableOfScores,tableOfRelevance,view)
+        if algorithemSelect3 == 'on':
+            alg3 = most_important_competence_that_lack(0,tableOfScores,tableOfRelevance,view)
+        if algorithemSelect4 == 'on':
+            alg4 = improve_comp_by_formula(0,tableOfScores,tableOfRelevance,tableOfImportance,view)
+        tableOfContentAlg1 = []
+        tableOfContentAlg2 = []
+        tableOfContentAlg3 = []
+        tableOfContentAlg4 = []
+        if alg1 != 0 and alg1 is not None:
+            ids = alg1[3]
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            tableOfContentAlg1.append(competence_rele.id_competence.slo_name)
+            tableOfContentAlg1.append(alg1[2])
+            ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
+        if alg2 != 0 and alg2 is not None:
+            ids = alg2[3]
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            tableOfContentAlg2.append(competence_rele.id_competence.slo_name)
+            tableOfContentAlg2.append(alg2[2])
+            ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
+        if alg3 != 0 and alg3 is not None:
+            ids = alg3[3]
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            tableOfContentAlg3.append(competence_rele.id_competence.slo_name)
+            tableOfContentAlg3.append(alg3[2])
+            ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
+        if alg4 != 0 and alg4 is not None:
+            ids = alg4[3]
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            tableOfContentAlg4.append(competence_rele.id_competence.slo_name)
+            tableOfContentAlg4.append(alg4[2])
+            ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
+
+    # TIME TO RENDER
+
+    user = "admin"
+    main_pick = "analytics"
+    employees = getEmployees()
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4})
 
 
-
-    return JsonResponse(True,safe=False)

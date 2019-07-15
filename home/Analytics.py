@@ -86,10 +86,12 @@ def maximal_absolute_lack(job_column_index, ocene, potrebno, view):
             if b - a >= maximal_lack:
                 maximal_lack = b - a
     if maximal_lack == float('Inf'):
-        return ("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
+        print("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
                 "improve row: " + list_out(rows))
+        return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
     elif maximal_lack == 0:
-        return "All competences satisfy the requirements."
+        print("All competences satisfy the requirements.")
+        return 0
     else:
         for i in range(len(ocene[:, job_column_index])):
             a = ocene[i, job_column_index]
@@ -101,8 +103,9 @@ def maximal_absolute_lack(job_column_index, ocene, potrebno, view):
                     rows.append(i)
             except:
                 pass
-    return ("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
+    print("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
             "improve row: " + list_out(rows))
+    return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
 
 
 def maximal_relative_lack(job_column_index, ocene, potrebno, view):
@@ -149,10 +152,12 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
             if round(a / b, 2) <= maximal_lack:
                 maximal_lack = round(a / b, 2)
     if maximal_lack == 0:
-        return ("required: " + list_out(p), "current mark: " + list_out(o), "relative lack: " + str(maximal_lack),
+        print("required: " + list_out(p), "current mark: " + list_out(o), "relative lack: " + str(maximal_lack),
                 "improve row: " + list_out(rows))
+        return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
     elif maximal_lack == 1:
-        return "All competences satisfy the requirements."
+        print("All competences satisfy the requirements.")
+        return 0
     else:
         for i in range(len(ocene[:, job_column_index])):
             a = ocene[i, job_column_index]
@@ -164,8 +169,9 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
                     rows.append(i)
             except:
                 pass
-    return ("required: " + list_out(p), "current mark: " + list_out(o), "relative lack: " + str(maximal_lack),
+    print("required: " + list_out(p), "current mark: " + list_out(o), "relative lack: " + str(maximal_lack),
             "improve row: " + list_out(rows))
+    return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
 
 
 def most_important_competence_that_lack(job_column_index, ocene, potrebno, view):
@@ -213,10 +219,12 @@ def most_important_competence_that_lack(job_column_index, ocene, potrebno, view)
             if b - a >= 0:
                 l.append((b, a, i))
     if maximal_lack == float('Inf'):
-        return ("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
+        print("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
                 "improve row: " + list_out(rows))
+        return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
     elif l == []:
-        return "All competences satisfy the requirements."
+        print("All competences satisfy the requirements.")
+        return 0
     else:
         l.sort(reverse=1)
         for i in range(len(l) - 1):
@@ -228,9 +236,10 @@ def most_important_competence_that_lack(job_column_index, ocene, potrebno, view)
                 if l[i][0] == l[i + 1][0]:
                     continue
                 else:
-                    return (
-                    "required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
+                    print("required: " + list_out(p), "current mark: " + list_out(o), "absolute lack: " + str(maximal_lack),
                     "improve row: " + list_out(rows))
+                    return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
+
 
 
 def improve_comp_by_formula(job_column_index, ocene, potrebno, table_of_importance_loc, view):
@@ -246,7 +255,7 @@ def improve_comp_by_formula(job_column_index, ocene, potrebno, table_of_importan
     p = []
     o = []
     rows = []
-    if table_of_importance_loc == None:
+    if table_of_importance_loc.any() == None:
         table_of_importance_loc = potrebno
     for i in range(len(ocene[:, job_column_index])):
         a = ocene[i, job_column_index]
@@ -301,8 +310,9 @@ def improve_comp_by_formula(job_column_index, ocene, potrebno, table_of_importan
                     rows.append(i)
             except:
                 pass
-    return ("required: " + list_out(p), "current mark: " + list_out(o), "lack by formula: " + str(formula_lack),
-            "improve row: " + list_out(rows))
+    print("required: " + list_out(p), "current mark: " + list_out(o), "lack by formula: " + str(formula_lack),
+     "improve row: " + list_out(rows))
+    return (list_out(p),list_out(o),str(formula_lack),list_out(rows))
 
 
 def importance_over_number(job_column_index, ocene_file, potrebno_file, table_of_importance, view, num=70,
