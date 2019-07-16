@@ -1,10 +1,6 @@
-
 {% extends "html/index.html" %}
 {% load static %}
-
-
 {% block main_content %}
-
 <div class="row">
     <div class="col mt-2">
         <form id="uploaderForm" class="" method="post" action="file/upload">
@@ -22,12 +18,12 @@
             </div>
             <div class="form-row mt-4">
                 <div class="col">
-                    <label for="compTypeRP">Competencies - Row Position</label>
-                    <input type="number" class="form-control" id="compTypeRP" placeholder="Competence Type Row Position">
+                    <label for="compRP">Competencies - Row Position</label>
+                    <input type="number" class="form-control" id="compRP" placeholder="Competence Row Position">
                 </div>
                 <div class="col">
-                    <label for="compTypeCP">Competencies - Column Position</label>
-                    <input type="number" class="form-control" id="compTypeCP" placeholder="Competence Type Column Position">
+                    <label for="compCP">Competencies - Column Position</label>
+                    <input type="number" class="form-control" id="compCP" placeholder="Competence Column Position">
                 </div>
             </div>
             <div class="custom-file mt-4">
@@ -44,14 +40,4 @@
         </form>
     </div>
 </div>
-
-
-<!--    <div id="fileUploadContainer">-->
-<!--        <input id="input-id" type="file" class="file" data-preview-file-type="text" >-->
-<!--    </div>-->
-<!--    <div id="button-container">-->
-<!--        <input id="submit-btn2" type="submit" value="Upload" class="rounded shadow-lg">-->
-<!--    </div>-->
-<!--</form>-->
-
 {% endblock main_content %}
