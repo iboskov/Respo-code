@@ -281,7 +281,7 @@ $('#searchCompetenceType').on('keyup',function(){
     });
 });
 
-$('#clickableCompetenceType').on('click',function(){
+$('.clickableCompetenceType').on('click',function(){
     var type = $(this).attr("name");
     $('#searchCompetence').attr("name",type);
     var id_employee = $('#hiddenComp').attr("data-id");
