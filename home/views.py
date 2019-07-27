@@ -153,7 +153,7 @@ def employeeAdd(request):
         return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
-        alert = {"show": "inline", "type": "danger", "message": "Employee already exists username and email must be unique!"}
+        alert = {"show": "inline", "type": "danger", "message": "Employee already exists, username and email must be unique!"}
         return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types,"alert":alert})
 
 def employeeEdit(request):

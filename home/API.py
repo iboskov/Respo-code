@@ -90,6 +90,7 @@ def getEmployeesByName(name):
 
 def deleteEmployeeById(id):
     delete_emp = employee.objects.filter(id_employee=id)[0]
+    employee_competence.objects.filter(id_employee=delete_emp.id_employee).delete()
     user.objects.filter(user_name=delete_emp.username).delete()
     employee.objects.filter(id_employee=id).delete()
     return True
