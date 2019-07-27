@@ -16,6 +16,11 @@ class workplace(models.Model):
 
     def __str__(self):
         return self.name
+    def as_json(self):
+        return dict(
+            id_workplace=self.id_workplace,
+            name=self.name,
+            desc=self.desc)
 
 class employee(models.Model):
     id_employee = models.AutoField(primary_key=True)
@@ -24,12 +29,24 @@ class employee(models.Model):
     phone = models.CharField(max_length=100,blank=False, default="")
     city = models.CharField(max_length=100,blank=False, default="")
     country = models.CharField(max_length=100, blank=False, default="")
-    email = models.CharField(max_length=100,blank=False, default="")
+    email = models.CharField(max_length=100,blank=False, default="",unique=True)
     username = models.CharField(max_length=100,blank=False, default="",unique=True)
     id_workplace = models.ForeignKey(workplace,on_delete=models.CASCADE,default="")
 
     def __str__(self):
         return self.first_name
+
+    def as_json(self):
+        return dict(
+            id_employee=self.id_employee,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            phone=self.phone,
+            city=self.city,
+            country=self.country,
+            email=self.email,
+            username=self.username,
+            workplace=self.id_workplace.name)
 
 class competence_type(models.Model):
     id_competence_type = models.AutoField(primary_key=True)
@@ -94,7 +111,7 @@ class participation(models.Model):
 class user(models.Model):
     id_user = models.AutoField(primary_key=True)
     user_name = models.CharField(max_length=100,blank=False,unique=True)
-    email = models.CharField(max_length=100,blank=False)
+    email = models.CharField(max_length=100,blank=False,unique=True)
     password = models.CharField(max_length=500, blank=False)
     user_image = models.ImageField(max_length=100, default=0)
     type=models.CharField(max_length=10, blank=False, default="user")

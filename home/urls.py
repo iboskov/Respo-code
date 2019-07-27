@@ -29,6 +29,7 @@ urlpatterns = [
     path('status', views.status, name='status'),
     #API
     path('employees/add', views.employeeAdd, name="add"),
+    path('employees/edit', views.employeeEdit, name="edit"),
     path('competencies/add', views.competencyAdd, name="competencyAdd"),
     path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
     path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
@@ -47,6 +48,7 @@ urlpatterns = [
     url(r'^ajax/findCompetencesSearch/$', views.findCompetencesByTwo, name="findCompetencesByTwo"),
     url(r'^ajax/addCompetenciesUser/$', views.addCompetenciesToUser, name="addCompetenciesForUser"),
     url(r'^ajax/deleteEmployee/$', views.deleteEmployee, name="deleteEmployee"),
+    url(r'^ajax/getEditEmployee/$', views.getEditEmployee, name="getEditEmployee"),
     url('', views.index, name='index'),
 
 

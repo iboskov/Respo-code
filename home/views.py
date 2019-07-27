@@ -153,7 +153,22 @@ def employeeAdd(request):
         return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
-        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types})
+        alert = {"show": "inline", "type": "danger", "message": "Employee already exists username and email must be unique!"}
+        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types,"alert":alert})
+
+def employeeEdit(request):
+    user = "admin"
+    main_pick = "employees"
+    workplaces = getWorkplaces()
+    competence_types = getCompetenceTypes()
+    if editEmployee(request):
+        employees = getEmployees()
+        alert = {"show": "inline", "type": "success", "message": "Employee successfully edited"}
+        return render(request, 'html/admin/employees.html',{"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
+    else:
+        employees = getEmployees()
+        alert = {"show": "inline", "type": "danger", "message": "Employee was not edited, keep in mind you cannot change username and email at the same time."}
+        return render(request, 'html/admin/employees.html',{"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
 
 def competencyAdd(request):
     user = "admin"
@@ -257,7 +272,7 @@ def addCompetenciesToUser(request):
         print(true_id)
         saveEmployeeCompetence(true_id,employee,value[i])
 
-    return JsonResponse(True,safe=False)
+    return JsonResponse(True, safe=False)
 
 def uploadFile(request):
     file = File(request.GET.get('excel_competencies'))
@@ -267,11 +282,19 @@ def uploadFile(request):
     return JsonResponse(True, safe=False)
 
 def deleteEmployee(request):
-    id_employee = request.GET.get('employee',None)
-    if deleteEmployee(id_employee):
-        return JsonResponse(True,safe=False)
+    id_employee = request.GET.get('employee', None)
+    print(id_employee)
+    if deleteEmployeeById(id_employee):
+        return JsonResponse(True, safe=False)
     else:
         return JsonResponse(False, safe=False)
+
+    return JsonResponse(False, safe=False)
+def getEditEmployee(request):
+    id_employee = request.GET.get('employee',None)
+    employee = getEmployeeById(id_employee)
+    dic_employee = employee.as_json()
+    return JsonResponse(data=dic_employee,safe=False)
 
 
 def analyticsCompute(request):

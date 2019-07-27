@@ -34,10 +34,53 @@ def addEmployee(request):
     worker_workplace = worker.get("employee-workplace","")
     #TODO ERROR CODING IN CASE IT FAILS
     new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
-    new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country, email=email, username=username,id_workplace=new_workplace)
-    new_employee.save()
-    createUser(username,email,'user')
+    if employee.objects.filter(email=email).exists() or employee.objects.filter(username=username).exists():
+        return False
+    else:
+        new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country, email=email, username=username,id_workplace=new_workplace)
+        new_employee.save()
+        createUser(username,email,'user')
+
     return True
+
+def editEmployee(request):
+    worker = request.POST.copy()
+    id_employee = worker.get("edit-employee_id", "")
+    first_name = worker.get("edit-employee_name", "")
+    last_name = worker.get("edit-employee_lastname", "")
+    phone = worker.get("edit-employee_phone", "")
+    city = worker.get("edit-employee_city", "")
+    country = worker.get("edit-employee_country", "")
+    email = worker.get("edit-employee_email", "")
+    username = worker.get("edit-employee_username", "")
+    worker_workplace = worker.get("edit-employee_workplace", "")
+    new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
+    new_worker = employee.objects.filter(id_employee=id_employee)[0]
+    # check when username and email are different
+    newUser = 0
+    newEmail = 0
+    if new_worker.username != username:
+        if employee.objects.filter(username=username).exists():
+            return False
+        else:
+            newUser = 1
+
+    if new_worker.email != email:
+        if employee.objects.filter(email=email).exists():
+            return False
+        else:
+            newEmail = 1
+    if newUser == 1 and newEmail == 1:
+        return False
+
+    employee.objects.filter(id_employee=id_employee).update(first_name=first_name,last_name=last_name,phone=phone,city=city,country=country,email=email,username=username,id_workplace=new_workplace)
+    if newUser == 1:
+        edit_user = user.objects.filter(email=email).update(user_name=username)
+    if newEmail == 1:
+        edit_user = user.objects.filter(user_name=username).update(email=email)
+
+    return True
+
 
 def getEmployees():
     return employee.objects.all()[0:10]
@@ -45,13 +88,17 @@ def getEmployees():
 def getEmployeesByName(name):
     return employee.objects.filter(first_name__icontains=name)
 
-def deleteEmployee(id):
-    employee.objects.filter(id=id).delete()
+def deleteEmployeeById(id):
+    delete_emp = employee.objects.filter(id_employee=id)[0]
+    user.objects.filter(user_name=delete_emp.username).delete()
+    employee.objects.filter(id_employee=id).delete()
     return True
 
 def getEmployeeeByNameAndSurname(first_name,last_name):
     return employee.objects.filter(first_name=first_name,last_name=last_name)
 
+def getEmployeeById(id_employee):
+    return employee.objects.filter(id_employee=id_employee)[0]
 ###COMPETENCIES###
 def addCompetencies(request):
     comp = request.POST.copy()
