@@ -15,7 +15,7 @@
          </ul>
         <div class="tab-content m-2" id="myTabContent">
             <div class="tab-pane show active" id="addWorkplace" role="tabpanel">
-                <form id="add-workplace-form" method="POST" action="workplace/add">
+                <form id="add-workplace-form" method="POST" action="{% url 'workplaceAdd' %}">
                     {% csrf_token %}
                     <div class="row">
                         <div class="col col-xl-8">

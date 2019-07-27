@@ -20,7 +20,7 @@
                 <div class="tab-pane show active" id="addEmployee" role="tabpanel">
                     <div class="row">
                         <div class="col col-xl-6">
-                            <form id="add-employee-form" method="POST" action="employees/add">
+                            <form id="add-employee-form" method="POST" action="{% url 'add' %}">
                                 {% csrf_token %}
                                 <h4 class="text-primary">Employee Details</h4>
                                 <div class="form-group">
@@ -109,8 +109,8 @@
                                             </tbody>
                                         </table>
                                     </div>
-                                    <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" name="" placeholder="Search Competence">
-                                    <div class="table-responsive">
+                                    <input type="text" class="form-control mt-2 mb-2 hiddenDiv" id="searchCompetence" name="" placeholder="Search Competence">
+                                    <div class="hiddenDiv" class="table-responsive" hidden="True">
                                             <table class="table table-hover">
                                                 <thead class="bg-primary text-white" style="font-size: .65rem;">
                                                     <tr>
@@ -125,7 +125,7 @@
                                                 </tbody>
                                             </table>
                                     </div>
-                                    <input class="btn btn-primary" type="submit" id="saveEmployee" name="" value="Save">
+                                    <input class="btn btn-primary hiddenDiv" type="submit" id="saveEmployee" name="" value="Save">
                                 </div>
                             </div>
                         </div>
@@ -283,6 +283,7 @@ $('#searchCompetenceType').on('keyup',function(){
 
 $('.clickableCompetenceType').on('click',function(){
     var type = $(this).attr("name");
+    $('.hiddenDiv').removeAttr('hidden');
     $('#searchCompetence').attr("name",type);
     var id_employee = $('#hiddenComp').attr("data-id");
     $.ajax({
@@ -316,9 +317,11 @@ $('#searchCompetence').on('keyup', function(){
 });
 $('.clickableEmployee').on('click', function(){
     var employee = $(this).attr('name');
+    var name_lastname = $(this).text()
     $('#hideComp').removeAttr('hidden');
+    $('.hiddenDiv').attr('hidden','True');
     $('#saveEmployee').attr('name', employee);
-    $('#hiddenComp').html("Add Competencies for employee "+employee);
+    $('#hiddenComp').html("Add Competencies for employee "+name_lastname);
     $('#hiddenComp').attr('data-id',employee);
 
 });

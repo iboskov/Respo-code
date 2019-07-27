@@ -1,0 +1,25 @@
+{% for obj in competence_types %}
+<tr>
+    <th scope="row">{{obj.id_competence_type}}</th>
+    <td><a href="#" class="clickableCompetenceType" id="typeCompetence" name={{obj.id_competence_type}}>{{obj.name}}</a></td>
+</tr>
+{% endfor %}
+<script>
+    $('.clickableCompetenceType').on('click',function(){
+    var type = $(this).attr("name");
+    $('.hiddenDiv').removeAttr('hidden');
+    $('#searchCompetence').attr("name",type);
+    var id_employee = $('#hiddenComp').attr("data-id");
+    $.ajax({
+        url: '/ajax/findCompetences/',
+        data:{
+            'types':type,
+            'employee':id_employee
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyOfRealCompetence').html(data['html_from_view']);
+            }
+    });
+});
+</script>

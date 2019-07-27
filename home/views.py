@@ -7,7 +7,7 @@ login function atm is just an example of how it should be written.
 from django.core.files import File
 import pandas as pd
 from pandas import ExcelFile
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from home.API import *
 from home.Analytics import *
 import json
@@ -34,7 +34,7 @@ def login(request):
 def upload(request):
     user = "admin"
     main_pick = "upload"
-    alert = {"show": "inline", "type": "success", "message": "Excel's have been successfully uploaded!"}
+    alert = {"show": "none", "type": "success", "message": "Excel's have been successfully uploaded!"}
     return render(request, 'html/admin/upload.html', {"main_pick": main_pick, "user": user, "alert": alert})
 
 
@@ -44,7 +44,7 @@ def employees(request):
     employees = getEmployees()
     workplaces = getWorkplaces()
     competence_types = getCompetenceTypes()
-    alert = {"show": "inline", "type": "danger", "message": "There was a problem adding an employee!"}
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
     return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
 
 
@@ -53,8 +53,9 @@ def competencies(request):
     main_pick = 'competencies'
     competency = getCompetencies()
     competency_type = getAllCompetencies_type()
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
     return render(request, 'html/admin/competencies.html',
-                  {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type})
+                  {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type, "alert": alert})
 
 
 def workplaces(request):
@@ -62,19 +63,22 @@ def workplaces(request):
     main_pick = 'workplaces'
     competency = getCompetencies()
     workplaces = getWorkplaces()
-    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user,'competency':competency,'workplaces':workplaces})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user,'competency':competency,'workplaces':workplaces, "alert": alert})
 
 
 def options(request):
     user = "admin"
     main_pick = 'options'
-    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user, "alert": alert})
 
 
 def history(request):
     user = "admin"
     main_pick = "history"
-    return render(request, 'html/admin/history.html', {"main_pick": main_pick, "user": user})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/history.html', {"main_pick": main_pick, "user": user, "alert": alert})
 
 
 def trainings(request):
@@ -82,19 +86,22 @@ def trainings(request):
     main_pick = "trainings"
     competency = getCompetencies()
     trainings = getTrainings()
-    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user,"competency":competency,"trainings":trainings})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user,"competency":competency,"trainings":trainings, "alert": alert})
 
 def analytics(request):
     user = "admin"
     main_pick = "analytics"
     employees = getEmployees()
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees, "alert": alert})
 
 
 def status(request):
     user = "admin"
     main_pick = "status"
-    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user})
+    alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user, "alert": alert})
 # endregion
 
 # region user_views
@@ -138,12 +145,15 @@ def user_trainings(request):
 def employeeAdd(request):
     user = "admin"
     main_pick = "employees"
+    workplaces = getWorkplaces()
+    competence_types = getCompetenceTypes()
     if addEmployee(request):
         employees = getEmployees()
-        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
+        alert = {"show": "inline", "type": "success", "message": "Employee successfully added"}
+        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
-        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees})
+        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types})
 
 def competencyAdd(request):
     user = "admin"
@@ -151,7 +161,8 @@ def competencyAdd(request):
     if addCompetencies(request):
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type})
+        alert = {"show": "inline", "type": "success", "message": "Competency successfully added"}
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
     else:
         competency = getCompetencies()
         competency_type = getCompetencies_type()
@@ -162,9 +173,10 @@ def trainingsAdd(request):
     main_pick = "trainings"
     competency = getCompetencies()
     if addTrainings(request):
+        alert = {"show": "inline", "type": "success", "message": "Training successfully added"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})
+                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings,"alert":alert})
     else:
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
@@ -174,9 +186,10 @@ def workplaceAdd(request):
     user = "admin"
     main_pick = "workplaces"
     if addWorkplace(request):
+        alert = {"show": "inline", "type": "success", "message": "Workplace successfully added"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency})
+                      {"main_pick": main_pick, "user": user, 'competency': competency,'alert':alert})
 
 
 ###AJAX###
@@ -184,7 +197,7 @@ def findEmployees(request):
     user = request.GET.get('username',None)
     foundUsers = getEmployeesByName(user)
     html = render_to_string(
-        template_name="html/admin/partial_table.html",
+        template_name="html/admin/partial_table_second.html",
         context={"employees":foundUsers}
     )
     data_dict = {"html_from_view": html}
@@ -194,7 +207,7 @@ def findCompetenceType(request):
     value = request.GET.get('types',None)
     foundTypes = getCompetenceType(value)
     html = render_to_string(
-        template_name="html/admin/partial_table_competence.html",
+        template_name="html/admin/partial_table_competence_second.html",
         context={"competence_types":foundTypes}
     )
     data_dict = {"html_from_view": html}

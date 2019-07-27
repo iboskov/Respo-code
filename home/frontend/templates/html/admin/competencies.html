@@ -17,7 +17,7 @@
             <div class="tab-pane fade show active" id="addcompetence" role="tabpanel">
                 <div class="row">
                     <div class="col col-xl-6">
-                        <form id="add-competence-form" method="post" action="competencies/add">
+                        <form id="add-competence-form" method="post" action="{% url 'competencyAdd' %}">
                             {% csrf_token %}
                             <h4 class="text-primary">Add competence</h4>
                             <div class="form-group">

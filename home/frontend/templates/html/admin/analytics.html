@@ -15,7 +15,7 @@
             <div class="tab-pane  show active" id="runAnalyzes" role="tabpanel">
                 <div class="row">
                     <div class="col">
-                        <form id="analyze-form" method="POST" action="/analytics/compute">
+                        <form id="analyze-form" method="POST" action="{% url 'analyticsCompute' %}">
                             {% csrf_token %}
                             <label for="employeesSelect">Select employee/s:</label>
                             <div class="form-group row align-items-center">
