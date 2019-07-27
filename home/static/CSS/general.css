@@ -7,3 +7,9 @@
 .deleteIconModal:hover{
     color: #ff0000 !important;
 }
+.myAlert-bottom{
+    position: fixed !important;
+    bottom: 5px;
+    left:2%;
+    width: 96%;
+}

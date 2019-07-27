@@ -34,7 +34,8 @@ def login(request):
 def upload(request):
     user = "admin"
     main_pick = "upload"
-    return render(request, 'html/admin/upload.html', {"main_pick": main_pick, "user": user})
+    alert = {"show": "inline", "type": "success", "message": "Excel's have been successfully uploaded!"}
+    return render(request, 'html/admin/upload.html', {"main_pick": main_pick, "user": user, "alert": alert})
 
 
 def employees(request):
@@ -43,7 +44,8 @@ def employees(request):
     employees = getEmployees()
     workplaces = getWorkplaces()
     competence_types = getCompetenceTypes()
-    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user,"employees":employees,"workplaces":workplaces,"competence_types":competence_types})
+    alert = {"show": "inline", "type": "danger", "message": "There was a problem adding an employee!"}
+    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
 
 
 def competencies(request):

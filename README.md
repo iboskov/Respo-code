@@ -95,5 +95,6 @@ npm run server
 
 For more information check the files in frontend and backend
 
-
+## Contribution
+Check the current issues on the list and follow the format of submiting bugs and error handling messages. 
 
