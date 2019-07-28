@@ -100,6 +100,7 @@ def getEmployeeeByNameAndSurname(first_name,last_name):
 
 def getEmployeeById(id_employee):
     return employee.objects.filter(id_employee=id_employee)[0]
+
 ###COMPETENCIES###
 def addCompetencies(request):
     comp = request.POST.copy()
@@ -108,10 +109,17 @@ def addCompetencies(request):
     type = comp.get("competence_type")
     desc = comp.get("competence_desc")
     hoeg_id = comp.get("hoegen_id")
+
+    if competence.objects.filter(hoegen_id=hoeg_id).exists() or competence.objects.filter(slo_name=nameSLO).exists():
+        return False
+
     new_type = competence_type.objects.get_or_create(name=type)[0]
     new_competence = competence(slo_name=nameSLO,eng_name=nameENG,hoegen_id=hoeg_id,desc=desc,id_competence_type=new_type)
     new_competence.save()
     return True
+
+def getCompetenceByIdOnly(id):
+    return competence.objects.filter(hoegen_id=id)[0]
 
 def getCompetencies():
     return competence.objects.all()
@@ -125,6 +133,10 @@ def getCompetenciesByName(name):
 def getCompetenciesByTwo(value,type,new_list):
     return competence.objects.filter(Q(id_competence_type=type,slo_name__icontains=value) & ~Q(id_competence__in=new_list))
 
+def getCompetenciesByOnlyType(type):
+    typeOf = competence_type.objects.filter(name=type)[0]
+    return competence.objects.filter(id_competence_type=typeOf.id_competence_type)
+
 def getCompetenceByEmployee(id_employee,type):
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
 
@@ -134,6 +146,27 @@ def getCompetenceByEmployeePart(id_employee,type,value):
     for i in findCompetences:
         listOfComp.append(i.id_competence)
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type,id_competence__in=listOfComp)
+
+def editCompetenceByRequest(request):
+    competences = request.POST.copy()
+    id_competence = competences.get('edit_comp_id',None)
+    type = competences.get('edit_comp_type', None)
+    hoeg_id = competences.get('edit_comp_hoegenId', None)
+    eng_name = competences.get('edit_comp_engName', None)
+    slo_name = competences.get('edit_comp_sloName', None)
+    desc = competences.get('edit_comp_desc', None)
+
+    editable_competence = competence.objects.filter(id_competence=id_competence)[0]
+    if int(hoeg_id) != int(editable_competence.hoegen_id) and competence.objects.filter(hoegen_id=hoeg_id).exists():
+        return False
+    new_type = competence_type.objects.get_or_create(name=type)[0]
+    competence.objects.filter(id_competence=id_competence).update(id_competence_type=new_type,hoegen_id=hoeg_id,slo_name=slo_name,eng_name=eng_name,desc=desc)
+    return True
+
+def deleteSelectedCompetenceByHoegId(id):
+    competence.objects.filter(hoegen_id=id).delete()
+    return True
+
 ###TRAININGS###
 def addTrainings(request):
     training = request.POST.copy()
@@ -143,7 +176,6 @@ def addTrainings(request):
     date_from = training.get("date_from")
     date_to = training.get("date_to")
 
-    print(competences)
     new_education = education(name=name, date_from=date_from, date_to=date_to, desc=desc)
     new_education.save()
     new_education = education.objects.filter(name=name)[0]
@@ -160,7 +192,6 @@ def getTrainings():
 ###WORKPLACE###
 def addWorkplace(request):
     workplaces = request.POST.copy()
-    print(workplaces)
     name = workplaces.get('workplace_name')
     desc = workplaces.get('workplace_desc')
     i = 0
@@ -202,13 +233,32 @@ def getCompetenceTypes():
 def getAllCompetencies_type():
     return competence_type.objects.all()
 
+def getCompetenceTypeStrict(value):
+    return competence_type.objects.filter(name=value)[0]
+
+def editCompetenceType(request):
+    types = request.POST.copy()
+    id = types.get('edit_competenceType_id',None)
+    name = types.get('edit_competenceType_name', None)
+    if competence_type.objects.filter(name=name).exists():
+        return False
+
+    competence_type.objects.filter(id_competence_type=id).update(name=name)
+
+    return True
+
+def deleteCompetenceTypeByName(name):
+    type = competence_type.objects.filter(name=name)[0]
+    competence.objects.filter(id_competence_type=type.id_competence_type).delete()
+    competence_type.objects.filter(name=name).delete()
+    return True
+
 ###EMPLOYEE_COMPETENCE###
 def saveEmployeeCompetence(id_competence,id_employee,score):
     selected_employee = employee.objects.filter(id_employee=id_employee)[0]
     selected_competence = competence.objects.filter(hoegen_id=id_competence)[0]
     selected_competence_type = competence_type.objects.filter(id_competence_type=selected_competence.id_competence_type.id_competence_type)[0]
-    print(selected_competence)
-    print(selected_employee)
+
     if employee_competence.objects.filter(id_competence=selected_competence.id_competence,id_employee=selected_employee.id_employee).exists():
         editCompetence = employee_competence.objects.filter(id_competence=selected_competence.id_competence,id_employee=selected_employee.id_employee)
         editCompetence.update(level=score)

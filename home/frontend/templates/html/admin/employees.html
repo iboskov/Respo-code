@@ -243,6 +243,7 @@ $(document).on('click', '.deleteIconModal', function () {
    id_employee = $(this).attr("data-id");
    $('.btn-danger').attr('data-id',id_employee);
 });
+
 $(document).on('click', '.editIconModal',function() {
     id_employee = $(this).attr("data-id");
     $.ajax({
@@ -260,7 +261,6 @@ $(document).on('click', '.editIconModal',function() {
             $('#edit-employee-country').val(data['country']);
             $('#edit-employee-email').val(data['email']);
             $('#edit-employee-username').val(data['username']);
-            console.log(data['workplace']);
             $('#edit-employee-workplace').val(data['workplace']);
             $('#edit-employee-workplace').select2().trigger('change');
         }

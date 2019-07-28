@@ -55,16 +55,30 @@ class competence_type(models.Model):
     def __str__(self):
         return self.name
 
+    def as_json(self):
+        return dict(
+            id_competence_type=self.id_competence_type,
+            name=self.name)
+
 class competence(models.Model):
     id_competence = models.AutoField(primary_key=True)
-    hoegen_id = models.IntegerField(blank=False,default=0)
-    slo_name = models.CharField(max_length=100,blank=False, unique=True)
+    hoegen_id = models.IntegerField(blank=False,default=0, unique=True)
+    slo_name = models.CharField(max_length=100,blank=False)
     eng_name = models.CharField(max_length=100,blank=True)
     desc = models.CharField(max_length=500,blank=True, default="")
     id_competence_type = models.ForeignKey(competence_type, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.slo_name
+
+    def as_json(self):
+        return dict(
+            id_competence=self.id_competence,
+            hoegen_id=self.hoegen_id,
+            slo_name=self.slo_name,
+            eng_name=self.eng_name,
+            desc=self.desc,
+            id_competence_type=self.id_competence_type.name)
 
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)

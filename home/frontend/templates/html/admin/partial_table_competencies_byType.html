@@ -1,0 +1,11 @@
+{% for obj in competency %}
+    <tr>
+        <th scope="row">{{obj.hoegen_id}}</th>
+        <td>{{ obj.slo_name }}</td>
+        <td>{{ obj.id_competence_type.name}}</td>
+        <td>{{ obj.desc }}</td>
+        <td class="text-center">
+            <i class="far fa-edit text-success editIconModal editComp" data-toggle="modal" data-id="{{obj.hoegen_id}}" data-target="#editCompModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal deleteCompetence" data-toggle="modal" data-id="{{obj.hoegen_id}}" data-target="#deleteCompModal"></i>
+        </td>
+    </tr>
+{% endfor %}

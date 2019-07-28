@@ -31,6 +31,8 @@ urlpatterns = [
     path('employees/add', views.employeeAdd, name="add"),
     path('employees/edit', views.employeeEdit, name="edit"),
     path('competencies/add', views.competencyAdd, name="competencyAdd"),
+    path('competencies/edit', views.competenciesEdit, name="competenciesEdit"),
+    path('competencies-type/edit', views.competencies_type_edit, name="competencies_type_edit"),
     path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
     path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
     path('file/upload', views.uploadFile, name='uploadFile'),
@@ -44,11 +46,16 @@ urlpatterns = [
     #AJAX
     url(r'^ajax/findemployee/$', views.findEmployees, name="findEmployees"),
     url(r'^ajax/findCompetenceType/$', views.findCompetenceType, name="findCompetenceType"),
+    url(r'^ajax/deleteCompType/$', views.deleteCompetenceType, name="deleteCompetenceType"),
     url(r'^ajax/findCompetences/$',views.findCompetencesByType, name="findCompetencesByType"),
+    url(r'^ajax/deleteComp/$', views.deleteCompetence, name="deleteCompetence"),
+    url(r'^ajax/getEditCompetence/$', views.getEditCompetences, name="getEditCompetences"),
     url(r'^ajax/findCompetencesSearch/$', views.findCompetencesByTwo, name="findCompetencesByTwo"),
     url(r'^ajax/addCompetenciesUser/$', views.addCompetenciesToUser, name="addCompetenciesForUser"),
     url(r'^ajax/deleteEmployee/$', views.deleteEmployee, name="deleteEmployee"),
     url(r'^ajax/getEditEmployee/$', views.getEditEmployee, name="getEditEmployee"),
+    url(r'^ajax/findCompetenciesByType/$', views.getCompetenciesByType, name="getByType"),
+    url(r'^ajax/getEditCompetenceType/$', views.getEditCompetenceType, name="getEditCompetenceType"),
     url('', views.index, name='index'),
 
 

@@ -65,9 +65,9 @@
                                 {% for obj in competency_type %}
                                     <tr>
                                         <th scope="row">{{ obj.id_competence_type }}</th>
-                                        <td><a href="#">{{ obj.name }}</a></td>
+                                        <td><a  class="clickableCompetenceType" href="#">{{ obj.name }}</a></td>
                                         <td class="text-center">
-                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                            <i class="far fa-edit text-success editIconModal editType" data-id="{{obj.name}}" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal deleteType" data-toggle="modal" data-id="{{obj.name}}" data-target="#deleteModal"></i>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -76,7 +76,7 @@
                         </div>
                     </div>
                     <!-- Table of competencies -->
-                    <div class="col-xl-6">
+                    <div class="col-xl-6" id="hiddenCompetencies" hidden="True">
                         <h4 class="text-primary">Competencies</h4>
                         <div class="table-responsive">
                             <table class="table table-hover">
@@ -89,18 +89,8 @@
                                         <th scope="col" class="text-center">EDIT / DELETE</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                {% for obj in competency %}
-                                    <tr>
-                                        <th scope="row">{{obj.hoegen_id}}</th>
-                                        <td>{{ obj.slo_name }}</td>
-                                        <td>{{ obj.id_competence_type.name}}</td>
-                                        <td>{{ obj.desc }}</td>
-                                        <td class="text-center">
-                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editCompModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteCompModal"></i>
-                                        </td>
-                                    </tr>
-                                {% endfor %}
+                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="competencesByType">
+                                    {% include 'html/admin/partial_table_competencies_byType.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -110,7 +100,7 @@
         </div>
     </div>
 </div>
-
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
 <!-- Modal Edit Competence Type-->
 <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -121,26 +111,20 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-            <form id="edit-competence-form" method="post" action="{% url 'upload' %}">
-                <div class="form-group">
-                    <label for="edit=competence-type">Competence Type:</label>
-                    <input type="text" class="form-control" id="edit=competence-type" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit=competence-name">Competence Name:</label>
-                    <input type="text" class="form-control" id="edit=competence-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="edit=competence-desc">Competence description:</label>
-                    <input type="text" class="form-control" id="edit=competence-desc" required>
-                </div>
-            </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
+      <form id="edit-competence-form" method="post" action="{% url 'competencies_type_edit' %}">
+          {% csrf_token %}
+              <div class="modal-body">
+                  <input type="text" class="form-control" name="edit_competenceType_id" id="edit_competence-id" hidden required>
+                  <div class="form-group">
+                      <label for="edit_competence-name">Competence type name:</label>
+                      <input type="text" class="form-control" name="edit_competenceType_name" id="edit_competence-name" required>
+                  </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+      </form>
     </div>
   </div>
 </div>
@@ -161,7 +145,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-danger btn_delete_type" data-id="" data-dismiss="modal">Delete</button>
       </div>
     </div>
   </div>
@@ -177,22 +161,37 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-            <form id="edit-comp-form" method="post" action="{% url 'upload' %}">
+      <form id="edit-comp-form" method="post" action="{% url 'competenciesEdit' %}">
+        {% csrf_token %}
+            <div class="modal-body">
+                <input type="text" class="form-control" name="edit_comp_id" id="edit-comp-id" hidden="True" required>
                 <div class="form-group">
                     <label for="edit-comp-type">Competence Type:</label>
-                    <input type="text" class="form-control" id="edit-comp-type" required>
+                    <input type="text" class="form-control" name="edit_comp_type" id="edit-comp-type" required>
+                </div>
+                <div>
+                    <label for="edit-comp-hoegenId">Hoegen ID:</label>
+                    <input type="text" class="form-control" name="edit_comp_hoegenId" id="edit-comp-hoegenId" required>
                 </div>
                 <div class="form-group">
-                    <label for="edit-comp-name">Competence Name:</label>
-                    <input type="text" class="form-control" id="edit-comp-name" required>
+                    <label for="edit-comp-engName">Competence Name (English):</label>
+                    <input type="text" class="form-control" name="edit_comp_engName" id="edit-comp-engName" required>
                 </div>
-            </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
+                <div class="form-group">
+                    <label for="edit-comp-sloName">Competence Name (Slovene):</label>
+                    <input type="text" class="form-control" name="edit_comp_sloName" id="edit-comp-sloName" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-comp-desc">Description:</label>
+                    <input type="text" class="form-control" name="edit_comp_desc" id="edit-comp-desc" required>
+                </div>
+            </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+        </div>
+      </form>
+
     </div>
   </div>
 </div>
@@ -212,10 +211,116 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-danger btn_delete_competence" data-id="" data-dismiss="modal">Delete</button>
       </div>
     </div>
   </div>
 </div>
 
 {% endblock main_content %}
+
+{% block scripts %}
+<script>
+    $(document).on('click','.deleteType', function(){
+        name = $(this).attr("data-id");
+        $('.btn_delete_type').attr('data-id', name);
+    });
+
+    $(document).on('click', '.deleteCompetence', function(){
+        hoeg_id = $(this).attr("data-id");
+        $('.btn_delete_competence').attr('data-id', hoeg_id);
+    });
+
+    $(document).on('click','.btn_delete_type', function(){
+        name = $(this).attr("data-id");
+        $.ajax({
+            url: '/ajax/deleteCompType/',
+            data:{
+                'type':name
+            },
+            dataType: 'json',
+            success: function(data){
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully deleted competence type');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                  $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                  $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                  location.href='/competencies';
+                }, 3000);
+            }
+        });
+    });
+    $(document).on('click','.btn_delete_competence', function(){
+        hoeg_id = $(this).attr("data-id");
+        $.ajax({
+            url: '/ajax/deleteComp/',
+            data:{
+                'hoeg_id': hoeg_id
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully deleted competence');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                  $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                  $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                  location.href='/competencies';
+                }, 3000);
+            }
+        });
+    });
+
+    $('.clickableCompetenceType').on('click', function(){
+        var type = $(this).text();
+        $('#hiddenCompetencies').removeAttr('hidden');
+        $.ajax({
+            url: '/ajax/findCompetenciesByType/',
+            data:{
+                'types':type
+            },
+            datatype: 'json',
+            success: function(data){
+                $('#competencesByType').html(data['html_from_view']);
+            }
+        });
+    });
+
+    $(document).on('click','.editType',function(){
+        name = $(this).attr("data-id");
+        $.ajax({
+            url: '/ajax/getEditCompetenceType/',
+            data:{
+                'type':name
+            },
+            dataType: 'json',
+            success: function(data) {
+                $('#edit_competence-id').val(data['id_competence_type']);
+                $('#edit_competence-name').val(data['name']);
+            }
+        });
+    });
+    $(document).on('click', '.editComp', function(){
+        id = $(this).attr("data-id");
+        $.ajax({
+            url: '/ajax/getEditCompetence/',
+            data:{
+                'id':id
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#edit-comp-id').val(data['id_competence'])
+                $('#edit-comp-type').val(data['id_competence_type'])
+                $('#edit-comp-hoegenId').val(data['hoegen_id'])
+                $('#edit-comp-engName').val(data['eng_name'])
+                $('#edit-comp-sloName').val(data['slo_name'])
+                $('#edit-comp-desc').val(data['desc'])
+
+            }
+        });
+    });
+</script>
+{% endblock %}

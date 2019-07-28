@@ -163,7 +163,7 @@ def employeeEdit(request):
     competence_types = getCompetenceTypes()
     if editEmployee(request):
         employees = getEmployees()
-        alert = {"show": "inline", "type": "success", "message": "Employee successfully edited"}
+        alert = {"show": "inline", "type": "success", "message": "Employee successfully changed"}
         return render(request, 'html/admin/employees.html',{"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
@@ -180,8 +180,41 @@ def competencyAdd(request):
         return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
     else:
         competency = getCompetencies()
-        competency_type = getCompetencies_type()
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type})
+        competency_type = getAllCompetencies_type()
+        alert = {"show": "inline", "type": "danger", "message": "Competency already exists, Hoegen id and Slovenian name need to be unique!"}
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+
+def competenciesEdit(request):
+    user = "admin"
+    main_pick = 'competencies'
+    if editCompetenceByRequest(request):
+        competency = getCompetencies()
+        competency_type = getAllCompetencies_type()
+        alert = {"show": "inline", "type": "success", "message": "Competency successfully changed!"}
+        return render(request, 'html/admin/competencies.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency,
+                       "competency_type": competency_type, "alert": alert})
+    else:
+        competency = getCompetencies()
+        competency_type = getAllCompetencies_type()
+        alert = {"show": "inline", "type": "danger", "message": "Competency with that hoegen id already exists!"}
+        return render(request, 'html/admin/competencies.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency,
+                       "competency_type": competency_type, "alert": alert})
+
+def competencies_type_edit(request):
+    user = "admin"
+    main_pick = 'competencies'
+    if editCompetenceType(request):
+        competency = getCompetencies()
+        competency_type = getAllCompetencies_type()
+        alert = {"show": "inline", "type": "success", "message": "Competency type successfully changed"}
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+    else:
+        competency = getCompetencies()
+        competency_type = getAllCompetencies_type()
+        alert = {"show": "inline", "type": "danger", "message": "Competency type name already exists!"}
+        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
 
 def trainingsAdd(request):
     user = "admin"
@@ -260,6 +293,16 @@ def findCompetencesByTwo(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+def getCompetenciesByType(request):
+    type = request.GET.get('types', None)
+    competences = getCompetenciesByOnlyType(type)
+    html = render_to_string(
+        template_name="html/admin/partial_table_competencies_byType.html",
+        context={"competency":competences}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
 def addCompetenciesToUser(request):
     value = request.GET
     employee = request.GET.get('employee',None)
@@ -283,19 +326,42 @@ def uploadFile(request):
 
 def deleteEmployee(request):
     id_employee = request.GET.get('employee', None)
-    print(id_employee)
     if deleteEmployeeById(id_employee):
         return JsonResponse(True, safe=False)
-    else:
-        return JsonResponse(False, safe=False)
 
     return JsonResponse(False, safe=False)
+
+def deleteCompetenceType(request):
+    name_type = request.GET.get('type', None)
+    if deleteCompetenceTypeByName(name_type):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
+def deleteCompetence(request):
+    hoeg_id = request.GET.get('hoeg_id', None)
+    if deleteSelectedCompetenceByHoegId(hoeg_id):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
 def getEditEmployee(request):
     id_employee = request.GET.get('employee',None)
     employee = getEmployeeById(id_employee)
     dic_employee = employee.as_json()
     return JsonResponse(data=dic_employee,safe=False)
 
+def getEditCompetenceType(request):
+    name = request.GET.get('type', None)
+    type = getCompetenceTypeStrict(name)
+    dic_type = type.as_json()
+    return JsonResponse(data=dic_type, safe=False)
+
+def getEditCompetences(request):
+    id = request.GET.get('id', None)
+    editCompetence = getCompetenceByIdOnly(id)
+    dic_editCompetence = editCompetence.as_json()
+    return JsonResponse(data=dic_editCompetence, safe=False)
 
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)
