@@ -140,6 +140,10 @@ def getCompetenciesByOnlyType(type):
 def getCompetenceByEmployee(id_employee,type):
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
 
+def findWorkplaceRelevanceAPI(name):
+    work_place = workplace.objects.filter(name=name)[0]
+    return competence_relevance.objects.filter(id_workplace=work_place.id_workplace)
+
 def getCompetenceByEmployeePart(id_employee,type,value):
     findCompetences = competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
     listOfComp = []
@@ -188,6 +192,10 @@ def addTrainings(request):
 
 def getTrainings():
     return education.objects.all()
+
+def deleteTrainingsById(id):
+    education.objects.filter(id_education=id).delete()
+    return True
 
 ###WORKPLACE###
 def addWorkplace(request):

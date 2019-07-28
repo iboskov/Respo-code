@@ -91,18 +91,12 @@
                                         <th scope="col">#</th>
                                         <th scope="col">COMPETENCE</th>
                                         <th scope="col">RELEVANCE</th>
+                                        <th scope="col">MINIMUM REQUIRED</th>
                                         <th scope="col" class="text-center">EDIT / DELETE</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>Some Competence</td>
-                                        <td><strong>1</strong></td>
-                                        <td class="text-center">
-                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
-                                        </td>
-                                    </tr>
+                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="relevanceId">
+                                    {% include 'html/admin/partial_table_workplaces_relevance.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -116,7 +110,21 @@
 
 {% block scripts %}
 <script>
+$('.clickableWorkplace').on('click', function(){
+    var workplace_name = $(this).attr("name");
+    $('#hiddenCompRel').removeAttr('hidden');
+    $.ajax({
+        url: '/ajax/findWorkplaceCompetences/',
+        data:{
+            'name':workplace_name
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#relevanceId').html(data['html_from_view']);
+        }
+    });
 
+});
 
 var data = [];
 

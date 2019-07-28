@@ -307,6 +307,16 @@ def getCompetenciesByTypeOnRequest(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+def findWorkplaceRelevance(request):
+    workplace_name = request.GET.get('name', None)
+    competencesWithRelevance = findWorkplaceRelevanceAPI(workplace_name)
+    html = render_to_string(
+        template_name="html/admin/partial_table_workplaces_relevance.html",
+        context={'competenceRelevance':competencesWithRelevance}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
 def addCompetenciesToUser(request):
     value = request.GET
     employee = request.GET.get('employee',None)
@@ -349,6 +359,14 @@ def deleteCompetence(request):
 
     return JsonResponse(False, safe=False)
 
+def deleteTrainings(request):
+    id_education = request.GET.get('id_education', None)
+    print(id_education)
+    if deleteTrainingsById(id_education):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
 def getEditEmployee(request):
     id_employee = request.GET.get('employee',None)
     employee = getEmployeeById(id_employee)
@@ -366,6 +384,7 @@ def getEditCompetences(request):
     editCompetence = getCompetenceByIdOnly(id)
     dic_editCompetence = editCompetence.as_json()
     return JsonResponse(data=dic_editCompetence, safe=False)
+
 
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)

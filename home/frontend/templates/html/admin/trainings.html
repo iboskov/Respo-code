@@ -62,17 +62,21 @@
                                         <th scope="col">#</th>
                                         <th scope="col">NAME</th>
                                         <th scope="col">DESCRIPTION</th>
+                                        <th scope="col">FROM</th>
+                                        <th scope="col">TO</th>
                                         <th scope="col" class="text-center">EDIT / DELETE</th>
                                     </tr>
                                 </thead>
                                 <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                                 {% for obj in trainings %}
                                     <tr>
-                                        <th scope="row">{{ obj.id_education }}</th>
+                                        <th scope="row">{{ forloop.counter }}</th>
                                         <td>{{ obj.name }}</td>
                                         <td>{{ obj.desc }}</td>
+                                        <td>{{ obj.date_from }}</td>
+                                        <td>{{ obj.date_to  }}</td>
                                         <td class="text-center">
-                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-target="#deleteModal"></i>
+                                            <i class="far fa-edit text-success editIconModal" data-toggle="modal" data-id="{{obj.id_education}}" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal" data-toggle="modal" data-id="{{obj.id_education}}" data-target="#deleteModal"></i>
                                         </td>
                                     </tr>
                                 {% endfor %}
@@ -85,7 +89,7 @@
         </div>
     </div>
 </div>
-
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
 <!-- Modal Edit Competence -->
 <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
@@ -108,7 +112,11 @@
                 </div>
                 <div class="form-group">
                     <label for="edit-target-comp">Target competence:</label>
-                    <input type="text" class="form-control" id="edit-target-comp" required>
+                    <select style="width:100%" class="js-example-basic-multiple js-states form-control" name="edit_training_competence" id="edit-target-comp" multiple="multiple" required>
+                        {% for obj in competency %}
+                            <option>{{ obj.slo_name }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
             </form>
       </div>
@@ -135,7 +143,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-danger">Delete</button>
+        <button type="submit" class="btn btn-danger deleteTraining" data-dismiss="modal" data-id="">Delete</button>
       </div>
     </div>
   </div>
@@ -144,6 +152,33 @@
 
 {% block scripts %}
 <script>
+$(document).on('click','.deleteIconModal', function(){
+    id_education = $(this).attr("data-id");
+    $('.deleteTraining').attr('data-id', id_education);
+
+});
+
+$(document).on('click','.deleteTraining', function(){
+    id_education = $(this).attr("data-id");
+    $.ajax({
+        url: '/ajax/deleteTraining/',
+        data:{
+            'id_education':id_education
+        },
+        dataType: 'json',
+        success: function(data){
+            $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+            $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+            $('.myAlert-bottom2').text('Successfully deleted training');
+            $('.myAlert-bottom2').show();
+            setTimeout(function() {
+              $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+              $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+              location.href='/trainings';
+            }, 2000);
+        }
+    });
+});
 
 var data = [];
 

@@ -136,7 +136,7 @@
                     <h4 class="text-primary">Employee History</h4>
                     <div class="form-group">
                         <label for="historyLabel">Search employee:</label>
-                        <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" placeholder="Enter employee name or username" multiple="multiple">
+                        <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" placeholder="Enter employee name or username" >
                             {% for obj in employees %}
                                 <option>{{obj.first_name}} {{obj.last_name}} ({{obj.username}})</option>
                             {% endfor %}
@@ -335,7 +335,7 @@ $('.clickableCompetenceType').on('click',function(){
         dataType: 'json',
         success: function(data){
             $('#bodyOfRealCompetence').html(data['html_from_view']);
-            }
+        }
     });
 });
 $('#searchCompetence').on('keyup', function(){
