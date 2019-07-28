@@ -64,7 +64,7 @@
                                 <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                                 {% for obj in competency_type %}
                                     <tr>
-                                        <th scope="row">{{ obj.id_competence_type }}</th>
+                                        <th scope="row">{{ forloop.counter }}</th>
                                         <td><a  class="clickableCompetenceType" href="#">{{ obj.name }}</a></td>
                                         <td class="text-center">
                                             <i class="far fa-edit text-success editIconModal editType" data-id="{{obj.name}}" data-toggle="modal" data-target="#editModal"></i> / <i class="far fa-trash-alt text-danger deleteIconModal deleteType" data-toggle="modal" data-id="{{obj.name}}" data-target="#deleteModal"></i>
