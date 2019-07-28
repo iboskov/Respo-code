@@ -1,6 +1,6 @@
 {% for obj in employees %}
     <tr>
-        <th scope="row">{{ obj.id_employee }}</th>
+        <th scope="row">{{ forloop.counter }}</th>
         <td><a href="#" class="clickableEmployee" name={{obj.id_employee}}>{{ obj.first_name }} {{ obj.last_name }}</a></td>
         <td>{{obj.id_workplace.name}}</td>
         <td class="text-center">

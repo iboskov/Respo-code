@@ -238,7 +238,11 @@ def workplaceAdd(request):
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
                       {"main_pick": main_pick, "user": user, 'competency': competency,'alert':alert})
-
+    else:
+        alert = {"show": "inline", "type": "danger", "message": "Workplace with that name already exists!"}
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency, 'alert': alert})
 
 ###AJAX###
 def findEmployees(request):
@@ -293,7 +297,7 @@ def findCompetencesByTwo(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
-def getCompetenciesByType(request):
+def getCompetenciesByTypeOnRequest(request):
     type = request.GET.get('types', None)
     competences = getCompetenciesByOnlyType(type)
     html = render_to_string(

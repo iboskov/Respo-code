@@ -54,7 +54,7 @@ urlpatterns = [
     url(r'^ajax/addCompetenciesUser/$', views.addCompetenciesToUser, name="addCompetenciesForUser"),
     url(r'^ajax/deleteEmployee/$', views.deleteEmployee, name="deleteEmployee"),
     url(r'^ajax/getEditEmployee/$', views.getEditEmployee, name="getEditEmployee"),
-    url(r'^ajax/findCompetenciesByType/$', views.getCompetenciesByType, name="getByType"),
+    url(r'^ajax/findCompetenciesByType/$', views.getCompetenciesByTypeOnRequest, name="getByType"),
     url(r'^ajax/getEditCompetenceType/$', views.getEditCompetenceType, name="getEditCompetenceType"),
     url('', views.index, name='index'),
 

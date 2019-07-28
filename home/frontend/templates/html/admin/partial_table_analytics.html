@@ -15,7 +15,7 @@
             <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
             {% for key,value in ALG1.items %}
                 <tr>
-                    <th scope="row">1</th>
+                    <th scope="row">{{ forloop.counter }}</th>
                     <td>{{key}}</td>
                     <td>Training 1</td>
                     {% for i in value %}
@@ -47,7 +47,7 @@
             <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                 {% for key,value in ALG2.items %}
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
                         <td>Training 1</td>
                         {% for i in value %}
@@ -79,7 +79,7 @@
             <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                 {% for key,value in ALG3.items %}
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
                         <td>Training 1</td>
                         {% for i in value %}
@@ -111,7 +111,7 @@
             <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                 {% for key,value in ALG4.items %}
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
                         <td>Training 1</td>
                         {% for i in value %}

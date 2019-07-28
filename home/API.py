@@ -195,6 +195,9 @@ def addWorkplace(request):
     name = workplaces.get('workplace_name')
     desc = workplaces.get('workplace_desc')
     i = 0
+    if workplace.objects.filter(name=name).exists():
+        return False
+
     new_workplace = workplace(name=name,desc=desc)
     new_workplace.save()
     while i < 6:
@@ -205,7 +208,6 @@ def addWorkplace(request):
         relevant = workplaces.get(relevance,None)
         minim = workplaces.get(minimumVal,None)
         if comp == None:
-
             i = i+1
             continue
         get_competence = competence.objects.filter(slo_name=comp)[0]
