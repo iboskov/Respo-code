@@ -53,6 +53,7 @@
             </div>
             <div class="tab-pane" id="showtrainings" role="tabpanel">
                 <div class="row">
+                    <!-- Table Trainings -->
                     <div class="col col-xl-6">
                         <h4 class="text-primary">Trainings</h4>
                         <div class="table-responsive">
@@ -71,7 +72,7 @@
                                 {% for obj in trainings %}
                                     <tr>
                                         <th scope="row">{{ forloop.counter }}</th>
-                                        <td>{{ obj.name }}</td>
+                                        <td><a href="#" class="clickableTraining" name="">{{ obj.name }}</a></td>
                                         <td>{{ obj.desc }}</td>
                                         <td>{{ obj.date_from }}</td>
                                         <td>{{ obj.date_to  }}</td>
@@ -80,6 +81,36 @@
                                         </td>
                                     </tr>
                                 {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <!-- Table Competencies of Training -->
+                    <div class="col col-xl-6">
+                        <h4 class="text-primary">Target competencies</h4>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                    <tr>
+                                        <th scope="col">#</th>
+                                        <th scope="col">ENGLISH NAME</th>
+                                        <th scope="col">SLOVENIAN NAME</th>
+                                        <th scope="col">DESCRIPTION</th>
+                                    </tr>
+                                </thead>
+                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    <tr>
+                                        <th scope="row">1</th>
+                                        <td>EngCompetence</td>
+                                        <td>SloCompetence</td>
+                                        <td>Description</td>
+                                    </tr>
+                                    <tr>
+                                        <th scope="row">2</th>
+                                        <td>EngCompetence</td>
+                                        <td>SloCompetence</td>
+                                        <td>Description</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -178,6 +209,10 @@ $(document).on('click','.deleteTraining', function(){
             }, 2000);
         }
     });
+});
+
+$(".clickableTraining").on("click",function(){
+    alert("click");
 });
 
 var data = [];

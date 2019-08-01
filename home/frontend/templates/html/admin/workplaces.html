@@ -1,6 +1,12 @@
 {% extends "html/index.html" %}
 {% load static %}
-
+{% block pagestyle %}
+<style>
+    .table th, .table td{
+        vertical-align:middle !important;
+    }
+</style>
+    {% endblock %}
 {% block main_content %}
 <div class="row mt-2">
     <div class="col">
@@ -64,41 +70,76 @@
                 <div class="row">
                     <!-- Table of Workplaces -->
                     <div class="col-xl-6">
-                        <h4 class="text-primary">Workplaces</h4>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">NAME</th>
-                                        <th scope="col">DESCRIPTION</th>
-                                        <th scope="col" class="text-center">EDIT / DELETE</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    {% include 'html/admin/partial_table_workplaces.html' %}
-                                </tbody>
-                            </table>
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">All Workplaces</h5>
+                                <input type="text" class="form-control mt-2 mb-2" id="searchWorkplace" placeholder="Search workplace">
+                                <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">NAME</th>
+                                    <th scope="col">DESCRIPTION</th>
+                                    <th scope="col" class="text-center">EDIT / DELETE</th>
+                                </tr>
+                            </thead>
+                            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                {% include 'html/admin/partial_table_workplaces.html' %}
+                            </tbody>
+                        </table>
+                    </div>
+                            </div>
                         </div>
                     </div>
                     <!-- Table of Competencies and their Relevance -->
-                    <div class="col-xl-6" id="hiddenCompRel" hidden>
-                        <h4 class="text-primary">Competencies and Relevance</h4>
-                        <div class="table-responsive">
-                            <table class="table table-hover">
-                                <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                    <tr>
-                                        <th scope="col">#</th>
-                                        <th scope="col">COMPETENCE</th>
-                                        <th scope="col">RELEVANCE</th>
-                                        <th scope="col">MINIMUM REQUIRED</th>
-                                        <th scope="col" class="text-center">EDIT / DELETE</th>
-                                    </tr>
-                                </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="relevanceId">
-                                    {% include 'html/admin/partial_table_workplaces_relevance.html' %}
-                                </tbody>
-                            </table>
+                    <div class="col-xl-6" id="hiddenCompRel">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col">
+                                        <h5 class="card-title">Competencies and Relevance</h5>
+                                    </div>
+                                    <div class="col text-right">
+                                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addCompModal">Add</button>
+                                        <button type="button" class="btn btn-primary btn-sm" id="saveChangedWorkplaces">Save</button>
+                                    </div>
+                                </div>
+                                <input type="text" class="form-control mt-2 mb-2" id="searchCompetence" placeholder="Search competence">
+                                <div class="table-responsive">
+                                    <table class="table table-hover">
+                                        <thead class="bg-primary text-white" style="font-size: .65rem;">
+                                            <tr>
+                                                <th scope="col">#</th>
+                                                <th scope="col">COMPETENCE</th>
+                                                <th scope="col">RELEVANCE</th>
+                                                <th scope="col">MINIMUM REQUIRED</th>
+                                                <th scope="col" class="text-center">DELETE</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="relevanceId">
+                                            <tr id="compWork1">
+                                                <th scope="row">1</th>
+                                                <td>SloEngl1</td>
+                                                <td><strong><input type="text" class="form-control" name="workplace-relevance" placeholder="Relevance"></strong></td>
+                                                <td><strong><input type="text" class="form-control" name="workplace-minrequired" placeholder="Minimum required"></strong></td>
+                                                <td class="text-center">
+                                                    <a href="#" class="deleteCompetenceOfWorkplace"><i class="far fa-trash-alt text-danger "></i></a>
+                                                </td>
+                                            </tr>
+                                            <tr id="compWork2">
+                                                <th scope="row">2</th>
+                                                <td>SloEngl2</td>
+                                                <td><strong><input type="text" class="form-control" name="workplace-relevance" placeholder="Relevance"></strong></td>
+                                                <td><strong><input type="text" class="form-control" name="workplace-minrequired" placeholder="Minimum required"></strong></td>
+                                                <td class="text-center">
+                                                    <a href="#" class="deleteCompetenceOfWorkplace"><i class="far fa-trash-alt text-danger "></i></a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -106,11 +147,121 @@
         </div>
     </div>
 </div>
+
+<!-- Modal Edit-->
+<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit Workplace</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit-employee-form" method="post" action="">
+          {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-workplace-name">Name:</label>
+                    <input type="text" class="form-control" name="edit-workplace-name" id="edit-workplace-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-workplace-desc">Description:</label>
+                    <input type="text" class="form-control" name="edit-workplace-desc" id="edit-workplace-desc" required>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Delete-->
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalTitle">Delete workplace</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p>Are you sure you want to delete this workplace?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger" data-id="" data-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Add Extra Competence to Workplace -->
+<div class="modal" id="addCompModal" tabindex="-1" role="dialog" aria-labelledby="addCompModal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addCompModalTitle">Add Competence to Workplace</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <form id="add-extra-workplace-form" method="POST" action="">
+            {% csrf_token %}
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="extra_workplace_name">Name:</label>
+                        <input type="text" class="form-control" name="extra_workplace_name" id="extra_workplace_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="extra_workplace_desc">Description:</label>
+                        <input type="text" class="form-control" name="extra_workplace_desc" id="extra_workplace_desc" required>
+                    </div>
+                    <div class="form-group row align-items-center">
+                        <div class="col">
+                            <label for="workplace_desc">Add competencies and their relevance:</label>
+                        </div>
+                        <div class="col-1 text-right">
+                            <span id="addCompReleFieldE" style="cursor:pointer;" class="text-primary"><i class="fas fa-plus"></i></span>
+                        </div>
+                    </div>
+                    <div class="extracomprele">
+                        <div class="form-group row align-items-center">
+                            <div class="col">
+                                <select class="form-control" name="extracompetence0" id="extracompetence0">
+                                    {% for obj in competency %}
+                                        <option>{{obj.slo_name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="extraminReq0" id="extraminReq0" placeholder="Minimum required score" required>
+                            </div>
+                            <div class="col">
+                                <input type="text" class="form-control" name="extrarelevance0" id="extrarelevance0" placeholder="Relevance" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary">Add</button>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
 {% endblock main_content %}
 
 {% block scripts %}
 <script>
-$('.clickableWorkplace').on('click', function(){
+/*$('.clickableWorkplace').on('click', function(){
     var workplace_name = $(this).attr("name");
     $('#hiddenCompRel').removeAttr('hidden');
     $.ajax({
@@ -123,10 +274,15 @@ $('.clickableWorkplace').on('click', function(){
             $('#relevanceId').html(data['html_from_view']);
         }
     });
-
-});
+});*/
 
 var data = [];
+
+$("#extracompetence0 option").each(function(){
+    data.push($(this).val());
+});
+
+$("#extracompetence0").select2({data: data});
 
 $("#competence0 option").each(function(){
     data.push($(this).val());
@@ -151,7 +307,6 @@ $("#addCompReleField").on("click", function(){
             '<span class="deleteCompReleField text-danger" data-id="'+idCounter+'" style="cursor:pointer;"><i class="fas fa-minus"></i></span>'+
         '</div>'+
     '</div>';
-
     $(".comprele").append(inputFieldsHtml);
     $("#competence"+idCounter).select2({data: data});
     idCounter++;
@@ -160,5 +315,50 @@ $("#addCompReleField").on("click", function(){
 $(".comprele").on("click", ".deleteCompReleField", function(){
     $("#"+$(this).data("id")).remove();
 });
+
+
+// ===================== For Modal =====================
+
+var ExtraIDCounter = 1;
+
+$("#addCompReleFieldE").on("click", function(){
+    ExtraInputFieldsHtml = '<div class="form-group row align-items-center" id="'+ExtraIDCounter+'">'+
+        '<div class="col">'+
+            '<select class="form-control" name="extracompetence'+ExtraIDCounter+'" id="extracompetence'+ExtraIDCounter+'">{% for obj in competency %}<option>{{obj.slo_name}}</option>{% endfor %}</select>'+
+        '</div>'+
+        '<div class="col">'+
+            '<input type="text" class="form-control" name="extraminReq'+ExtraIDCounter+'" id="extraminReq'+ExtraIDCounter+'" placeholder="Minimum required score" required>'+
+        '</div>'+
+        '<div class="col">'+
+            '<input type="text" class="form-control" name="extrarelevance'+ExtraIDCounter+'" id="extrarelevance'+ExtraIDCounter+'" placeholder="Relevance" required>'+
+        '</div>'+
+        '<div class="col-1 text-right">'+
+            '<span class="deleteCompReleField text-danger" data-id="'+ExtraIDCounter+'" style="cursor:pointer;"><i class="fas fa-minus"></i></span>'+
+        '</div>'+
+    '</div>';
+    $(".extracomprele").append(ExtraInputFieldsHtml);
+    $("#competence"+ExtraIDCounter).select2({data: data});
+    ExtraIDCounter++;
+});
+
+$(".extracomprele").on("click", ".deleteCompReleField", function(){
+    $("#"+$(this).data("id")).remove();
+});
+
+$("#saveChangedWorkplaces").on("click", function(){
+    alert("Save");
+});
+
+$(".deleteCompetenceOfWorkplace").on("click", function(){
+    var compWorkId = $(this).parent().parent().attr("id");
+    if(confirm("Are you sure you want to delete this?")){
+        $("#"+compWorkId).remove();
+    }
+    else{
+        return false;
+    }
+
+});
+
 </script>
 {% endblock %}
