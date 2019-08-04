@@ -86,31 +86,20 @@
                         </div>
                     </div>
                     <!-- Table Competencies of Training -->
-                    <div class="col col-xl-6">
+                    <div class="col col-xl-6" id="hiddenTrainingCompetence" hidden="True">
                         <h4 class="text-primary">Target competencies</h4>
                         <div class="table-responsive">
                             <table class="table table-hover">
                                 <thead class="bg-primary text-white" style="font-size: .65rem;">
                                     <tr>
-                                        <th scope="col">#</th>
+                                        <th scope="col">#HOEGEN ID</th>
                                         <th scope="col">ENGLISH NAME</th>
                                         <th scope="col">SLOVENIAN NAME</th>
                                         <th scope="col">DESCRIPTION</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>EngCompetence</td>
-                                        <td>SloCompetence</td>
-                                        <td>Description</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>EngCompetence</td>
-                                        <td>SloCompetence</td>
-                                        <td>Description</td>
-                                    </tr>
+                                <tbody id="bodyTrainingCompetency" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    {% include 'html/admin/partial_table_trainings.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -121,7 +110,7 @@
     </div>
 </div>
 <div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
-<!-- Modal Edit Competence -->
+<!-- Modal Edit Training -->
 <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -199,19 +188,19 @@ $(document).on('click','.deleteIconModal', function(){
 
 $(document).on('click','.editIconModal', function(){
     id_education = $(this).attr("data-id");
+    console.log(id_education);
     $.ajax({
         url: '/ajax/getEditEducation/',
         data: {
             'id_education': id_education
         },
-        dataType: 'json'
+        dataType: 'json',
         success: function(data){
+            console.log(data);
             $('#edit-training-name').val(data['name']);
             $('#edit-training-desc').val(data['desc']);
-            $('#edit-training-fromInput').val(data['from']);
-            $('#edit-training-toInput').val(data['to']);
-            $('#edit-target-comp').val(data['competences']);
-            $('#edit-target-comp').select2().trigger('change');
+            $('#edit-training-fromInput').val(data['date_from']);
+            $('#edit-training-toInput').val(data['date_to']);
         }
     });
 
@@ -240,9 +229,22 @@ $(document).on('click','.deleteTraining', function(){
     });
 });
 
-$(".clickableTraining").on("click",function(){
-    alert("click");
+$('.clickableTraining').on('click', function(){
+    var type = $(this).text();
+    $('#hiddenTrainingCompetence').removeAttr('hidden');
+    $.ajax({
+        url: '/ajax/findTrainingCompetencies/',
+        data:{
+            'name':type
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyTrainingCompetency').html(data['html_from_view']);
+        }
+    });
 });
+
+
 
 var data = [];
 

@@ -234,16 +234,53 @@ def workplaceAdd(request):
     user = "admin"
     main_pick = "workplaces"
     if addWorkplace(request):
+        workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "success", "message": "Workplace successfully added"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency,'alert':alert})
+                      {"main_pick": main_pick, "user": user, 'competency': competency,'workplaces':workplaces,'alert':alert})
     else:
+        workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "danger", "message": "Workplace with that name already exists!"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency, 'alert': alert})
+                      {"main_pick": main_pick, "user": user, 'competency': competency,'workplaces':workplaces, 'alert': alert})
 
+def workplaceEdit(request):
+    user = "admin"
+    main_pick = "workplaces"
+    if editWorkplace(request):
+        workplaces = getWorkplaces()
+        alert = {"show": "inline", "type": "success", "message": "Workplace successfully changed"}
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                       'alert': alert})
+    else:
+        workplaces = getWorkplaces()
+        alert = {"show": "inline", "type": "danger", "message": "Workplace with that name already exists!"}
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                       'alert': alert})
+
+def addExtraRelevanceToWorkplace(request):
+    user = "admin"
+    main_pick = "workplaces"
+    if addExtraCompetenceRelevance(request):
+        workplaces = getWorkplaces()
+        alert = {"show": "inline", "type": "success", "message": "Successfully added more competencies to workplace"}
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                       'alert': alert})
+    else:
+        workplaces = getWorkplaces()
+        alert = {"show": "inline", "type": "danger", "message": "One or more competencies already exists for that workplace!"}
+        competency = getCompetencies()
+        return render(request, 'html/admin/workplaces.html',
+                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                       'alert': alert})
 ###AJAX###
 def findEmployees(request):
     user = request.GET.get('username',None)
@@ -309,10 +346,21 @@ def getCompetenciesByTypeOnRequest(request):
 
 def findWorkplaceRelevance(request):
     workplace_name = request.GET.get('name', None)
+    print(workplace_name)
     competencesWithRelevance = findWorkplaceRelevanceAPI(workplace_name)
     html = render_to_string(
         template_name="html/admin/partial_table_workplaces_relevance.html",
         context={'competenceRelevance':competencesWithRelevance}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+def findTrainingCompetencies(request):
+    training_name = request.GET.get('name', None)
+    trainingInfo = getTrainingByName(training_name)
+    html = render_to_string(
+        template_name="html/admin/partial_table_trainings.html",
+        context={'training_competence':trainingInfo}
     )
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
@@ -324,10 +372,22 @@ def addCompetenciesToUser(request):
         if i == 'employee':
             continue
         id_of_competence = i.split('[')
-        print(id_of_competence)
         true_id = id_of_competence[1].split(']')[0]
-        print(true_id)
+        if value[i] == '':
+            continue
         saveEmployeeCompetence(true_id,employee,value[i])
+
+    return JsonResponse(True, safe=False)
+
+def editCompetencyRelevanceForWorkplace(request):
+    value = request.GET
+    work = request.GET.get('workplace', None)
+    for i in value:
+        if i == 'workplace':
+            continue
+        nameOfCompetence = i.split('[')
+        trueName = nameOfCompetence[1].split(']')[0]
+        editCompetencyRelevance(trueName,work,value[i])
 
     return JsonResponse(True, safe=False)
 
@@ -359,6 +419,20 @@ def deleteCompetence(request):
 
     return JsonResponse(False, safe=False)
 
+def deleteWorkplaceAndRelevance(request):
+    name = request.GET.get('name', None)
+    if deleteSelectedWorkplace(name):
+        return JsonResponse(True,safe=False)
+
+    return JsonResponse(False,safe=False)
+
+def deleteCompetence_relevance(request):
+    id_relevance = request.GET.get('id_relevance', None)
+    if deleteCompetenceRelevanceAPI(id_relevance):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
 def deleteTrainings(request):
     id_education = request.GET.get('id_education', None)
     print(id_education)
@@ -385,6 +459,19 @@ def getEditCompetences(request):
     dic_editCompetence = editCompetence.as_json()
     return JsonResponse(data=dic_editCompetence, safe=False)
 
+def getEditWorkplaces(request):
+    name = request.GET.get('name', None)
+    editWorkplace = findWorkplaceByName(name)
+    dic_editWorkplace = editWorkplace.as_json()
+    return JsonResponse(data=dic_editWorkplace, safe=False)
+
+def getEditEducation(request):
+    id = request.GET.get('id_education', None)
+    selectedEducation = getTrainingsById(id)
+    newComp = selectedEducation.as_json()
+    competences = selectedEducation.id_competence.all()
+
+    return JsonResponse(data=newComp, safe=False)
 
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)

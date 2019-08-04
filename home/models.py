@@ -101,6 +101,14 @@ class education(models.Model):
     def __str__(self):
         return self.name
 
+    def as_json(self):
+        return dict(
+            id_education=self.id_education,
+            name=self.name,
+            desc=self.desc,
+            date_from=self.date_from,
+            date_to=self.date_to,
+        )
 class employee_competence(models.Model):
     id_employee_competence = models.AutoField(primary_key=True)
     level = models.IntegerField(blank=False)

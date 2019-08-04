@@ -35,6 +35,8 @@ urlpatterns = [
     path('competencies-type/edit', views.competencies_type_edit, name="competencies_type_edit"),
     path('trainings/add', views.trainingsAdd, name="trainingsAdd"),
     path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
+    path('workplace/edit', views.workplaceEdit, name='workplaceEdit'),
+    path('workplace/addExtra', views.addExtraRelevanceToWorkplace, name='addExtraCompetence'),
     path('file/upload', views.uploadFile, name='uploadFile'),
     path('analytics/compute',views.analyticsCompute, name='analyticsCompute'),
     #User
@@ -56,7 +58,13 @@ urlpatterns = [
     url(r'^ajax/getEditEmployee/$', views.getEditEmployee, name="getEditEmployee"),
     url(r'^ajax/findCompetenciesByType/$', views.getCompetenciesByTypeOnRequest, name="getByType"),
     url(r'^ajax/getEditCompetenceType/$', views.getEditCompetenceType, name="getEditCompetenceType"),
+    url(r'^ajax/getEditWorkplace/$', views.getEditWorkplaces, name="getEditWorkplaces"),
     url(r'^ajax/findWorkplaceCompetences/$', views.findWorkplaceRelevance, name="findWorkplaceRelevance"),
+    url(r'^ajax/deleteCompetenceRelevance/$', views.deleteCompetence_relevance, name="delete_competence_relevance"),
+    url(r'^ajax/editCompetencyRelevance/$', views.editCompetencyRelevanceForWorkplace, name="editCompetencyRelevanceForWorkplace"),
+    url(r'^ajax/deleteWorkplace/$', views.deleteWorkplaceAndRelevance, name='deleteWorkplaceAndRelevance'),
+    url(r'^ajax/findTrainingCompetencies/$', views.findTrainingCompetencies, name='findTrainingCompetencies'),
+    url(r'^ajax/getEditEducation/$', views.getEditEducation, name="getEditEducation"),
     url(r'^ajax/deleteTraining/$', views.deleteTrainings, name="deleteTraining"),
     url('', views.index, name='index'),
 

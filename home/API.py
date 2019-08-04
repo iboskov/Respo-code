@@ -140,9 +140,6 @@ def getCompetenciesByOnlyType(type):
 def getCompetenceByEmployee(id_employee,type):
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
 
-def findWorkplaceRelevanceAPI(name):
-    work_place = workplace.objects.filter(name=name)[0]
-    return competence_relevance.objects.filter(id_workplace=work_place.id_workplace)
 
 def getCompetenceByEmployeePart(id_employee,type,value):
     findCompetences = competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
@@ -193,9 +190,15 @@ def addTrainings(request):
 def getTrainings():
     return education.objects.all()
 
+def getTrainingsById(id):
+    return education.objects.filter(id_education=id)[0]
+
 def deleteTrainingsById(id):
     education.objects.filter(id_education=id).delete()
     return True
+
+def getTrainingByName(name):
+    return education.objects.filter(name=name)[0].id_competence.all()
 
 ###WORKPLACE###
 def addWorkplace(request):
@@ -205,16 +208,18 @@ def addWorkplace(request):
     i = 0
     if workplace.objects.filter(name=name).exists():
         return False
-
+    j = True
     new_workplace = workplace(name=name,desc=desc)
     new_workplace.save()
-    while i < 6:
+    while j:
         competen = "competence"+str(i)
         relevance = "relevance"+str(i)
         minimumVal = "minReq"+str(i)
         comp = workplaces.get(competen,None)
         relevant = workplaces.get(relevance,None)
         minim = workplaces.get(minimumVal,None)
+        if comp == None and relevant == None and minim == None:
+            break
         if comp == None:
             i = i+1
             continue
@@ -226,12 +231,65 @@ def addWorkplace(request):
 
     return True
 
+def addExtraCompetenceRelevance(request):
+    request_for_extra = request.POST.copy()
+    nameOfWorkplace = request_for_extra.get('extra_workplace_name', None)
+    work = workplace.objects.filter(name=nameOfWorkplace)[0]
+    i = 0
+    j = True
+    error = False
+    while j:
+        competen = "extracompetence"+str(i)
+        relevance = "extrarelevance"+str(i)
+        minimumVal = "extraminReq"+str(i)
+        comp = request_for_extra.get(competen, None)
+        relevant = request_for_extra.get(relevance, None)
+        minim = request_for_extra.get(minimumVal, None)
+        if comp == None and relevant == None and minim == None:
+            break
+        if comp == None:
+            i = i+1
+            continue
+        get_competence = competence.objects.filter(slo_name=comp)[0]
+
+        if competence_relevance.objects.filter(id_competence=get_competence.id_competence,id_workplace=work.id_workplace).exists():
+            error=True
+            break
+        new_comp_relevance = competence_relevance(competence_weight=relevant,id_competence=get_competence,id_workplace=work,minimum_required=minim)
+        new_comp_relevance.save()
+        i = i+1
+
+    if error:
+        return False
+    return True
 
 def getWorkplaces():
     return workplace.objects.all()
 
 def findWorkplace(id):
     return workplace.objects.filter(id_workplace=id).values('name')
+
+def findWorkplaceByName(name):
+    return workplace.objects.filter(name=name)[0]
+
+def editWorkplace(request):
+    workspace = request.POST.copy()
+    id = workspace.get('edit-workplace-id', None)
+    name = workspace.get('edit-workplace-name', None)
+    desc = workspace.get('edit-workplace-desc', None)
+
+    editable_workplace = workplace.objects.filter(id_workplace=id)[0]
+    if editable_workplace.name != name and workplace.objects.filter(name=name).exists():
+        return False
+
+    workplace.objects.filter(id_workplace=id).update(name=name,desc=desc)
+    return True
+
+def deleteSelectedWorkplace(name):
+    workspace = workplace.objects.filter(name=name)[0]
+    competence_relevance.objects.filter(id_workplace=workspace.id_workplace).delete()
+    workplace.objects.filter(name=name).delete()
+    return True
 
 ###COMPETENCE_TYPE###
 def getCompetenceType(value):
@@ -287,3 +345,25 @@ def getAllCompetenceRelevanceForWorkplace(id_workplace):
 
 def getSpecificCompetenceOfRelevanceById(id_competence_relevance):
     return competence_relevance.objects.filter(id_competence_relevance=id_competence_relevance)
+
+def findWorkplaceRelevanceAPI(name):
+    work_place = workplace.objects.filter(name=name)[0]
+    return competence_relevance.objects.filter(id_workplace=work_place.id_workplace)
+
+def deleteCompetenceRelevanceAPI(id_relevance):
+    competence_relevance.objects.filter(id_competence_relevance=id_relevance).delete()
+    return True
+
+def editCompetencyRelevance(nameOfCompetence,work,score):
+    devidedScores = score.split(' ')
+    relevance = devidedScores[0]
+    minReq = devidedScores[1]
+    selectedWorkplace = workplace.objects.filter(name=work)[0]
+    selectedCompetence = competence.objects.filter(slo_name=nameOfCompetence)[0]
+
+    print(relevance)
+    print(minReq)
+    print(selectedWorkplace)
+    print(selectedCompetence)
+    competence_relevance.objects.filter(id_workplace=selectedWorkplace.id_workplace,id_competence=selectedCompetence.id_competence).update(competence_weight=relevance,minimum_required=minReq)
+    return True

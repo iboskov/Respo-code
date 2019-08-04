@@ -19,3 +19,10 @@
     left:2%;
     width: 96%;
 }
+.my-custom-scrollbar {
+position: relative;
+overflow: auto;
+}
+.table-wrapper-scroll-y {
+display: block;
+}

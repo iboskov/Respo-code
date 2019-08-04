@@ -2,7 +2,10 @@
 <tr>
     <th scope="row">{{ forloop.counter }}</th>
     <td>{{ obj.id_competence.slo_name }}</td>
-    <td><strong>{{ obj.competence_weight }}</strong></td>
-    <td><strong>{{obj.minimum_required}}</strong></td>
+    <td><strong><input type="text" class="form-control" name="workplace-relevance" placeholder="Relevance" value="{{ obj.competence_weight }}"></strong></td>
+    <td><strong><input type="text" class="form-control" name="workplace-minrequired" placeholder="Minimum required" value="{{obj.minimum_required}}"></strong></td>
+    <td class="text-center">
+        <i data-id="{{obj.id_competence_relevance}}" class="far fa-trash-alt text-danger deleteIconModal deleteCompetenceOfWorkplace" data-toggle="modal" data-target="#deleteModalCompetenceRelevance"></i>
+    </td>
 </tr>
 {% endfor %}
