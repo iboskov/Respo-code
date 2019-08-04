@@ -104,15 +104,23 @@
             <form id="edit-training-form" method="post" action="{% url 'upload' %}">
                 <div class="form-group">
                     <label for="edit-training-name">Training Name:</label>
-                    <input type="text" class="form-control" id="edit-training-name" required>
+                    <input type="text" class="form-control" name="edit_training_name" id="edit-training-name" required>
                 </div>
                 <div class="form-group">
                     <label for="edit-training-desc">Training description:</label>
-                    <input type="text" class="form-control" id="edit-training-desc" required>
+                    <input type="text" class="form-control" name="edit_training_desc" id="edit-training-desc" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-training-fromInput">From:</label>
+                    <input type="date" class="form-control" name="edit_training_date_from" id="edit-training-fromInput">
+                </div>
+                <div class="form-group">
+                    <label for="edit-training-toInput">To:</label>
+                    <input type="date" class="form-control" name="edit_training_date_to" id="edit-training-toInput">
                 </div>
                 <div class="form-group">
                     <label for="edit-target-comp">Target competence:</label>
-                    <select style="width:100%" class="js-example-basic-multiple js-states form-control" name="edit_training_competence" id="edit-target-comp" multiple="multiple" required>
+                    <select style="width:100%" class="js-example-basic-multiple js-states form-control" name="edit_training_competence" name="edit_target_comp" id="edit-target-comp" multiple="multiple" required>
                         {% for obj in competency %}
                             <option>{{ obj.slo_name }}</option>
                         {% endfor %}
@@ -157,6 +165,27 @@ $(document).on('click','.deleteIconModal', function(){
     $('.deleteTraining').attr('data-id', id_education);
 
 });
+
+$(document).on('click','.editIconModal', function(){
+    id_education = $(this).attr("data-id");
+    $.ajax({
+        url: '/ajax/getEditEducation/',
+        data: {
+            'id_education': id_education
+        },
+        dataType: 'json'
+        success: function(data){
+            $('#edit-training-name').val(data['name']);
+            $('#edit-training-desc').val(data['desc']);
+            $('#edit-training-fromInput').val(data['from']);
+            $('#edit-training-toInput').val(data['to']);
+            $('#edit-target-comp').val(data['competences']);
+            $('#edit-target-comp').select2().trigger('change');
+        }
+    });
+
+});
+
 
 $(document).on('click','.deleteTraining', function(){
     id_education = $(this).attr("data-id");
