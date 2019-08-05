@@ -92,7 +92,7 @@ class competence_relevance(models.Model):
 
 class education(models.Model):
     id_education = models.AutoField(primary_key=True)
-    name = models.CharField(max_length=100, blank=False)
+    name = models.CharField(max_length=100, blank=False, unique=True)
     desc = models.CharField(max_length=500, blank=True)
     date_from = models.DateField(default=now)
     date_to = models.DateField(default=now)

@@ -120,8 +120,10 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-            <form id="edit-training-form" method="post" action="{% url 'upload' %}">
+      <form id="edit-training-form" method="post" action="{% url 'editTraining' %}">
+          {% csrf_token %}
+            <div class="modal-body">
+                <input type="text" class="form-control" name="edit_training_id" hidden id="edit-training-id">
                 <div class="form-group">
                     <label for="edit-training-name">Training Name:</label>
                     <input type="text" class="form-control" name="edit_training_name" id="edit-training-name" required>
@@ -146,12 +148,12 @@
                         {% endfor %}
                     </select>
                 </div>
-            </form>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="submit" class="btn btn-primary">Save changes</button>
-      </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+      </form>
     </div>
   </div>
 </div>
@@ -196,11 +198,13 @@ $(document).on('click','.editIconModal', function(){
         },
         dataType: 'json',
         success: function(data){
-            console.log(data);
-            $('#edit-training-name').val(data['name']);
-            $('#edit-training-desc').val(data['desc']);
-            $('#edit-training-fromInput').val(data['date_from']);
-            $('#edit-training-toInput').val(data['date_to']);
+            $('#edit-training-id').val(data['education'].id_education);
+            $('#edit-training-name').val(data['education'].name);
+            $('#edit-training-desc').val(data['education'].desc);
+            $('#edit-training-fromInput').val(data['education'].date_from);
+            $('#edit-training-toInput').val(data['education'].date_to);
+            $('#edit-target-comp').val(data['competences']);
+            $('#edit-target-comp').select2().trigger('change');
         }
     });
 

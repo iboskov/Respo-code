@@ -226,9 +226,11 @@ def trainingsAdd(request):
         return render(request, 'html/admin/trainings.html',
                       {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings,"alert":alert})
     else:
+        alert = {"show": "inline", "type": "danger", "message": "Training with that name already exists!"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings})
+                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,
+                       "alert": alert})
 
 def workplaceAdd(request):
     user = "admin"
@@ -281,6 +283,23 @@ def addExtraRelevanceToWorkplace(request):
         return render(request, 'html/admin/workplaces.html',
                       {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
                        'alert': alert})
+
+def editTraining(request):
+    user = "admin"
+    main_pick = "trainings"
+    competency = getCompetencies()
+    if editTrainings(request):
+        alert = {"show": "inline", "type": "success", "message": "Training successfully changed!"}
+        trainings = getTrainings()
+        return render(request, 'html/admin/trainings.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,
+                       "alert": alert})
+    else:
+        alert = {"show": "inline", "type": "danger", "message": "Training with that name already exists!"}
+        trainings = getTrainings()
+        return render(request, 'html/admin/trainings.html',
+                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,"alert":alert})
+
 ###AJAX###
 def findEmployees(request):
     user = request.GET.get('username',None)
@@ -470,8 +489,15 @@ def getEditEducation(request):
     selectedEducation = getTrainingsById(id)
     newComp = selectedEducation.as_json()
     competences = selectedEducation.id_competence.all()
-
-    return JsonResponse(data=newComp, safe=False)
+    newInformation = []
+    for i in competences:
+        newInformation.append(i.slo_name)
+    print(newInformation)
+    dataDic = {
+        'education':newComp,
+        'competences':newInformation
+    }
+    return JsonResponse(data=dataDic, safe=False)
 
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)

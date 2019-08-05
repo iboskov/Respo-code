@@ -37,6 +37,7 @@ urlpatterns = [
     path('workplace/add', views.workplaceAdd, name='workplaceAdd'),
     path('workplace/edit', views.workplaceEdit, name='workplaceEdit'),
     path('workplace/addExtra', views.addExtraRelevanceToWorkplace, name='addExtraCompetence'),
+    path('training/edit', views.editTraining, name='editTraining'),
     path('file/upload', views.uploadFile, name='uploadFile'),
     path('analytics/compute',views.analyticsCompute, name='analyticsCompute'),
     #User

@@ -177,6 +177,8 @@ def addTrainings(request):
     date_from = training.get("date_from")
     date_to = training.get("date_to")
 
+    if education.objects.filter(name=name).exists():
+        return False
     new_education = education(name=name, date_from=date_from, date_to=date_to, desc=desc)
     new_education.save()
     new_education = education.objects.filter(name=name)[0]
@@ -199,6 +201,27 @@ def deleteTrainingsById(id):
 
 def getTrainingByName(name):
     return education.objects.filter(name=name)[0].id_competence.all()
+
+def editTrainings(request):
+    training = request.POST.copy()
+    competences = request.POST.getlist('edit_training_competence')
+    id = training.get('edit_training_id', None)
+    name = training.get('edit_training_name', None)
+    desc  = training.get('edit_training_desc', None)
+    date_from = training.get('edit_training_date_from', None)
+    date_to = training.get('edit_training_date_to', None)
+
+    if education.objects.filter(name=name).exists() and int(education.objects.filter(name=name)[0].id_education) != int(id):
+        print("exists already")
+        return False
+    listOfCompetences = []
+    for i in competences:
+        comp = competence.objects.filter(slo_name=i)[0]
+        listOfCompetences.append(comp)
+
+    education.objects.filter(id_education=id).update(name=name,desc=desc,date_from=date_from, date_to=date_to)
+    education.objects.filter(id_education=id)[0].id_competence.set(listOfCompetences)
+    return True
 
 ###WORKPLACE###
 def addWorkplace(request):
