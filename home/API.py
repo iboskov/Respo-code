@@ -212,7 +212,6 @@ def editTrainings(request):
     date_to = training.get('edit_training_date_to', None)
 
     if education.objects.filter(name=name).exists() and int(education.objects.filter(name=name)[0].id_education) != int(id):
-        print("exists already")
         return False
     listOfCompetences = []
     for i in competences:
@@ -384,9 +383,5 @@ def editCompetencyRelevance(nameOfCompetence,work,score):
     selectedWorkplace = workplace.objects.filter(name=work)[0]
     selectedCompetence = competence.objects.filter(slo_name=nameOfCompetence)[0]
 
-    print(relevance)
-    print(minReq)
-    print(selectedWorkplace)
-    print(selectedCompetence)
     competence_relevance.objects.filter(id_workplace=selectedWorkplace.id_workplace,id_competence=selectedCompetence.id_competence).update(competence_weight=relevance,minimum_required=minReq)
     return True

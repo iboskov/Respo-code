@@ -240,6 +240,7 @@ def most_important_competence_that_lack(job_column_index, ocene, potrebno, view)
                     "improve row: " + list_out(rows))
                     return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
 
+    return 0
 
 
 def improve_comp_by_formula(job_column_index, ocene, potrebno, table_of_importance_loc, view):
@@ -297,7 +298,8 @@ def improve_comp_by_formula(job_column_index, ocene, potrebno, table_of_importan
         return ("required: " + list_out(p), "current mark: " + list_out(o), "lack by formula: " + "Inf",
                 "improve row: " + list_out(rows))
     elif formula_lack == 0:
-        return "All competences satisfy the requirements."
+        print("All competences satisfy the requirements.")
+        return 0
     else:
         for i in range(len(ocene[:, job_column_index])):
             a = ocene[i, job_column_index]

@@ -502,7 +502,7 @@ def getEditEducation(request):
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)
     postRequest = request.POST.copy()
-    algorithemSelect1 = postRequest.get('algo1',None)
+    algorithemSelect1 = postRequest.get('algo1', None)
     algorithemSelect2 = postRequest.get('algo2', None)
     algorithemSelect3 = postRequest.get('algo3', None)
     algorithemSelect4 = postRequest.get('algo4', None)
@@ -556,10 +556,10 @@ def analyticsCompute(request):
         print(tableOfScores)
         #Now the analysis
 
-        alg1 = 0
-        alg2 = 0
-        alg3 = 0
-        alg4 = 0
+        alg1 = None
+        alg2 = None
+        alg3 = None
+        alg4 = None
         print(tableOfImportance)
         if algorithemSelect1 == 'on':
             alg1 = maximal_absolute_lack(0,tableOfScores,tableOfRelevance,view)
@@ -573,24 +573,45 @@ def analyticsCompute(request):
         tableOfContentAlg2 = []
         tableOfContentAlg3 = []
         tableOfContentAlg4 = []
+        print("alg1"+str(alg1))
+        print("alg2"+str(alg2))
+        print("alg3"+str(alg3))
+        print("alg4"+str(alg4))
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
             tableOfContentAlg1.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg1.append(alg1[2])
             ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
+        elif alg1 is not None:
+            tableOfContentAlg1.append('/')
+            tableOfContentAlg1.append('All competencies satisfy requirment')
+            ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
+
         if alg2 != 0 and alg2 is not None:
             ids = alg2[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
             tableOfContentAlg2.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg2.append(alg2[2])
             ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
+
+        elif alg2 is not None:
+            tableOfContentAlg2.append('/')
+            tableOfContentAlg2.append('All competencies satisfy requirment')
+            ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
+
         if alg3 != 0 and alg3 is not None:
             ids = alg3[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
             tableOfContentAlg3.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg3.append(alg3[2])
             ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
+
+        elif alg3 is not None:
+            tableOfContentAlg3.append('/')
+            tableOfContentAlg3.append('All competencies satisfy requirment')
+            ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
+
         if alg4 != 0 and alg4 is not None:
             ids = alg4[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
@@ -598,8 +619,16 @@ def analyticsCompute(request):
             tableOfContentAlg4.append(alg4[2])
             ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
 
-    # TIME TO RENDER
+        elif alg4 is not None:
+            tableOfContentAlg4.append('/')
+            tableOfContentAlg4.append('All competencies satisfy requirment')
+            ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
 
+    # TIME TO RENDER
+    print(ALG1)
+    print(ALG2)
+    print(ALG3)
+    print(ALG4)
     user = "admin"
     main_pick = "analytics"
     employees = getEmployees()
