@@ -101,8 +101,19 @@ def analytics(request):
 def status(request):
     user = "admin"
     main_pick = "status"
+    train = {}
+    employees = getEmployees()
+    allTrainings = getTrainings()
+    for i in allTrainings:
+        participants = getParticipationByEducation(i.id_education)
+        tableOfContent = {}
+        tableOfContent["desc"] = i.desc
+        for j in participants:
+            tableOfContent[j.id_employee.first_name+" "+j.id_employee.last_name] = j.status
+
+        train[i.name] = tableOfContent
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user, "alert": alert})
+    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user,"train":train,"employees":employees, "alert": alert})
 # endregion
 
 # region user_views

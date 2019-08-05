@@ -18,89 +18,7 @@
             <div class="tab-pane show active" id="trainingsStatus" role="tabpanel">
                 <div class="row mt-2">
                     <div class="col">
-                        <input type="text" class="form-control mb-2" id="searchTraining" placeholder="Search training">
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        English 1 <span class="badge badge-success">ONGOING</span>
-                                    </div>
-                                    <div class="col text-right">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Description of the Training: Lorem ipsum</p>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                            <tr>
-                                                <th scope="col" width="1%">#</th>
-                                                <th scope="col" width="30%">EMPLOYEE</th>
-                                                <th scope="col" width="30%">STATUS</th>
-                                                <th scope="col" width="30%">RESEND</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Mark</td>
-                                                <td>Accepted</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Adem Kikaj</td>
-                                                <td>Declined</td>
-                                                <td><a href="#" class="badge badge-primary">Resend</a></td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card mt-2">
-                            <div class="card-header">
-                                <div class="row align-items-center">
-                                    <div class="col">
-                                        English 2 <span class="badge badge-success">ONGOING</span>
-                                    </div>
-                                    <div class="col text-right">
-                                        <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-text">Description of the Training: Lorem ipsum</p>
-                                <div class="table-responsive">
-                                    <table class="table table-hover">
-                                        <thead class="bg-primary text-white" style="font-size: .65rem;">
-                                            <tr>
-                                                <th scope="col" width="1%">#</th>
-                                                <th scope="col" width="30%">EMPLOYEE</th>
-                                                <th scope="col" width="30%">STATUS</th>
-                                                <th scope="col" width="30%">RESEND</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                            <tr>
-                                                <th scope="row">1</th>
-                                                <td>Jure</td>
-                                                <td>Accepted</td>
-                                                <td>-</td>
-                                            </tr>
-                                            <tr>
-                                                <th scope="row">2</th>
-                                                <td>Adem Kikaj</td>
-                                                <td>Waiting</td>
-                                                <td>-</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
+                        {% include 'html/admin/partial_table_status.html' %}
                     </div>
                 </div>
             </div>
@@ -109,7 +27,11 @@
                     <div class="col">
                         <div class="row align-items-center">
                             <div class="col">
-                                <input type="text" class="form-control mb-2" id="searchEmployee" placeholder="Enter employee name or username">
+                                <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" placeholder="Enter employee name or username" >
+                                    {% for obj in employees %}
+                                        <option>{{obj.first_name}} {{obj.last_name}} ({{obj.username}})</option>
+                                    {% endfor %}
+                                </select>
                             </div>
                             <div class="col-auto"><a class="btn btn-primary btn-sm mb-2" href="#" role="button"><i class="fas fa-file-pdf"></i> PDF</a></div>
                         </div>

@@ -138,6 +138,7 @@ class employee_history(models.Model):
 
     def __int__(self):
         return self.level
+
 #Users for login
 class user(models.Model):
     id_user = models.AutoField(primary_key=True)

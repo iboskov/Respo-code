@@ -110,7 +110,7 @@
 <script>
 $(document).on('click','.sendEmployee', function(){
     information = $(this).attr("data-id");
-    console.log(information);
+    $(this).attr("hidden","True");
     $.ajax({
         url: '/ajax/sendEmployeeOnTraining/',
         data:{
@@ -122,10 +122,10 @@ $(document).on('click','.sendEmployee', function(){
             $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
             $('.myAlert-bottom2').text('Successfully sent invitation to employee');
             $('.myAlert-bottom2').show();
+            $(this).attr("hidden","True")
             setTimeout(function() {
                 $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
                 $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
-                location.href='/analytics';
             }, 3000);
         }
     });

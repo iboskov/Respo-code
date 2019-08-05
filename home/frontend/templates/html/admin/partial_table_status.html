@@ -1,0 +1,51 @@
+{% for key,value in train.items %}
+<div class="card mt-2">
+    <div class="card-header">
+        <div class="row align-items-center">
+            <div class="col">
+                {{key}} <span class="badge badge-success">ONGOING</span>
+            </div>
+            <div class="col text-right">
+                <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        {% for ke,va in value.items %}
+            {% if ke == 'desc' %}
+                <p class="card-text">Description of the Training: {{va}}</p>
+            {% endif %}
+        {% endfor %}
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="bg-primary text-white" style="font-size: .65rem;">
+                <tr>
+                    <th scope="col" width="1%">#</th>
+                    <th scope="col" width="30%">EMPLOYEE</th>
+                    <th scope="col" width="30%">STATUS</th>
+                    <th scope="col" width="30%">RESEND</th>
+                </tr>
+                </thead>
+                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                {% for ke,va in value.items %}
+                    {% if ke != 'desc' %}
+                        <tr>
+                            <th scope="row">{{ forloop.counter0 }}</th>
+                            <td>{{ke}}</td>
+                            <td>{{va}}</td>
+                            {% if va == 'Waiting' %}
+                                <td>-</td>
+                            {% elif va == 'Accepted' %}
+                                <td>-</td>
+                            {% else %}
+                                <td><a href="#" class="badge badge-primary">Resend</a></td>
+                            {% endif %}
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endfor %}

@@ -429,3 +429,6 @@ def sendEmployeeOnEducation(edu,worker):
     new_part = participation(participated=False,status="Waiting",id_employee=emp,id_education=training)
     new_part.save()
     return True
+
+def getParticipationByEducation(edu_id):
+    return participation.objects.filter(id_education=edu_id)
