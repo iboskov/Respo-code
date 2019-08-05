@@ -93,8 +93,9 @@ def analytics(request):
     user = "admin"
     main_pick = "analytics"
     employees = getEmployees()
+    competency = getCompetencies()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees, "alert": alert})
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees,"competency":competency, "alert": alert})
 
 
 def status(request):
@@ -486,7 +487,13 @@ def getEditWorkplaces(request):
 
 def getEditEducation(request):
     id = request.GET.get('id_education', None)
-    selectedEducation = getTrainingsById(id)
+    by = request.GET.get('by', None)
+    selectedEducation = 0
+    print(by)
+    if by != None:
+        selectedEducation = getTrainingsByNameAPI(id)
+    else:
+        selectedEducation = getTrainingsById(id)
     newComp = selectedEducation.as_json()
     competences = selectedEducation.id_competence.all()
     newInformation = []
@@ -573,17 +580,21 @@ def analyticsCompute(request):
         tableOfContentAlg2 = []
         tableOfContentAlg3 = []
         tableOfContentAlg4 = []
-        print("alg1"+str(alg1))
-        print("alg2"+str(alg2))
-        print("alg3"+str(alg3))
-        print("alg4"+str(alg4))
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
+            possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
+            if possibleTraining is not False:
+                print("it exists!")
+                tableOfContentAlg1.append(possibleTraining.name)
+            else:
+                tableOfContentAlg1.append('No training at this time')
             tableOfContentAlg1.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg1.append(alg1[2])
             ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
         elif alg1 is not None:
+            tableOfContentAlg1.append('/')
             tableOfContentAlg1.append('/')
             tableOfContentAlg1.append('All competencies satisfy requirment')
             ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
@@ -591,11 +602,18 @@ def analyticsCompute(request):
         if alg2 != 0 and alg2 is not None:
             ids = alg2[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
+            possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
+            if possibleTraining is not False:
+                tableOfContentAlg2.append(possibleTraining.name)
+            else:
+                tableOfContentAlg2.append('No training at this time')
             tableOfContentAlg2.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg2.append(alg2[2])
             ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
 
         elif alg2 is not None:
+            tableOfContentAlg2.append('/')
             tableOfContentAlg2.append('/')
             tableOfContentAlg2.append('All competencies satisfy requirment')
             ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
@@ -603,11 +621,19 @@ def analyticsCompute(request):
         if alg3 != 0 and alg3 is not None:
             ids = alg3[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
+            possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
+            if possibleTraining is not False:
+                print("it exists!")
+                tableOfContentAlg3.append(possibleTraining.name)
+            else:
+                tableOfContentAlg3.append('No training at this time')
             tableOfContentAlg3.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg3.append(alg3[2])
             ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
 
         elif alg3 is not None:
+            tableOfContentAlg3.append('/')
             tableOfContentAlg3.append('/')
             tableOfContentAlg3.append('All competencies satisfy requirment')
             ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
@@ -615,11 +641,19 @@ def analyticsCompute(request):
         if alg4 != 0 and alg4 is not None:
             ids = alg4[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
+            possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
+            if possibleTraining is not False:
+                print("it exists!")
+                tableOfContentAlg4.append(possibleTraining.name)
+            else:
+                tableOfContentAlg4.append('No training at this time')
             tableOfContentAlg4.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg4.append(alg4[2])
             ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
 
         elif alg4 is not None:
+            tableOfContentAlg4.append('/')
             tableOfContentAlg4.append('/')
             tableOfContentAlg4.append('All competencies satisfy requirment')
             ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
@@ -632,6 +666,7 @@ def analyticsCompute(request):
     user = "admin"
     main_pick = "analytics"
     employees = getEmployees()
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4})
+    competency = getCompetencies()
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"competency":competency,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4})
 
 

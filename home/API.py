@@ -140,6 +140,8 @@ def getCompetenciesByOnlyType(type):
 def getCompetenceByEmployee(id_employee,type):
     return employee_competence.objects.filter(id_employee=id_employee,id_competence_type=type)
 
+def getCompetenceOnlyByNameAPI(name):
+    return competence.objects.filter(slo_name=name)[0]
 
 def getCompetenceByEmployeePart(id_employee,type,value):
     findCompetences = competence.objects.filter(id_competence_type=type,slo_name__icontains=value)
@@ -192,6 +194,9 @@ def addTrainings(request):
 def getTrainings():
     return education.objects.all()
 
+def getTrainingsByNameAPI(name):
+    return education.objects.filter(name=name)[0]
+
 def getTrainingsById(id):
     return education.objects.filter(id_education=id)[0]
 
@@ -201,6 +206,12 @@ def deleteTrainingsById(id):
 
 def getTrainingByName(name):
     return education.objects.filter(name=name)[0].id_competence.all()
+
+def getTrainingByCompetenceAPI(comp):
+    if education.objects.filter(id_competence=comp).exists():
+        return education.objects.filter(id_competence=comp)[0]
+    else:
+        return False
 
 def editTrainings(request):
     training = request.POST.copy()

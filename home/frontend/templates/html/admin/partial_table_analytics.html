@@ -6,7 +6,7 @@
                 <tr>
                     <th scope="col" style="width: 1%;">#</th>
                     <th scope="col">EMPLOYEE</th>
-                    <th scope="col">TRAINING</th>
+                    <th scope="col">SUGGESTED TRAINING</th>
                     <th scope="col">TARGET COMPETENCE</th>
                     <th scope="col">ABSOLUTE LACK</th>
                     <th scope="col">SEND INVITATION</th>
@@ -17,9 +17,18 @@
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
                     <td>{{key}}</td>
-                    <td>Training 1</td>
                     {% for i in value %}
-                        <td>{{i}}</td>
+                        {% if forloop.first %}
+                            {% if i == 'No training at this time' %}
+                                <td><a href="/trainings">{{i}}</a></td>
+                            {% elif i == '/' %}
+                                <td>{{i}}</td>
+                            {% else %}
+                                <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
+                            {% endif %}
+                        {% else %}
+                            <td>{{i}}</td>
+                        {% endif %}
                     {% endfor %}
                     <td><a href="#" class="badge badge-primary">SEND</a></td>
                 </tr>
@@ -38,7 +47,7 @@
                 <tr>
                     <th scope="col" style="width: 1%;">#</th>
                     <th scope="col">EMPLOYEE</th>
-                    <th scope="col">TRAINING</th>
+                    <th scope="col">SUGGESTED TRAINING</th>
                     <th scope="col">TARGET COMPETENCE</th>
                     <th scope="col">RELATIVE LACK</th>
                     <th scope="col">SEND INVITATION</th>
@@ -49,9 +58,18 @@
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
-                        <td>Training 1</td>
                         {% for i in value %}
-                            <td>{{i}}</td>
+                            {% if forloop.first %}
+                                {% if i == 'No training at this time' %}
+                                    <td><a href="/trainings">{{i}}</a></td>
+                                {% elif i == '/' %}
+                                    <td>{{i}}</td>
+                                {% else %}
+                                    <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
+                                {% endif %}
+                            {% else %}
+                                <td>{{i}}</td>
+                            {% endif %}
                         {% endfor %}
                         <td><a href="#" class="badge badge-primary">SEND</a></td>
                     </tr>
@@ -70,7 +88,7 @@
                 <tr>
                     <th scope="col" style="width: 1%;">#</th>
                     <th scope="col">EMPLOYEE</th>
-                    <th scope="col">TRAINING</th>
+                    <th scope="col">SUGGESTED TRAINING</th>
                     <th scope="col">TARGET COMPETENCE</th>
                     <th scope="col">ABSOLUTE LACK</th>
                     <th scope="col">SEND INVITATION</th>
@@ -81,9 +99,18 @@
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
-                        <td>Training 1</td>
                         {% for i in value %}
-                            <td>{{i}}</td>
+                            {% if forloop.first %}
+                                {% if i == 'No training at this time' %}
+                                    <td><a href="/trainings">{{i}}</a></td>
+                                {% elif i == '/' %}
+                                    <td>{{i}}</td>
+                                {% else %}
+                                    <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
+                                {% endif %}
+                            {% else %}
+                                <td>{{i}}</td>
+                            {% endif %}
                         {% endfor %}
                         <td><a href="#" class="badge badge-primary">SEND</a></td>
                     </tr>
@@ -102,7 +129,7 @@
                 <tr>
                     <th scope="col" style="width: 1%;">#</th>
                     <th scope="col">EMPLOYEE</th>
-                    <th scope="col">TRAINING</th>
+                    <th scope="col">SUGGESTED TRAINING</th>
                     <th scope="col">TARGET COMPETENCE</th>
                     <th scope="col">LACK BY FORMULA</th>
                     <th scope="col">SEND INVITATION</th>
@@ -113,9 +140,18 @@
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
                         <td>{{key}}</td>
-                        <td>Training 1</td>
                         {% for i in value %}
-                            <td>{{i}}</td>
+                            {% if forloop.first %}
+                                {% if i == 'No training at this time' %}
+                                    <td><a href="/trainings">{{i}}</a></td>
+                                {% elif i == '/' %}
+                                    <td>{{i}}</td>
+                                {% else %}
+                                    <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
+                                {% endif %}
+                            {% else %}
+                                <td>{{i}}</td>
+                            {% endif %}
                         {% endfor %}
                         <td><a href="#" class="badge badge-primary">SEND</a></td>
                     </tr>
