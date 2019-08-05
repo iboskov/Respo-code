@@ -60,6 +60,7 @@
         </div>
     </div>
 </div>
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
 <div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -107,6 +108,29 @@
 
 {% block scripts %}
 <script>
+$(document).on('click','.sendEmployee', function(){
+    information = $(this).attr("data-id");
+    console.log(information);
+    $.ajax({
+        url: '/ajax/sendEmployeeOnTraining/',
+        data:{
+            'information':information
+        },
+        dataType: 'json',
+        success: function(data){
+            $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+            $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+            $('.myAlert-bottom2').text('Successfully sent invitation to employee');
+            $('.myAlert-bottom2').show();
+            setTimeout(function() {
+                $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                location.href='/analytics';
+            }, 3000);
+        }
+    });
+
+});
 $(document).on('click','.showTraining', function(){
      id_education = $(this).attr("data-id");
      $.ajax({

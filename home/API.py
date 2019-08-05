@@ -1,5 +1,6 @@
 from django.core.mail import send_mail
 from django.utils.crypto import get_random_string
+from django.utils.timezone import now
 from django.conf import settings
 from django.db.models import Q
 import json
@@ -208,8 +209,14 @@ def getTrainingByName(name):
     return education.objects.filter(name=name)[0].id_competence.all()
 
 def getTrainingByCompetenceAPI(comp):
+    time = now().date()
     if education.objects.filter(id_competence=comp).exists():
-        return education.objects.filter(id_competence=comp)[0]
+        for i in education.objects.filter(id_competence=comp).order_by('-date_from'):
+            if i.date_from < time:
+                continue
+            if i.date_from > time:
+                return i
+        return False
     else:
         return False
 
@@ -367,7 +374,9 @@ def saveEmployeeCompetence(id_competence,id_employee,score):
     else:
         new_employee_competence = employee_competence(level=score,id_competence=selected_competence,id_competence_type=selected_competence_type,id_employee=selected_employee)
         new_employee_competence.save()
-
+    time = now()
+    new_history = employee_history(id_competence=selected_competence,level=score,dateOfChange=time,id_employee=selected_employee)
+    new_history.save()
     return True
 def getAllEmployeeCompetence(id_employee):
     return employee_competence.objects.filter(id_employee=id_employee)
@@ -395,4 +404,28 @@ def editCompetencyRelevance(nameOfCompetence,work,score):
     selectedCompetence = competence.objects.filter(slo_name=nameOfCompetence)[0]
 
     competence_relevance.objects.filter(id_workplace=selectedWorkplace.id_workplace,id_competence=selectedCompetence.id_competence).update(competence_weight=relevance,minimum_required=minReq)
+    return True
+
+###PARTICIPATION###
+def getParticipationByEmployee(worker,competence):
+    emp = employee.objects.filter(id_employee=worker)[0]
+    training = 0
+    if education.objects.filter(id_competence=competence).exists():
+        training = education.objects.filter(id_competence=competence)[0]
+    else:
+        return False
+
+    if participation.objects.filter(id_employee=emp.id_employee,id_education=training.id_education).exists():
+        if participation.objects.filter(id_employee=emp.id_employee,id_education=training.id_education)[0].participated:
+            return False
+        else:
+            return True
+    else:
+        False
+
+def sendEmployeeOnEducation(edu,worker):
+    training = education.objects.filter(name=edu)[0]
+    emp = employee.objects.filter(id_employee=worker)[0]
+    new_part = participation(participated=False,status="Waiting",id_employee=emp,id_education=training)
+    new_part.save()
     return True

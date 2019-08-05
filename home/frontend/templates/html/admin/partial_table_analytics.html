@@ -26,11 +26,16 @@
                             {% else %}
                                 <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
                             {% endif %}
+                        {% elif forloop.counter == 4 %}
+                            {% if i == 'NO' %}
+                                <td><div class="badge badge-secondary">SEND</div></td>
+                            {% else %}
+                                <td><a href="#" data-id="{{i}}" class="badge badge-primary sendEmployee">SEND</a></td>
+                            {% endif %}
                         {% else %}
                             <td>{{i}}</td>
                         {% endif %}
                     {% endfor %}
-                    <td><a href="#" class="badge badge-primary">SEND</a></td>
                 </tr>
             {% endfor %}
             </tbody>
@@ -67,11 +72,16 @@
                                 {% else %}
                                     <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
                                 {% endif %}
+                            {% elif forloop.counter == 4 %}
+                                {% if i == 'NO' %}
+                                    <td><div class="badge badge-secondary">SEND</div></td>
+                                {% else %}
+                                    <td><a href="#" data-id="{{i}}" class="badge badge-primary sendEmployee">SEND</a></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{i}}</td>
                             {% endif %}
                         {% endfor %}
-                        <td><a href="#" class="badge badge-primary">SEND</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -108,11 +118,16 @@
                                 {% else %}
                                     <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
                                 {% endif %}
+                            {% elif forloop.counter == 4 %}
+                                {% if i == 'NO' %}
+                                    <td><div class="badge badge-secondary">SEND</div></td>
+                                {% else %}
+                                    <td><a href="#" data-id="{{i}}" class="badge badge-primary sendEmployee">SEND</a></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{i}}</td>
                             {% endif %}
                         {% endfor %}
-                        <td><a href="#" class="badge badge-primary">SEND</a></td>
                     </tr>
                 {% endfor %}
             </tbody>
@@ -149,11 +164,17 @@
                                 {% else %}
                                     <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{i}}" data-target="#editModal">{{i}}</a></td>
                                 {% endif %}
+                            {% elif forloop.counter == 4 %}
+                                {% if i == 'NO' %}
+                                    <td><div class="badge badge-secondary">SEND</div></td>
+                                {% else %}
+                                    <td><a href="#" data-id="{{i}}" class="badge badge-primary sendEmployee">SEND</a></td>
+                                {% endif %}
                             {% else %}
                                 <td>{{i}}</td>
                             {% endif %}
                         {% endfor %}
-                        <td><a href="#" class="badge badge-primary">SEND</a></td>
+
                     </tr>
                 {% endfor %}
             </tbody>

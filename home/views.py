@@ -506,6 +506,18 @@ def getEditEducation(request):
     }
     return JsonResponse(data=dataDic, safe=False)
 
+def sendEmployee(request):
+    information = request.GET.get('information')
+    devide = information.split('|')
+    trainingName = devide[0]
+    employee_id = devide[1]
+    if sendEmployeeOnEducation(trainingName,employee_id):
+        return JsonResponse(True,safe=False)
+
+    return JsonResponse(False,safe=False)
+
+
+
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)
     postRequest = request.POST.copy()
@@ -523,30 +535,41 @@ def analyticsCompute(request):
     ALG2 = {}
     ALG3 = {}
     ALG4 = {}
+    #Go through all employees
     for i in listOfEmployees:
         devide = i.split(" ")
-        gottenEmployee = getEmployeeeByNameAndSurname(devide[0],devide[1])[0]
-        findAllOfHisCompetence = getAllEmployeeCompetence(gottenEmployee.id_employee)
-        getAllCompetenceRelevance = getAllCompetenceRelevanceForWorkplace(gottenEmployee.id_workplace.id_workplace)
+        gottenEmployee = getEmployeeeByNameAndSurname(devide[0],devide[1])[0] #find employee
+        findAllOfHisCompetence = getAllEmployeeCompetence(gottenEmployee.id_employee) #find his competence
+        getAllCompetenceRelevance = getAllCompetenceRelevanceForWorkplace(gottenEmployee.id_workplace.id_workplace) #get all work related relations
         print(getAllCompetenceRelevance)
         lengthOfRelevance = len(getAllCompetenceRelevance)
         print(lengthOfRelevance)
+        #create tables for statistics
         tableOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
         tableOfScores = np.zeros(shape=(lengthOfRelevance,1))
         tableOfImportance = np.zeros(shape=(lengthOfRelevance,1))
         iterator = 0
         idsOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
         tableOfResults = {}
+        name=""
+        #Loop through all competence relevances
         for i in getAllCompetenceRelevance:
             value = 0
             relevance = 0
+            #Loop through all of a employees competences
             for j in findAllOfHisCompetence:
+                #find match and add
                 if i.id_competence.id_competence == j.id_competence.id_competence:
-                    value = j.level
+                    #check if employee is going to participate in an existing training for this competence
+                    if getParticipationByEmployee(gottenEmployee.id_employee,j.id_competence.id_competence):
+                        value = 100
+                    else:
+                        value = j.level
                     relevance = i.minimum_required
                     name = i.id_competence.slo_name
                     importance = i.competence_weight
                     id = i.id_competence_relevance
+            #If the employee doesn't have a competence for his workplace
             if len(name) == 0:
                 value = 0
                 relevance = i.minimum_required
@@ -580,23 +603,30 @@ def analyticsCompute(request):
         tableOfContentAlg2 = []
         tableOfContentAlg3 = []
         tableOfContentAlg4 = []
+        doesTrainingExist=False
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
-                print("it exists!")
+                doesTrainingExist = True
                 tableOfContentAlg1.append(possibleTraining.name)
             else:
+                doesTrainingExist = False
                 tableOfContentAlg1.append('No training at this time')
             tableOfContentAlg1.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg1.append(alg1[2])
+            if doesTrainingExist:
+                tableOfContentAlg1.append(possibleTraining.name+"|"+str(gottenEmployee.id_employee))
+            else:
+                tableOfContentAlg1.append('NO')
             ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
         elif alg1 is not None:
             tableOfContentAlg1.append('/')
             tableOfContentAlg1.append('/')
             tableOfContentAlg1.append('All competencies satisfy requirment')
+            tableOfContentAlg1.append('NO')
             ALG1[devide[0] + " " + devide[1]] = tableOfContentAlg1
 
         if alg2 != 0 and alg2 is not None:
@@ -605,17 +635,25 @@ def analyticsCompute(request):
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
+                doesTrainingExist = True
                 tableOfContentAlg2.append(possibleTraining.name)
             else:
+                doesTrainingExist = False
                 tableOfContentAlg2.append('No training at this time')
             tableOfContentAlg2.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg2.append(alg2[2])
+
+            if doesTrainingExist:
+                tableOfContentAlg2.append(possibleTraining.name+"|"+str(gottenEmployee.id_employee))
+            else:
+                tableOfContentAlg2.append('NO')
             ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
 
         elif alg2 is not None:
             tableOfContentAlg2.append('/')
             tableOfContentAlg2.append('/')
             tableOfContentAlg2.append('All competencies satisfy requirment')
+            tableOfContentAlg2.append('NO')
             ALG2[devide[0] + " " + devide[1]] = tableOfContentAlg2
 
         if alg3 != 0 and alg3 is not None:
@@ -624,18 +662,24 @@ def analyticsCompute(request):
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
-                print("it exists!")
+                doesTrainingExist = True
                 tableOfContentAlg3.append(possibleTraining.name)
             else:
+                doesTrainingExist = False
                 tableOfContentAlg3.append('No training at this time')
             tableOfContentAlg3.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg3.append(alg3[2])
+            if doesTrainingExist:
+                tableOfContentAlg3.append(possibleTraining.name+"|"+str(gottenEmployee.id_employee))
+            else:
+                tableOfContentAlg3.append('NO')
             ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
 
         elif alg3 is not None:
             tableOfContentAlg3.append('/')
             tableOfContentAlg3.append('/')
             tableOfContentAlg3.append('All competencies satisfy requirment')
+            tableOfContentAlg3.append('NO')
             ALG3[devide[0] + " " + devide[1]] = tableOfContentAlg3
 
         if alg4 != 0 and alg4 is not None:
@@ -644,18 +688,24 @@ def analyticsCompute(request):
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
-                print("it exists!")
+                doesTrainingExist = True
                 tableOfContentAlg4.append(possibleTraining.name)
             else:
+                doesTrainingExist = False
                 tableOfContentAlg4.append('No training at this time')
             tableOfContentAlg4.append(competence_rele.id_competence.slo_name)
             tableOfContentAlg4.append(alg4[2])
+            if doesTrainingExist:
+                tableOfContentAlg4.append(possibleTraining.name+"|"+str(gottenEmployee.id_employee))
+            else:
+                tableOfContentAlg4.append('NO')
             ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
 
         elif alg4 is not None:
             tableOfContentAlg4.append('/')
             tableOfContentAlg4.append('/')
             tableOfContentAlg4.append('All competencies satisfy requirment')
+            tableOfContentAlg4.append('NO')
             ALG4[devide[0] + " " + devide[1]] = tableOfContentAlg4
 
     # TIME TO RENDER

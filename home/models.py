@@ -129,6 +129,15 @@ class participation(models.Model):
     def __str__(self):
         return self.id_participation
 
+class employee_history(models.Model):
+    id_employee_history = models.AutoField(primary_key=True)
+    level = models.IntegerField(blank=False)
+    dateOfChange = models.DateField(default=now)
+    id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
+    id_employee = models.ForeignKey(employee, on_delete=models.CASCADE)
+
+    def __int__(self):
+        return self.level
 #Users for login
 class user(models.Model):
     id_user = models.AutoField(primary_key=True)
