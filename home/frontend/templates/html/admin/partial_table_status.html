@@ -3,15 +3,21 @@
     <div class="card-header">
         <div class="row align-items-center">
             <div class="col">
-                {{key}} <span class="badge badge-success">ONGOING</span>
+                {% if value.status == 'Scheduled' %}
+                    {{key}} <span class="badge badge-primary">{{value.status}}</span>
+                {% elif value.status == 'Ongoing' %}
+                    {{key}} <span class="badge badge-success">{{value.status}}</span>
+                {% else %}
+                    {{key}} <span class="badge badge-secondary">{{value.status}}</span>
+                {% endif %}
             </div>
             <div class="col text-right">
-                <button type="button" class="btn btn-danger btn-sm">Cancel Training</button>
+                <button type="button" class="btn btn-danger btn-sm cancelTraining" data-toggle="modal" data-target="#deleteModal" data-id="{{key}}">Cancel Training</button>
             </div>
         </div>
     </div>
     <div class="card-body">
-        {% for ke,va in value.items %}
+        {% for ke,va in value.participants.items %}
             {% if ke == 'desc' %}
                 <p class="card-text">Description of the Training: {{va}}</p>
             {% endif %}
@@ -27,18 +33,30 @@
                 </tr>
                 </thead>
                 <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                {% for ke,va in value.items %}
+                {% for ke,va in value.participants.items %}
                     {% if ke != 'desc' %}
                         <tr>
                             <th scope="row">{{ forloop.counter0 }}</th>
                             <td>{{ke}}</td>
-                            <td>{{va}}</td>
+                            {% if va == 'Waiting' %}
+                                <td><span class="badge badge-secondary">{{va}}</span></td>
+                            {% elif va == 'Accepted' %}
+                                <td><span class="badge badge-success">{{va}}</span></td>
+                            {% else %}
+                                <td><span class="badge badge-danger">{{va}}</span></td>
+                            {% endif %}
                             {% if va == 'Waiting' %}
                                 <td>-</td>
                             {% elif va == 'Accepted' %}
                                 <td>-</td>
                             {% else %}
-                                <td><a href="#" class="badge badge-primary">Resend</a></td>
+                                {% if value.status == 'Ongoing' %}
+                                    <td>-</td>
+                                {% elif value.status == 'Finished' %}
+                                    <td>-</td>
+                                {% else %}
+                                    <td><a href="#" class="badge badge-primary">Resend</a></td>
+                                {% endif %}
                             {% endif %}
                         </tr>
                     {% endif %}

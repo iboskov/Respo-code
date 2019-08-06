@@ -68,6 +68,9 @@ urlpatterns = [
     url(r'^ajax/getEditEducation/$', views.getEditEducation, name="getEditEducation"),
     url(r'^ajax/deleteTraining/$', views.deleteTrainings, name="deleteTraining"),
     url(r'^ajax/sendEmployeeOnTraining/$', views.sendEmployee, name="sendEmployee"),
+    url(r'^ajax/findTrainingsByKey/$', views.findTrainingsByKey, name="findtrainingsByKey"),
+    url(r'^ajax/deleteTrainingByName/$', views.deleteTrainingByName, name="deleteTrainingByName"),
+    url(r'^ajax/getParticipationEmployee/$', views.getParticipationEmployee, name="getParticipationEmployee"),
     url('', views.index, name='index'),
 
 

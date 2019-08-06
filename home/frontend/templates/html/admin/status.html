@@ -18,7 +18,10 @@
             <div class="tab-pane show active" id="trainingsStatus" role="tabpanel">
                 <div class="row mt-2">
                     <div class="col">
-                        {% include 'html/admin/partial_table_status.html' %}
+                        <input type="text" class="form-control mb-2" id="searchTraining" placeholder="Search training">
+                        <div id="holds">
+                            {% include 'html/admin/partial_table_status.html' %}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -27,7 +30,7 @@
                     <div class="col">
                         <div class="row align-items-center">
                             <div class="col">
-                                <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" placeholder="Enter employee name or username" >
+                                <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyTraining" name="history-Training" placeholder="Enter employee name or username" >
                                     {% for obj in employees %}
                                         <option>{{obj.first_name}} {{obj.last_name}} ({{obj.username}})</option>
                                     {% endfor %}
@@ -47,31 +50,8 @@
                                         <th scope="col" width="20%">RESEND</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>English 1</td>
-                                        <td>10.05.2019</td>
-                                        <td>30.05.2019</td>
-                                        <td>Finished</td>
-                                        <td>-</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>English 2</td>
-                                        <td>-</td>
-                                        <td>-</td>
-                                        <td>Declined</td>
-                                        <td><a href="#" class="badge badge-primary">Resend</a></td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>German 1</td>
-                                        <td>15.06.2019</td>
-                                        <td>-</td>
-                                        <td>Accepted</td>
-                                        <td>-</td>
-                                    </tr>
+                                <tbody id="bodyOfParticipationEmployee" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    {% include 'html/admin/partial_table_status_employee.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -81,4 +61,92 @@
         </div>
     </div>
 </div>
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
+<div class="modal" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="deleteModalTitle">Delete competence</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <p id="nameOfTraining">Are you sure you want to cancel/delete training: ?</p>
+          <small class="text-muted">Canceling training will delete all its descendants.</small>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger btn_delete_training" data-id="" data-dismiss="modal">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock main_content %}
+{% block scripts %}
+<script>
+    $('#searchTraining').on('keyup', function(){
+        var training = $(this).val();
+        $.ajax({
+            url: '/ajax/findTrainingsByKey/',
+            data:{
+                'training':training
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#holds').html(data['html_from_view']);
+            }
+        });
+    });
+
+    $( document ).ready(function() {
+        $('#historyTraining').trigger('change');
+    });
+    $('#historyTraining').on('change', function(){
+        var employee = $(this).val();
+        $.ajax({
+            url: '/ajax/getParticipationEmployee/',
+            data:{
+                'info':employee
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#bodyOfParticipationEmployee').html(data['html_from_view']);
+            }
+
+        });
+
+    });
+    $(document).on('click','.cancelTraining', function(){
+        name = $(this).attr("data-id");
+        $('.btn_delete_training').attr('data-id',name);
+        $('#nameOfTraining').html('Are you sure you want to cancel/delete training: '+name+'?');
+    });
+
+    $(document).on('click','.btn_delete_training', function(){
+        name = $(this).attr("data-id");
+        $.ajax({
+            url: '/ajax/deleteTrainingByName/',
+            data:{
+                'name':name
+            },
+            dataType: 'json',
+            success: function(data){
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully deleted training');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                    $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                    $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                    location.href='/status';
+                }, 2000);
+            }
+        });
+
+    });
+    var data = [];
+    $(".js-example-basic-multiple").select2({data: data});
+</script>
+{% endblock scripts %}

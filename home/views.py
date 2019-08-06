@@ -14,6 +14,7 @@ import json
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 import numpy as np
+from django.utils.timezone import now
 from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.http import HttpResponse
@@ -30,6 +31,30 @@ def login(request):
 
 # region admin_views
 
+# additional functions
+def calculateForTrainings(allTrainings):
+    train = {}
+    for i in allTrainings:
+
+        participant = {}
+        tableOfContent = {}
+        tableOfContent["desc"] = i.desc
+        if now().date() < i.date_from:
+            participant['status'] = 'Scheduled'
+        elif now().date() >= i.date_from and now().date() <= i.date_to:
+            participant['status'] = 'Ongoing'
+        else:
+            participant['status'] = 'Finished'
+
+        participants = getParticipationByEducation(i.id_education,participant['status'])
+        for j in participants:
+            tableOfContent[j.id_employee.first_name + " " + j.id_employee.last_name] = j.status
+        participant['participants'] = tableOfContent
+
+
+        train[i.name] = participant
+    return train
+# end additional functions
 
 def upload(request):
     user = "admin"
@@ -104,14 +129,9 @@ def status(request):
     train = {}
     employees = getEmployees()
     allTrainings = getTrainings()
-    for i in allTrainings:
-        participants = getParticipationByEducation(i.id_education)
-        tableOfContent = {}
-        tableOfContent["desc"] = i.desc
-        for j in participants:
-            tableOfContent[j.id_employee.first_name+" "+j.id_employee.last_name] = j.status
 
-        train[i.name] = tableOfContent
+    train = calculateForTrainings(allTrainings)
+    print(train)
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
     return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user,"train":train,"employees":employees, "alert": alert})
 # endregion
@@ -396,6 +416,31 @@ def findTrainingCompetencies(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+def getParticipationEmployee(request):
+    information = request.GET.get('info', None)
+    devide = information.split("(")
+    username = devide[1].split(")")[0]
+    party = getParticipationByEmployeeUsername(username)
+    html = render_to_string(
+        template_name="html/admin/partial_table_status_employee.html",
+        context={'participations':party}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+def findTrainingsByKey(request):
+    keys = request.GET.get('training')
+    allTrainings = getTrainingsByPartialName(keys)
+    train = {}
+    train = calculateForTrainings(allTrainings)
+    html = render_to_string(
+        template_name="html/admin/partial_table_status.html",
+        context={'train':train}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+
 def addCompetenciesToUser(request):
     value = request.GET
     employee = request.GET.get('employee',None)
@@ -472,6 +517,13 @@ def deleteTrainings(request):
 
     return JsonResponse(False, safe=False)
 
+def deleteTrainingByName(request):
+    name = request.GET.get('name', None)
+    if deleteTrainingByNameAPI(name):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
 def getEditEmployee(request):
     id_employee = request.GET.get('employee',None)
     employee = getEmployeeById(id_employee)
@@ -517,8 +569,9 @@ def getEditEducation(request):
     }
     return JsonResponse(data=dataDic, safe=False)
 
+
 def sendEmployee(request):
-    information = request.GET.get('information')
+    information = request.GET.get('information', None)
     devide = information.split('|')
     trainingName = devide[0]
     employee_id = devide[1]
@@ -563,14 +616,18 @@ def analyticsCompute(request):
         idsOfRelevance = np.zeros(shape=(lengthOfRelevance,1))
         tableOfResults = {}
         name=""
+
         #Loop through all competence relevances
         for i in getAllCompetenceRelevance:
             value = 0
             relevance = 0
+
             #Loop through all of a employees competences
             for j in findAllOfHisCompetence:
+
                 #find match and add
                 if i.id_competence.id_competence == j.id_competence.id_competence:
+
                     #check if employee is going to participate in an existing training for this competence
                     if getParticipationByEmployee(gottenEmployee.id_employee,j.id_competence.id_competence):
                         value = 100
@@ -580,6 +637,7 @@ def analyticsCompute(request):
                     name = i.id_competence.slo_name
                     importance = i.competence_weight
                     id = i.id_competence_relevance
+
             #If the employee doesn't have a competence for his workplace
             if len(name) == 0:
                 value = 0
@@ -602,6 +660,8 @@ def analyticsCompute(request):
         alg3 = None
         alg4 = None
         print(tableOfImportance)
+
+        #check which algorithems we use and use them
         if algorithemSelect1 == 'on':
             alg1 = maximal_absolute_lack(0,tableOfScores,tableOfRelevance,view)
         if algorithemSelect2 == 'on':
@@ -615,6 +675,8 @@ def analyticsCompute(request):
         tableOfContentAlg3 = []
         tableOfContentAlg4 = []
         doesTrainingExist=False
+
+        #get information based off the results
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]

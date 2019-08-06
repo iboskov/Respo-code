@@ -1,0 +1,24 @@
+{% for obj in participations %}
+<tr>
+    <th scope="row">{{ forloop.counter }}</th>
+    <td>{{obj.id_education.name}}</td>
+    <td>{{obj.id_education.date_from}}</td>
+    <td>{{obj.id_education.date_to}}</td>
+    {% if obj.status == 'Accepted' %}
+        <td><span class="badge badge-success">{{obj.status}}</span></td>
+    {% elif obj.status == 'Declined' %}
+        <td><span class="badge badge-danger">{{obj.status}}</span></td>
+    {% else %}
+        <td><span class="badge badge-secondary">{{obj.status}}</span></td>
+    {% endif %}
+    {% if obj.status == 'Declined' %}
+            {% if obj.id_education.date_from|date > now|date %}
+                <td>-</td>
+            {% else %}
+                <td><a href="#" class="badge badge-primary">Resend</a></td>
+            {% endif %}
+    {% else %}
+        <td>-</td>
+    {% endif %}
+</tr>
+{% endfor %}

@@ -193,16 +193,23 @@ def addTrainings(request):
     return True
 
 def getTrainings():
-    return education.objects.all()
+    return education.objects.all().order_by('-date_from')
 
 def getTrainingsByNameAPI(name):
     return education.objects.filter(name=name)[0]
+
+def getTrainingsByPartialName(name):
+    return education.objects.filter(name__icontains=name).order_by('-date_from')
 
 def getTrainingsById(id):
     return education.objects.filter(id_education=id)[0]
 
 def deleteTrainingsById(id):
     education.objects.filter(id_education=id).delete()
+    return True
+
+def deleteTrainingByNameAPI(name):
+    education.objects.filter(name=name).delete()
     return True
 
 def getTrainingByName(name):
@@ -415,10 +422,13 @@ def getParticipationByEmployee(worker,competence):
     else:
         return False
 
-    if participation.objects.filter(id_employee=emp.id_employee,id_education=training.id_education).exists():
-        if participation.objects.filter(id_employee=emp.id_employee,id_education=training.id_education)[0].participated:
+    if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence).exists():
+        if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].participated:
             return False
         else:
+            if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].id_education.date_from <= now().date():
+                return False
+
             return True
     else:
         False
@@ -430,5 +440,23 @@ def sendEmployeeOnEducation(edu,worker):
     new_part.save()
     return True
 
-def getParticipationByEducation(edu_id):
-    return participation.objects.filter(id_education=edu_id)
+def getParticipationByEducation(edu_id,status):
+     party = participation.objects.filter(id_education=edu_id)
+     if len(party) > 0:
+         if party[0].participated == False and status == 'Finished':
+             for i in party:
+                 if i.status == 'Accepted':
+                    participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(participated=True)
+                 if i.status == 'Waiting':
+                    participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(status='Declined')
+         elif party[0].participated == False and status == 'Ongoing':
+
+                for i in party:
+                    if i.status == 'Waiting':
+                        participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(status='Declined')
+
+     return participation.objects.filter(id_education=edu_id)
+
+def getParticipationByEmployeeUsername(username):
+    worker = employee.objects.filter(username=username)[0]
+    return participation.objects.filter(id_employee=worker.id_employee).order_by('-id_education__date_from')
