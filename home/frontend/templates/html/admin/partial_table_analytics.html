@@ -12,7 +12,7 @@
                     <th scope="col">SEND INVITATION</th>
                 </tr>
             </thead>
-            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="alg1Table">
             {% for key,value in ALG1.items %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
@@ -42,7 +42,9 @@
         </table>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-primary btn-sm">SEND ALL</button>
+        {% if ALG1 %}
+            <button type="submit" class="btn btn-primary btn-sm sendAll" data-id="alg1Table">SEND ALL</button>
+        {% endif %}
     </div>
 <hr>
 <p><strong>Algorithm 2</strong></p>
@@ -58,7 +60,7 @@
                     <th scope="col">SEND INVITATION</th>
                 </tr>
             </thead>
-            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;" id="alg2Table">
                 {% for key,value in ALG2.items %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
@@ -88,7 +90,9 @@
         </table>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-primary btn-sm">SEND ALL</button>
+        {% if ALG2 %}
+            <button type="submit" class="btn btn-primary btn-sm sendAll" data-id="alg2Table">SEND ALL</button>
+        {% endif %}
     </div>
 <hr>
 <p><strong>Algorithm 3</strong></p>
@@ -104,7 +108,7 @@
                     <th scope="col">SEND INVITATION</th>
                 </tr>
             </thead>
-            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+            <tbody id="alg3Table" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                 {% for key,value in ALG3.items %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
@@ -134,7 +138,9 @@
         </table>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-primary btn-sm">SEND ALL</button>
+        {% if ALG3 %}
+            <button type="submit" class="btn btn-primary btn-sm sendAll" data-id="alg3Table">SEND ALL</button>
+        {% endif %}
     </div>
 <hr>
 <p><strong>Algorithm 4</strong></p>
@@ -150,7 +156,7 @@
                     <th scope="col">SEND INVITATION</th>
                 </tr>
             </thead>
-            <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+            <tbody id="alg4Table" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
                 {% for key,value in ALG4.items %}
                     <tr>
                         <th scope="row">{{ forloop.counter }}</th>
@@ -181,6 +187,8 @@
         </table>
     </div>
     <div class="text-right">
-        <button type="submit" class="btn btn-primary btn-sm">SEND ALL</button>
+        {% if ALG4 %}
+            <button type="submit" class="btn btn-primary btn-sm sendAll" data-id="alg4Table">SEND ALL</button>
+        {% endif %}
     </div>
 <hr>

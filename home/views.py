@@ -585,7 +585,10 @@ def sendEmployee(request):
     trainingName = devide[0]
     employee_id = devide[1]
     if sendEmployeeOnEducation(trainingName,employee_id):
-        return JsonResponse(True,safe=False)
+        dataDic = {
+            'info':information
+        }
+        return JsonResponse(data=dataDic,safe=False)
 
     return JsonResponse(False,safe=False)
 
@@ -804,6 +807,11 @@ def analyticsCompute(request):
     main_pick = "analytics"
     employees = getEmployees()
     competency = getCompetencies()
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"competency":competency,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4})
+    selects = {}
+    selects['algorithem1'] = algorithemSelect1
+    selects['algorithem2'] = algorithemSelect2
+    selects['algorithem3'] = algorithemSelect3
+    selects['algorithem4'] = algorithemSelect4
+    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"competency":competency,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4,"selects":selects})
 
 

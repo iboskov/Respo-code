@@ -108,6 +108,25 @@
 
 {% block scripts %}
 <script>
+
+function removeAttrOfButtons(){
+    $('.sendAll').each(function(){
+        data = $(this).attr('data-id');
+        if(!$('#'+data+'').find('.sendEmployee')[0]){
+            $(this).removeClass('sendAll');
+            $(this).removeClass('btn-primary').addClass('btn-secondary');
+        }
+    });
+}
+
+$(document).on('click','.sendAll', function(){
+    algorithem = $(this).attr("data-id");
+    $(this).removeClass('sendAll');
+    $(this).removeClass('btn-primary').addClass('btn-secondary');
+    $('#'+algorithem+'').find('.sendEmployee').each(function(){
+        $(this).trigger('click');
+    });
+});
 $(document).on('click','.sendEmployee', function(){
     information = $(this).attr("data-id");
     $(this).attr("hidden","True");
@@ -118,11 +137,16 @@ $(document).on('click','.sendEmployee', function(){
         },
         dataType: 'json',
         success: function(data){
+            $("a[data-id='"+data.info+"']").each(function(){
+                $(this).attr("hidden","True");
+                $(this).removeClass('sendEmployee');
+            });
             $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
             $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
             $('.myAlert-bottom2').text('Successfully sent invitation to employee');
             $('.myAlert-bottom2').show();
             $(this).attr("hidden","True")
+            removeAttrOfButtons();
             setTimeout(function() {
                 $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
                 $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');

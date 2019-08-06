@@ -54,7 +54,8 @@ def addEmployee(request):
     email = worker.get("employee_email","")
     username = worker.get("employee_username","")
     worker_workplace = worker.get("employee-workplace","")
-    #TODO ERROR CODING IN CASE IT FAILS
+
+
     new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
     if employee.objects.filter(email=email).exists() or employee.objects.filter(username=username).exists():
         return False
