@@ -24,12 +24,8 @@
                                         <th scope="col" width="50%">PASSWORD</th>
                                     </tr>
                                 </thead>
-                                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                                    <tr>
-                                        <th scope="row">1</th>
-                                        <td>ademkikaj</td>
-                                        <td><a href="#" class="badge badge-primary">Reset</a></td>
-                                    </tr>
+                                <tbody id="bodyOfOption" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                                    {% include 'html/admin/partial_table_options.html' %}
                                 </tbody>
                             </table>
                         </div>
@@ -40,3 +36,20 @@
     </div>
 </div>
 {% endblock main_content %}
+{% block scripts %}
+<script>
+$('#searchEmployee').on('keyup', function(){
+    var user = $(this).val();
+    $.ajax({
+        url: '/ajax/findEmployeeForOption/',
+        data:{
+            'username':user
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#bodyOfOption').html(data['html_from_view']);
+        }
+    });
+});
+</script>
+{% endblock %}

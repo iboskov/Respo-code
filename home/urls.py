@@ -46,7 +46,7 @@ urlpatterns = [
     path('user_competencies', views.user_competencies, name='user_competencies'),
     path('user_status', views.user_status, name='user_status'),
     path('user_trainings', views.user_trainings, name='user_trainings'),
-    #AJAX
+    #AJAX ADMIN
     url(r'^ajax/findemployee/$', views.findEmployees, name="findEmployees"),
     url(r'^ajax/findCompetenceType/$', views.findCompetenceType, name="findCompetenceType"),
     url(r'^ajax/deleteCompType/$', views.deleteCompetenceType, name="deleteCompetenceType"),
@@ -71,6 +71,7 @@ urlpatterns = [
     url(r'^ajax/findTrainingsByKey/$', views.findTrainingsByKey, name="findtrainingsByKey"),
     url(r'^ajax/deleteTrainingByName/$', views.deleteTrainingByName, name="deleteTrainingByName"),
     url(r'^ajax/getParticipationEmployee/$', views.getParticipationEmployee, name="getParticipationEmployee"),
+    url(r'^ajax/findEmployeeForOption/$', views.getEmployeeForOption, name="getEmployeeForOption"),
     url('', views.index, name='index'),
 
 

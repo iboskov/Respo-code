@@ -11,7 +11,12 @@ from home.models import *
 
 ###USER###
 def createUser(username,email,type):
-    password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?')
+    while True:
+        password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
+        if user.objects.filter(password=password).exists():
+            continue
+        break
+
     new_user = user(user_name=username,email=email,password=password,type=type)
     new_user.save()
     #send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
@@ -88,6 +93,9 @@ def getEmployees():
 
 def getEmployeesByName(name):
     return employee.objects.filter(first_name__icontains=name)
+
+def getEmployeesByNameOrUsername(name):
+    return employee.objects.filter(Q(first_name__icontains=name) | Q(last_name__icontains=name) | Q(username__icontains=name))
 
 def deleteEmployeeById(id):
     delete_emp = employee.objects.filter(id_employee=id)[0]

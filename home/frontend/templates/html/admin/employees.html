@@ -297,7 +297,7 @@ $('#searchEmployee').on('keyup',function(){
     $.ajax({
         url: '/ajax/findemployee/',
         data:{
-        'username':user
+            'username':user
         },
         dataType: 'json',
         success: function(data){

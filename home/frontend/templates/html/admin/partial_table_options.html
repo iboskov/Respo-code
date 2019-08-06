@@ -1,0 +1,7 @@
+{% for obj in employees %}
+<tr>
+    <th scope="row">{{ forloop.counter }}</th>
+    <td>{{obj.first_name}} {{obj.last_name}} ( {{obj.username}} )</td>
+    <td><a href="#" class="badge badge-primary" data-id="{{obj.username}}">Reset</a></td>
+</tr>
+{% endfor %}

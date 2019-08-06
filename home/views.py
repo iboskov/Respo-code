@@ -95,8 +95,9 @@ def workplaces(request):
 def options(request):
     user = "admin"
     main_pick = 'options'
+    employees = getEmployees()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user, "alert": alert})
+    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user,"employees":employees, "alert": alert})
 
 
 def history(request):
@@ -173,7 +174,6 @@ def user_trainings(request):
 # endregion
 
 #***API***
-#TODO SEND CONFIRMATION
 def employeeAdd(request):
     user = "admin"
     main_pick = "employees"
@@ -429,7 +429,7 @@ def getParticipationEmployee(request):
     return JsonResponse(data=data_dict, safe=False)
 
 def findTrainingsByKey(request):
-    keys = request.GET.get('training')
+    keys = request.GET.get('training', None)
     allTrainings = getTrainingsByPartialName(keys)
     train = {}
     train = calculateForTrainings(allTrainings)
@@ -440,6 +440,15 @@ def findTrainingsByKey(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+def getEmployeeForOption(request):
+    keys = request.GET.get('username', None)
+    findWorkers = getEmployeesByNameOrUsername(keys)
+    html = render_to_string(
+        template_name="html/admin/partial_table_options.html",
+        context={'employees':findWorkers}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
 
 def addCompetenciesToUser(request):
     value = request.GET
