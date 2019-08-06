@@ -589,7 +589,12 @@ def sendEmployee(request):
 
     return JsonResponse(False,safe=False)
 
+def resetPassword(request):
+    username = request.GET.get('username', None)
+    if changePassword(username):
+        return JsonResponse(True, safe=False)
 
+    return JsonResponse(False, safe=False)
 
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)

@@ -35,9 +35,31 @@
         </div>
     </div>
 </div>
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
 {% endblock main_content %}
 {% block scripts %}
 <script>
+$(document).on('click', '.resetPass', function(){
+    worker = $(this).attr("data-id");
+    $(this).attr('hidden', 'True');
+    $.ajax({
+        url: '/ajax/resetPassword/',
+        data:{
+            'username':worker
+        },
+        dataType: 'json',
+        success: function(data){
+            $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+            $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+            $('.myAlert-bottom2').text('Successfully reset employees password');
+            $('.myAlert-bottom2').show();
+            setTimeout(function() {
+              $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+              $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+            }, 2000);
+        }
+    });
+});
 $('#searchEmployee').on('keyup', function(){
     var user = $(this).val();
     $.ajax({

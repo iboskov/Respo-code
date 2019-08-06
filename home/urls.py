@@ -72,6 +72,7 @@ urlpatterns = [
     url(r'^ajax/deleteTrainingByName/$', views.deleteTrainingByName, name="deleteTrainingByName"),
     url(r'^ajax/getParticipationEmployee/$', views.getParticipationEmployee, name="getParticipationEmployee"),
     url(r'^ajax/findEmployeeForOption/$', views.getEmployeeForOption, name="getEmployeeForOption"),
+    url(r'^ajax/resetPassword/$', views.resetPassword, name="resetPassword"),
     url('', views.index, name='index'),
 
 

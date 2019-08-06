@@ -21,11 +21,27 @@ def createUser(username,email,type):
     new_user.save()
     #send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
     subject = 'Account on Respo project app'
-    message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application\n \n Username: '+username+'\n password: '+password+'\n \n best wishes the Respo team'
+    message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application\n \n Username: '+username+'\n Password: '+password+'\n \n best wishes the Respo team'
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
     send_mail(subject,message,from_email,to_list,fail_silently=False)
 
+def changePassword(username):
+    while True:
+        password = get_random_string(length=10,
+                                     allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
+        if user.objects.filter(password=password).exists():
+            continue
+        break
+    worker = employee.objects.filter(username=username)[0]
+    user.objects.filter(user_name=username).update(password=password)
+    #send email
+    subject = 'Account on Respo project app'
+    message = 'Hello '+worker.first_name+' '+worker.last_name+',\n you are seeing this email because an administrator changed your password. \n Here is your new password for logging into the respo application\n \n Username: '+username+'\n Password: '+password+'\n \n best wishes the Respo team'
+    from_email = settings.EMAIL_HOST_USER
+    to_list = [worker.email]
+    send_mail(subject, message, from_email, to_list, fail_silently=False)
+    return True
 ###EMPLOYEE###
 def addEmployee(request):
 

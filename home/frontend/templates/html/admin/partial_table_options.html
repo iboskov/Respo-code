@@ -2,6 +2,6 @@
 <tr>
     <th scope="row">{{ forloop.counter }}</th>
     <td>{{obj.first_name}} {{obj.last_name}} ( {{obj.username}} )</td>
-    <td><a href="#" class="badge badge-primary" data-id="{{obj.username}}">Reset</a></td>
+    <td><a href="#" class="badge badge-primary resetPass" data-id="{{obj.username}}">Reset</a></td>
 </tr>
 {% endfor %}
