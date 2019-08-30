@@ -1,5 +1,9 @@
 RESPO PROJECT STRUCTURE
 
+##WARNING
+anybody who before the 30.8.2019 set up their database for the respo project needs to delete their version of the database
+and create it again. This is because the previous database isn't compatable with the changes commited on the 30.8.2019.
+
 RESPO
 - home/backend (where all the analytics files are gonna be located and the connection with the database)
     
