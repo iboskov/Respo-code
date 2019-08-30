@@ -1,0 +1,13 @@
+{% for obj in competences %}
+<tr>
+    <th scope="row">{{obj.id_competence.hoegen_id}}</th>
+    <td>{{obj.id_competence.slo_name}}</td>
+    <td>{{obj.id_competence_type.name}}</td>
+    <td>{{obj.id_competence.desc}}</td>
+    {% for rele in relevance %}
+        {% if rele.id_competence.id_competence == obj.id_competence.id_competence %}
+            <td><strong>{{obj.level}}/{{rele.minimum_required}}</strong></td>
+        {% endif %}
+    {% endfor %}
+</tr>
+{% endfor %}

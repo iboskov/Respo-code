@@ -5,51 +5,110 @@
 
 <div class="row mt-2">
     <div class="col">
-        <h2 class="text-primary">Trainings</h2>
+        <h2 class="text-primary">Scheduled Trainings</h2>
     </div>
 </div>
 
 <div class="row">
-    <div class="col col-xl-8">
+    <div class="col col-xl-10">
         <div class="table-responsive">
             <table class="table table-hover">
                 <thead class="bg-primary text-white" style="font-size: .65rem;">
                     <tr>
                         <th scope="col" style="width:1%;">#</th>
-                        <th scope="col"  style="width:30%;">NAME</th>
-                        <th scope="col"  style="width:30%;">DESCRIPTION</th>
-                        <th scope="col"  style="width:10%;">FROM</th>
-                        <th scope="col"  style="width:10%;">TO</th>
+                        <th scope="col"  style="width:10%;">NAME</th>
+                        <th scope="col"  style="width:25%;">DESCRIPTION</th>
+                        <th scope="col"  style="width:20%;">FROM</th>
+                        <th scope="col"  style="width:20%;">TO</th>
                         <th scope="col"  style="width:20%;">RESPONSE</th>
                     </tr>
                 </thead>
-                <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
-                    <tr>
-                        <th scope="row">1</th>
-                        <td>English 1</td>
-                        <td>English Training Description</td>
-                        <td>10/02/2019</td>
-                        <td>30/02/2019</td>
-                        <td>
-                            <a href="#" class="badge badge-primary">ACCEPT</a>
-                            <a href="#" class="badge badge-primary">DECLINE</a>
-                        </td>
-                    </tr>
-                    <tr>
-                        <th scope="row">2</th>
-                        <td>English 2</td>
-                        <td>English 2 Training Description</td>
-                        <td>15/02/2019</td>
-                        <td>05/03/2019</td>
-                        <td>
-                            <a href="#" class="badge badge-primary">ACCEPT</a>
-                            <a href="#" class="badge badge-primary">DECLINE</a>
-                        </td>
-                    </tr>
+                <tbody id="bodyOfUserTraining" style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                    {% for obj in participation %}
+                        {% now "Y-m-d" as todays_date %}
+                        {% if todays_date < obj.id_education.date_from|date:"Y-m-d" %}
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td>{{ obj.id_education.name}}</td>
+                                <td>{{ obj.id_education.desc }}</td>
+                                <td>{{ obj.id_education.date_from }}</td>
+                                <td>{{ obj.id_education.date_to }}</td>
+                                <td>
+                                    {% if obj.status == 'Accepted' %}
+                                        <span data-id="{{ obj.id_education.name }}" class="badge badge-success ">ACCEPTED</span>
+                                    {% elif obj.status == 'Declined' %}
+                                        <span data-id="{{ obj.id_education.name }}" class="badge badge-danger ">DECLINED</span>
+                                    {% else %}
+                                        <a href="#" data-id="{{ obj.id_education.name }}" class="badge badge-primary invAccept">ACCEPT</a>
+                                        <a href="#" data-id="{{ obj.id_education.name }}" class="badge badge-danger invDecline">DECLINE</a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
     </div>
 </div>
-
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
 {% endblock main_content %}
+{% block scripts %}
+<script>
+    $(document).on('click','.invAccept', function(){
+        training = $(this).attr('data-id');
+        $(this).removeClass('badge-primary').addClass('badge-success');
+        $(this).removeClass('invAccept');
+        $(this).removeAttr('data-id');
+        $("a[data-id='"+training+"']").attr('hidden','True');
+        $(this).text("ACCEPTED");
+        $(this).removeAttr('href');
+        $.ajax({
+           url: '/ajax/trainingResponse/',
+           data:{
+                'training':training,
+                'response':'Accepted'
+           },
+           dataType: 'json',
+           success: function(data){
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully accepted training');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                  $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                  $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                }, 3000);
+           }
+        });
+
+    });
+    $(document).on('click','.invDecline', function(){
+        console.log("hello");
+        training = $(this).attr('data-id');
+        $(this).removeClass('invDecline');
+        $(this).removeAttr('data-id');
+        $(this).text("DECLINED");
+        $("a[data-id='"+training+"']").attr('hidden','True');
+        $(this).removeAttr('href');
+        $.ajax({
+            url: '/ajax/trainingResponse/',
+            data:{
+                'training':training,
+                'response':'Declined'
+            },
+            dataType: 'json',
+            success: function(data){
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully declined training');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                  $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                  $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                }, 3000);
+            }
+        });
+    });
+</script>
+{% endblock %}

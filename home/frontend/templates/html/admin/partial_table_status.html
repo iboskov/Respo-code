@@ -4,11 +4,11 @@
         <div class="row align-items-center">
             <div class="col">
                 {% if value.status == 'Scheduled' %}
-                    {{key}} <span class="badge badge-primary">{{value.status}}</span>
+                    <strong>{{key}}</strong>  <span class="badge badge-primary">{{value.status}}</span>
                 {% elif value.status == 'Ongoing' %}
-                    {{key}} <span class="badge badge-success">{{value.status}}</span>
+                    <strong>{{key}}</strong>  <span class="badge badge-success">{{value.status}}</span>
                 {% else %}
-                    {{key}} <span class="badge badge-secondary">{{value.status}}</span>
+                    <strong>{{key}}</strong>  <span class="badge badge-secondary">{{value.status}}</span>
                 {% endif %}
             </div>
             <div class="col text-right">
@@ -19,7 +19,7 @@
     <div class="card-body">
         {% for ke,va in value.participants.items %}
             {% if ke == 'desc' %}
-                <p class="card-text">Description of the Training: {{va}}</p>
+        <p class="card-text"><strong>Description of the Training:</strong> {{va}}</p>
             {% endif %}
         {% endfor %}
         <div class="table-responsive">
@@ -55,7 +55,7 @@
                                 {% elif value.status == 'Finished' %}
                                     <td>-</td>
                                 {% else %}
-                                    <td><a href="#" class="badge badge-primary">Resend</a></td>
+                                    <td><a href="#" data-type="first" data-id="{{ke}}|{{key}}" class="badge badge-primary resendInv">Resend</a></td>
                                 {% endif %}
                             {% endif %}
                         </tr>

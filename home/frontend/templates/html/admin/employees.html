@@ -114,7 +114,7 @@
                                             <table class="table table-hover">
                                                 <thead class="bg-primary text-white" style="font-size: .65rem;">
                                                     <tr>
-                                                        <th scope="col">#</th>
+                                                        <th scope="col" style="width:10%">#</th>
                                                         <th scope="col">NAME</th>
                                                         <th scope="col" style="width:50%;">SCORE</th>
                                                     </tr>
@@ -136,14 +136,33 @@
                     <h4 class="text-primary">Employee History</h4>
                     <div class="form-group">
                         <label for="historyLabel">Search employee:</label>
-                        <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" placeholder="Enter employee name or username" >
+                        <select style="width:40%" class="js-example-basic-multiple js-states form-control" id="historyLabel" name="history-label" >
                             {% for obj in employees %}
                                 <option>{{obj.first_name}} {{obj.last_name}} ({{obj.username}})</option>
                             {% endfor %}
                         </select>
                     </div>
-                    <div class="col-xl-6 text-center">
-                        <canvas id="myChart"></canvas>
+                    <div class="row">
+                        <div class="col-xl-4">
+                            <div class="form-group">
+                                <label for="fromInput">From:</label>
+                                <input type="date" class="form-control" id="fromInput">
+                            </div>
+                            <div class="form-group">
+                                <label for="toInput">To:</label>
+                                <input type="date" class="form-control" id="toInput">
+                            </div>
+                            <div class="form-group">
+                                <label for="competenceInput">Competence:</label>
+                                <select class="js-example-basic-multiple js-states form-control" name="competence_input" id="competenceInput" required>
+                                    {% include 'html/admin/partial_options_employee_competence.html' %}
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-primary onSelect">Submit</button>
+                        </div>
+                        <div class="col-xl-8 text-center">
+                            <canvas id="myChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -239,6 +258,68 @@
 {% block scripts %}
 <script>
 
+$(document).on('click', '.onSelect', function(){
+    var competences = $('#competenceInput').val();
+
+    if(competences == null){
+        return 0;
+    }
+    var from = $('#fromInput').val();
+    var to = $('#toInput').val();
+    var employ = $('#historyLabel').val();
+    $.ajax({
+        url: '/ajax/getGraphAdmin/',
+        data:{
+            'employ':employ,
+            'competences':competences,
+            'from':from,
+            'to':to
+        },
+        dataType: 'json',
+        success: function(data){
+            var times = data['Times'];
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: times,
+                    datasets: data['information']
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Employee competence over time'
+                    }
+                }
+            });
+        }
+    });
+
+});
+
+$(document).ready(function(){
+    $('#historyLabel').trigger('change');
+});
+
+$('#historyLabel').on('change', function(){
+    var employee = $(this).val();
+    $.ajax({
+        url: '/ajax/getEmployeeCompetenceHistory/',
+        data:{
+            'info':employee
+        },
+        dataType: 'json',
+        success: function(data){
+            $('#competenceInput').html(data['html_from_view']);
+        }
+    });
+});
 $(document).on('click', '.deleteIconModal', function () {
    id_employee = $(this).attr("data-id");
    $('.btn-danger').attr('data-id',id_employee);
@@ -402,22 +483,18 @@ $(".js-example-basic-multiple").select2({data: data});
 var ctx = document.getElementById('myChart');
 var myLineChart = new Chart(ctx, {
     type: 'line',
-    data: {
-        labels: ['Competence 1', 'Competence 2', 'Competence 3', 'Competence 4', 'Competence 5', 'Competence 6', 'Competence 7'],
-        datasets: [{
-            label: 'Before Training',
-            backgroundColor: 'rgba(255, 0, 0, 1)',
-            borderColor: 'rgba(255, 0, 0, 1)',
-            data: [4, 3, 2, 5, 2, 6, 8],
-            fill: false,
-        }, {
-            label: 'After Training',
-            fill: false,
-            backgroundColor: 'rgba(0, 0, 255, 1)',
-            borderColor: 'rgba(0, 0, 255, 1)',
-            data: [7, 5, 5, 8, 3, 7, 10],
-            fill: false
-        }]
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Employee competence over time'
+        }
     }
 });
 </script>

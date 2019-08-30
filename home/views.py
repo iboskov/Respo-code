@@ -4,34 +4,67 @@ This is the views.py file where we will direct html and send objects from backen
 login function atm is just an example of how it should be written.
 'html\login' is the location of the html file.
 """
+from django.core.files.storage import FileSystemStorage
 from django.core.files import File
 import pandas as pd
 from pandas import ExcelFile
 from django.shortcuts import render, redirect
 from home.API import *
 from home.Analytics import *
+from home.decorators import employee_required, HR_required
 import json
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 import numpy as np
 from django.utils.timezone import now
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate, login, logout, get_user
 from django.core.serializers.json import DjangoJSONEncoder
 # Create your views here.
 from django.http import HttpResponse
 
-
+@login_required
 def index(request):
-    user = "admin"
-    return render(request, 'html/index.html', {"user": user})
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    return render(request, 'html/index.html', {'notifications':notifications,'number':nrOfNotifications})
 
 
-def login(request):
-    title = "Login"
-    return render(request, 'html/login.html', {"title": title})
+#def login(request):
+#    title = "Login"
+#    return render(request, 'html/login.html', {"title": title})
 
 # region admin_views
 
 # additional functions
+def authenticationOfUser(request):
+    username = request.POST['usrName']
+    password = request.POST['usrPass']
+    user = findUser(username,password)
+    print(user)
+    if user is not None:
+        login(request,user)
+        notifications = getAllNotifications(user)
+        nrOfNotifications = len(notifications)
+        allTrainings = getTrainings()
+        train = calculateForTrainings(allTrainings)
+        usr = "admin"
+        return render(request, 'html/index.html', {"usr": usr,'notifications':notifications,'number':nrOfNotifications})
+    else:
+        title = "Login"
+        alert = {"show": "inline", "type": "danger", "message": "Wrong username or password."}
+        return render(request, 'registration/login.html', {"title": title,'alert':alert})
+
+
+#TODO create check for code and create admin user
+@login_required
+def logoutUser(request):
+    logout(request)
+    title = "Login"
+    alert = {"show": "inline", "type": "success", "message": "You have successfully logged out."}
+    return render(request, 'registration/login.html', {"title": title,"alert":alert})
+
 def calculateForTrainings(allTrainings):
     train = {}
     for i in allTrainings:
@@ -55,126 +88,206 @@ def calculateForTrainings(allTrainings):
         train[i.name] = participant
     return train
 # end additional functions
-
+@login_required
+@HR_required
 def upload(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    usr = "admin"
     main_pick = "upload"
     alert = {"show": "none", "type": "success", "message": "Excel's have been successfully uploaded!"}
-    return render(request, 'html/admin/upload.html', {"main_pick": main_pick, "user": user, "alert": alert})
-
-
+    return render(request, 'html/admin/upload.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": usr, "alert": alert})
+@login_required
+@HR_required
 def employees(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    usr = "admin"
     main_pick = "employees"
     employees = getEmployees()
     workplaces = getWorkplaces()
     competence_types = getCompetenceTypes()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
+    return render(request, 'html/admin/employees.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": usr, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
 
-
+@login_required
+@HR_required
 def competencies(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    usr = "admin"
     main_pick = 'competencies'
     competency = getCompetencies()
     competency_type = getAllCompetencies_type()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
     return render(request, 'html/admin/competencies.html',
-                  {"main_pick": main_pick, "user": user, "competency": competency, "competency_type": competency_type, "alert": alert})
+                  {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": usr, "competency": competency, "competency_type": competency_type, "alert": alert})
 
-
+@login_required
+@HR_required
 def workplaces(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    usr = "admin"
     main_pick = 'workplaces'
     competency = getCompetencies()
     workplaces = getWorkplaces()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/workplaces.html', {"main_pick": main_pick, "user": user,'competency':competency,'workplaces':workplaces, "alert": alert})
+    return render(request, 'html/admin/workplaces.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": usr,'competency':competency,'workplaces':workplaces, "alert": alert})
 
-
+@login_required
+@HR_required
 def options(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = 'options'
     employees = getEmployees()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/options.html', {"main_pick": main_pick, "user": user,"employees":employees, "alert": alert})
+    return render(request, 'html/admin/options.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user,"employees":employees, "alert": alert})
 
-
+@login_required
+@HR_required
 def history(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "history"
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/history.html', {"main_pick": main_pick, "user": user, "alert": alert})
+    return render(request, 'html/admin/history.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "alert": alert})
 
-
+@login_required
+@HR_required
 def trainings(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "trainings"
     competency = getCompetencies()
     trainings = getTrainings()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/trainings.html', {"main_pick": main_pick, "user": user,"competency":competency,"trainings":trainings, "alert": alert})
+    return render(request, 'html/admin/trainings.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user,"competency":competency,"trainings":trainings, "alert": alert})
 
+@login_required
+@HR_required
 def analytics(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "analytics"
     employees = getEmployees()
     competency = getCompetencies()
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user,"employees":employees,"competency":competency, "alert": alert})
+    return render(request, 'html/admin/analytics.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user,"employees":employees,"competency":competency, "alert": alert})
 
-
+@login_required
+@HR_required
 def status(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "status"
     train = {}
     employees = getEmployees()
     allTrainings = getTrainings()
-
+    competency = getCompetencies()
     train = calculateForTrainings(allTrainings)
-    print(train)
     alert = {"show": "none", "type": "danger", "message": "There was a problem adding an employee!"}
-    return render(request, 'html/admin/status.html', {"main_pick": main_pick, "user": user,"train":train,"employees":employees, "alert": alert})
+    return render(request, 'html/admin/status.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick,"competency":competency, "usr": user,"train":train,"employees":employees, "alert": alert})
 # endregion
 
 # region user_views
 
-
+@login_required
+@employee_required
 def user_history_recent(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    employe = getEmployeeeByNameAndSurname(user.first_name, user.last_name)[0]
+    user_comp = getAllEmployeeCompetence(employe.id_employee)
     user = "user"
     main_pick = "user_history"
     picked = "recent"
-    return render(request, 'html/user/history.html', {"main_pick": main_pick, "user": user, "picked": picked})
+    return render(request, 'html/user/history.html', {'competences':user_comp,'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "picked": picked})
 
-
+@login_required
+@employee_required
 def user_history_timeline(request):
-    user = "user"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    employe = getEmployeeeByNameAndSurname(user.first_name, user.last_name)[0]
+    user_comp = getAllEmployeeCompetence(employe.id_employee)
+    user = "usr"
     main_pick = "user_history"
     picked = "timeline"
-    return render(request, 'html/user/history.html', {"main_pick": main_pick, "user": user, "picked": picked})
+    return render(request, 'html/user/history.html', {'competences':user_comp,'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "picked": picked})
 
-
+@login_required
+@employee_required
 def user_competencies(request):
-    user = "user"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    user = get_user(request)
+    employe = getEmployeeeByNameAndSurname(user.first_name,user.last_name)[0]
+    user_comp = getAllEmployeeCompetence(employe.id_employee)
+    types = []
+
+    for i in user_comp:
+        exists = False
+        for j in types:
+            if j == i.id_competence_type.name:
+                exists = True
+        if exists:
+            continue
+        types.append(i.id_competence_type.name)
+
     main_pick = "user_competencies"
-    return render(request, 'html/user/competencies.html', {"main_pick": main_pick, "user": user})
+    return render(request, 'html/user/competencies.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick,"types":types,"competences":user_comp})
 
-
+@login_required
+@employee_required
 def user_status(request):
-    user = "user"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    user = get_user(request)
+    competency = getCompetencies()
+    get_participation = getParticipationByEmployeeUsername(user.username)
     main_pick = "user_status"
-    return render(request, 'html/user/user_status.html', {"main_pick": main_pick, "user": user})
+    return render(request, 'html/user/user_status.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick,"competency":competency,"participation":get_participation})
 
-
+@login_required
+@employee_required
 def user_trainings(request):
-    user = "user"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    user = get_user(request)
+    get_participation = getParticipationByEmployeeUsername(user.username)
     main_pick = "user_trainings"
-    return render(request, 'html/user/trainings.html', {"main_pick": main_pick, "user": user})
+    return render(request, 'html/user/trainings.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick,'participation':get_participation})
 
 # endregion
 
 #***API***
+@login_required
+@HR_required
 def employeeAdd(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "employees"
     workplaces = getWorkplaces()
@@ -182,13 +295,31 @@ def employeeAdd(request):
     if addEmployee(request):
         employees = getEmployees()
         alert = {"show": "inline", "type": "success", "message": "Employee successfully added"}
-        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
+        return render(request, 'html/admin/employees.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
         alert = {"show": "inline", "type": "danger", "message": "Employee already exists, username and email must be unique!"}
-        return render(request, 'html/admin/employees.html', {"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types,"alert":alert})
+        return render(request, 'html/admin/employees.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "employees": employees, "workplaces": workplaces, "competence_types": competence_types,"alert":alert})
 
+def createHR(request):
+    title = "Login"
+    value = addHR_user(request)
+    if value == 'not code':
+        alert = {"show": "inline", "type": "danger", "message": "The code you entered is invalid"}
+        return render(request, 'registration/login.html', {"title": title, "alert": alert})
+    if value:
+        alert = {"show": "inline", "type": "success", "message": "Successfully created an account. A email with your username and password has been sent."}
+        return render(request, 'registration/login.html', {"title":title,"alert":alert})
+    else:
+        alert = {"show": "inline", "type": "danger", "message": "An account with that username or email already exists."}
+        return render(request, 'registration/login.html', {"title": title, "alert": alert})
+
+@login_required
+@HR_required
 def employeeEdit(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "employees"
     workplaces = getWorkplaces()
@@ -196,27 +327,37 @@ def employeeEdit(request):
     if editEmployee(request):
         employees = getEmployees()
         alert = {"show": "inline", "type": "success", "message": "Employee successfully changed"}
-        return render(request, 'html/admin/employees.html',{"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
+        return render(request, 'html/admin/employees.html',{'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
     else:
         employees = getEmployees()
         alert = {"show": "inline", "type": "danger", "message": "Employee was not edited, keep in mind you cannot change username and email at the same time."}
-        return render(request, 'html/admin/employees.html',{"main_pick": main_pick, "user": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
+        return render(request, 'html/admin/employees.html',{'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "employees": employees, "workplaces": workplaces,"competence_types": competence_types, "alert": alert})
 
+@login_required
+@HR_required
 def competencyAdd(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = 'competencies'
     if addCompetencies(request):
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "success", "message": "Competency successfully added"}
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+        return render(request, 'html/admin/competencies.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency":competency,"competency_type":competency_type,"alert":alert})
     else:
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "danger", "message": "Competency already exists, Hoegen id and Slovenian name need to be unique!"}
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+        return render(request, 'html/admin/competencies.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency":competency,"competency_type":competency_type,"alert":alert})
 
+@login_required
+@HR_required
 def competenciesEdit(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = 'competencies'
     if editCompetenceByRequest(request):
@@ -224,31 +365,41 @@ def competenciesEdit(request):
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "success", "message": "Competency successfully changed!"}
         return render(request, 'html/admin/competencies.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency,
                        "competency_type": competency_type, "alert": alert})
     else:
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "danger", "message": "Competency with that hoegen id already exists!"}
         return render(request, 'html/admin/competencies.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency,
                        "competency_type": competency_type, "alert": alert})
 
+@login_required
+@HR_required
 def competencies_type_edit(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = 'competencies'
     if editCompetenceType(request):
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "success", "message": "Competency type successfully changed"}
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+        return render(request, 'html/admin/competencies.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency":competency,"competency_type":competency_type,"alert":alert})
     else:
         competency = getCompetencies()
         competency_type = getAllCompetencies_type()
         alert = {"show": "inline", "type": "danger", "message": "Competency type name already exists!"}
-        return render(request, 'html/admin/competencies.html', {"main_pick": main_pick, "user": user, "competency":competency,"competency_type":competency_type,"alert":alert})
+        return render(request, 'html/admin/competencies.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency":competency,"competency_type":competency_type,"alert":alert})
 
+@login_required
+@HR_required
 def trainingsAdd(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "trainings"
     competency = getCompetencies()
@@ -256,15 +407,20 @@ def trainingsAdd(request):
         alert = {"show": "inline", "type": "success", "message": "Training successfully added"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency,"trainings":trainings,"alert":alert})
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency,"trainings":trainings,"alert":alert})
     else:
         alert = {"show": "inline", "type": "danger", "message": "Training with that name already exists!"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency, "trainings": trainings,
                        "alert": alert})
 
+@login_required
+@HR_required
 def workplaceAdd(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "workplaces"
     if addWorkplace(request):
@@ -272,15 +428,20 @@ def workplaceAdd(request):
         alert = {"show": "inline", "type": "success", "message": "Workplace successfully added"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency,'workplaces':workplaces,'alert':alert})
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency,'workplaces':workplaces,'alert':alert})
     else:
         workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "danger", "message": "Workplace with that name already exists!"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency,'workplaces':workplaces, 'alert': alert})
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency,'workplaces':workplaces, 'alert': alert})
 
+@login_required
+@HR_required
 def workplaceEdit(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     user = "admin"
     main_pick = "workplaces"
     if editWorkplace(request):
@@ -288,51 +449,205 @@ def workplaceEdit(request):
         alert = {"show": "inline", "type": "success", "message": "Workplace successfully changed"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency, 'workplaces': workplaces,
                        'alert': alert})
     else:
         workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "danger", "message": "Workplace with that name already exists!"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency, 'workplaces': workplaces,
                        'alert': alert})
 
+@login_required
+@HR_required
 def addExtraRelevanceToWorkplace(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     main_pick = "workplaces"
     if addExtraCompetenceRelevance(request):
         workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "success", "message": "Successfully added more competencies to workplace"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency, 'workplaces': workplaces,
                        'alert': alert})
     else:
         workplaces = getWorkplaces()
         alert = {"show": "inline", "type": "danger", "message": "One or more competencies already exists for that workplace!"}
         competency = getCompetencies()
         return render(request, 'html/admin/workplaces.html',
-                      {"main_pick": main_pick, "user": user, 'competency': competency, 'workplaces': workplaces,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, 'competency': competency, 'workplaces': workplaces,
                        'alert': alert})
 
+@login_required
+@HR_required
 def editTraining(request):
-    user = "admin"
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
     main_pick = "trainings"
     competency = getCompetencies()
     if editTrainings(request):
         alert = {"show": "inline", "type": "success", "message": "Training successfully changed!"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency, "trainings": trainings,
                        "alert": alert})
     else:
         alert = {"show": "inline", "type": "danger", "message": "Training with that name already exists!"}
         trainings = getTrainings()
         return render(request, 'html/admin/trainings.html',
-                      {"main_pick": main_pick, "user": user, "competency": competency, "trainings": trainings,"alert":alert})
+                      {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "competency": competency, "trainings": trainings,"alert":alert})
 
-###AJAX###
+###AJAX USER###
+@login_required
+@employee_required
+def getCompetencesByUser(request):
+    type = request.GET.get('type', None)
+    comp = request.GET.get('competence', None)
+
+    user = get_user(request)
+    employ = getEmployeeeByNameAndSurname(user.first_name,user.last_name)[0]
+    compRelevance = getAllCompetenceRelevanceForWorkplace(employ.id_workplace.id_workplace)
+    userCompetence = 0
+    if comp is not None:
+        userCompetence = getEmployeeCompetenceByTypeAndKey(type,comp)
+    else:
+        userCompetence = getEmployeeCompetenceByType(type)
+    html = render_to_string(
+        template_name="html/user/partial_table_competencies_user.html",
+        context={'competences':userCompetence,'relevance':compRelevance}
+    )
+    data_dict = {"html_from_view":html}
+    return JsonResponse(data=data_dict, safe=False)
+
+@login_required
+@employee_required
+def respondToTraining(request):
+    train = request.GET.get('training',None)
+    response = request.GET.get('response', None)
+    user = get_user(request)
+    if setResponseToParticipation(user.username,response,train):
+        return JsonResponse(True,safe=False)
+
+    return JsonResponse(False,safe=False)
+
+@login_required
+@employee_required
+def changeDecision(request):
+    info = request.GET.get('info',None)
+    decision = request.GET.get('decision', None)
+    if resetResponseParticipation(info,decision):
+        return JsonResponse(True, safe=False)
+
+    return JsonResponse(False, safe=False)
+
+@login_required
+@employee_required
+def getGraphUser(request):
+    compList = request.GET.get('competences')
+    fromDate = request.GET.get('from', None)
+    toDate = request.GET.get('to', None)
+    user = get_user(request)
+    employ = getEmployeeByUsername(user.username)
+    work = findWorkplaceByName(employ.id_workplace.name)
+    dictionary = {}
+    times = []
+
+    lst = []
+    relevance = getCompetenceRelevanceByWorkAndComp(compList,work.id_workplace,)
+    if fromDate == "" or fromDate == None:
+        fromDate = None
+    if toDate == "" or toDate == None:
+        toDate = None
+    listOfEmpComp = getEmployeeHistoryFromTimeCompetenceAndEmployee(user.username,fromDate,toDate,compList)
+    print(listOfEmpComp)
+    data = []
+    dataRel = []
+    for j in listOfEmpComp:
+        dicton = j.as_json()
+        if dicton['dateOfChange'] not in times:
+            times.append(dicton['dateOfChange'])
+            data.append(dicton['level'])
+            dataRel.append(relevance.minimum_required)
+    new_dic = dict(
+        label=compList,
+        fill=False,
+        data=data,
+        borderColor="#3e95cd",
+        backgroundColor="#3e95cd"
+    )
+    lst.append(new_dic)
+    rele_dic = dict(
+        label='workplace relevance ('+work.name+')',
+        fill=False,
+        data=dataRel,
+        borderColor="#3cba9f",
+        backgroundColor="#3cba9f"
+    )
+    lst.append(rele_dic)
+    dictionary['information'] = lst
+    dictionary['Times'] = times
+
+    return JsonResponse(data=dictionary, safe=False)
+
+###AJAX ADMIN###
+@login_required
+@HR_required
+def getGraphAdmin(request):
+    compList = request.GET.get('competences')
+    fromDate = request.GET.get('from', None)
+    toDate = request.GET.get('to', None)
+    emp = request.GET.get('employ', None)
+    devide = emp.split('(')
+    newDevide = devide[1].split(')')
+    worker = newDevide[0]
+    employ = getEmployeeByUsername(worker)
+
+    work = findWorkplaceByName(employ.id_workplace.name)
+    dictionary = {}
+    times = []
+
+    lst = []
+    relevance = getCompetenceRelevanceByWorkAndComp(compList, work.id_workplace, )
+    if fromDate == "" or fromDate == None:
+        fromDate = None
+    if toDate == "" or toDate == None:
+        toDate = None
+    listOfEmpComp = getEmployeeHistoryFromTimeCompetenceAndEmployee(employ.username, fromDate, toDate, compList)
+    data = []
+    dataRel = []
+    for j in listOfEmpComp:
+        dicton = j.as_json()
+        if dicton['dateOfChange'] not in times:
+            times.append(dicton['dateOfChange'])
+            data.append(dicton['level'])
+            dataRel.append(relevance.minimum_required)
+    new_dic = dict(
+        label=compList,
+        fill=False,
+        data=data,
+        borderColor="#3e95cd",
+        backgroundColor="#3e95cd"
+    )
+    lst.append(new_dic)
+    rele_dic = dict(
+        label='workplace relevance (' + work.name + ')',
+        fill=False,
+        data=dataRel,
+        borderColor="#3cba9f",
+        backgroundColor="#3cba9f"
+    )
+    lst.append(rele_dic)
+    dictionary['information'] = lst
+    dictionary['Times'] = times
+
+    return JsonResponse(data=dictionary, safe=False)
+
+@login_required
+@HR_required
 def findEmployees(request):
     user = request.GET.get('username',None)
     foundUsers = getEmployeesByName(user)
@@ -341,8 +656,28 @@ def findEmployees(request):
         context={"employees":foundUsers}
     )
     data_dict = {"html_from_view": html}
-    return JsonResponse(data = data_dict,safe=False)
+    return JsonResponse(data=data_dict,safe=False)
 
+@login_required
+@HR_required
+def getEmployeeCompetenceHistory(request):
+    employ = request.GET.get('info', None)
+    devide = employ.split('(')
+    anotherDevide = devide[1].split(')')
+    usernameOfEmp = anotherDevide[0]
+    getEmp = getEmployeeByUsername(usernameOfEmp)
+    getCompRelevance = getAllEmployeeCompetence(getEmp.id_employee)
+
+    html = render_to_string(
+        template_name="html/admin/partial_options_employee_competence.html",
+        context={'EmpCompetences':getCompRelevance}
+    )
+    data_dict = {"html_from_view": html}
+    return JsonResponse(data=data_dict, safe=False)
+
+
+@login_required
+@HR_required
 def findCompetenceType(request):
     value = request.GET.get('types',None)
     foundTypes = getCompetenceType(value)
@@ -353,6 +688,8 @@ def findCompetenceType(request):
     data_dict = {"html_from_view": html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def findCompetencesByType(request):
     value = request.GET.get('types', None)
     id_employee = request.GET.get('employee',None)
@@ -368,6 +705,8 @@ def findCompetencesByType(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def findCompetencesByTwo(request):
     value = request.GET.get('value',None)
     type = request.GET.get('types', None)
@@ -385,6 +724,8 @@ def findCompetencesByTwo(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def getCompetenciesByTypeOnRequest(request):
     type = request.GET.get('types', None)
     competences = getCompetenciesByOnlyType(type)
@@ -395,9 +736,10 @@ def getCompetenciesByTypeOnRequest(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def findWorkplaceRelevance(request):
     workplace_name = request.GET.get('name', None)
-    print(workplace_name)
     competencesWithRelevance = findWorkplaceRelevanceAPI(workplace_name)
     html = render_to_string(
         template_name="html/admin/partial_table_workplaces_relevance.html",
@@ -406,6 +748,8 @@ def findWorkplaceRelevance(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def findTrainingCompetencies(request):
     training_name = request.GET.get('name', None)
     trainingInfo = getTrainingByName(training_name)
@@ -416,18 +760,26 @@ def findTrainingCompetencies(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def getParticipationEmployee(request):
     information = request.GET.get('info', None)
-    devide = information.split("(")
-    username = devide[1].split(")")[0]
-    party = getParticipationByEmployeeUsername(username)
-    html = render_to_string(
-        template_name="html/admin/partial_table_status_employee.html",
-        context={'participations':party}
-    )
-    data_dict = {"html_from_view":html}
-    return JsonResponse(data=data_dict, safe=False)
 
+    if information is not None:
+        if information == "":
+            return JsonResponse(False,safe=False)
+        devide = information.split("(")
+        username = devide[1].split(")")[0]
+        party = getParticipationByEmployeeUsername(username)
+        html = render_to_string(
+            template_name="html/admin/partial_table_status_employee.html",
+            context={'participations':party}
+        )
+        data_dict = {"html_from_view":html}
+        return JsonResponse(data=data_dict, safe=False)
+    return JsonResponse(False, safe=False)
+@login_required
+@HR_required
 def findTrainingsByKey(request):
     keys = request.GET.get('training', None)
     allTrainings = getTrainingsByPartialName(keys)
@@ -440,6 +792,8 @@ def findTrainingsByKey(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def getEmployeeForOption(request):
     keys = request.GET.get('username', None)
     findWorkers = getEmployeesByNameOrUsername(keys)
@@ -450,6 +804,8 @@ def getEmployeeForOption(request):
     data_dict = {"html_from_view":html}
     return JsonResponse(data=data_dict, safe=False)
 
+@login_required
+@HR_required
 def addCompetenciesToUser(request):
     value = request.GET
     employee = request.GET.get('employee',None)
@@ -464,6 +820,8 @@ def addCompetenciesToUser(request):
 
     return JsonResponse(True, safe=False)
 
+@login_required
+@HR_required
 def editCompetencyRelevanceForWorkplace(request):
     value = request.GET
     work = request.GET.get('workplace', None)
@@ -476,13 +834,46 @@ def editCompetencyRelevanceForWorkplace(request):
 
     return JsonResponse(True, safe=False)
 
+
+@login_required
+@HR_required
 def uploadFile(request):
-    file = File(request.GET.get('excel_competencies'))
+    if request.FILES['excel_One']:
+        fs = FileSystemStorage()
+        myFile = request.FILES['excel_One']
+        devide = myFile.name.split('.')
+        if devide[1] != 'xlsx':
+            alert = {"show": "inline", "type": "danger", "message": "The file you uploaded is not an xlsx file."}
+            return render(request, 'html/admin/upload.html',
+                          {"alert": alert})
+        x1 = pd.ExcelFile(myFile)
+        if len(x1.sheet_names) > 1:
+            alert = {"show": "inline", "type": "danger", "message": "The file you uploaded for competences should not have more then one sheet name."}
+            return render(request, 'html/admin/upload.html',
+                          {"alert": alert})
+        excel = pd.read_excel(myFile,sheet_name=x1.sheet_names[0])
+        if not excel.columns.contains('Hogan id'):
+            alert = {"show": "inline", "type": "danger",
+                     "message": "The file you uploaded for competences does not have Hogan id column."}
+            return render(request, 'html/admin/upload.html',
+                          {"alert": alert})
+        hoganId = excel['Hogan id']
+        jobs = []
+        if setDatabase(jobs,excel):
+            alert = {"show": "inline", "type": "success", "message": "Excel's have been successfully uploaded!"}
+            return render(request, 'html/admin/upload.html',
+                          {"alert": alert})
 
-    excel = pd.read_excel(file,sheetname='Temida-kompetence')
-    print(excel.columns)
-    return JsonResponse(True, safe=False)
+        alert = {"show": "inline", "type": "danger", "message": "There was an error in processing your xlsx file!"}
+        return render(request, 'html/admin/upload.html',
+                      {"alert": alert})
+    else:
+        alert = {"show": "inline", "type": "danger", "message": "No file uploaded."}
+        return render(request, 'html/admin/upload.html',
+                      {"alert": alert})
 
+@login_required
+@HR_required
 def deleteEmployee(request):
     id_employee = request.GET.get('employee', None)
     if deleteEmployeeById(id_employee):
@@ -490,6 +881,8 @@ def deleteEmployee(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def deleteCompetenceType(request):
     name_type = request.GET.get('type', None)
     if deleteCompetenceTypeByName(name_type):
@@ -497,6 +890,8 @@ def deleteCompetenceType(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def deleteCompetence(request):
     hoeg_id = request.GET.get('hoeg_id', None)
     if deleteSelectedCompetenceByHoegId(hoeg_id):
@@ -504,6 +899,8 @@ def deleteCompetence(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def deleteWorkplaceAndRelevance(request):
     name = request.GET.get('name', None)
     if deleteSelectedWorkplace(name):
@@ -511,6 +908,8 @@ def deleteWorkplaceAndRelevance(request):
 
     return JsonResponse(False,safe=False)
 
+@login_required
+@HR_required
 def deleteCompetence_relevance(request):
     id_relevance = request.GET.get('id_relevance', None)
     if deleteCompetenceRelevanceAPI(id_relevance):
@@ -518,14 +917,17 @@ def deleteCompetence_relevance(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def deleteTrainings(request):
     id_education = request.GET.get('id_education', None)
-    print(id_education)
     if deleteTrainingsById(id_education):
         return JsonResponse(True, safe=False)
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def deleteTrainingByName(request):
     name = request.GET.get('name', None)
     if deleteTrainingByNameAPI(name):
@@ -533,30 +935,39 @@ def deleteTrainingByName(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def getEditEmployee(request):
     id_employee = request.GET.get('employee',None)
     employee = getEmployeeById(id_employee)
     dic_employee = employee.as_json()
     return JsonResponse(data=dic_employee,safe=False)
 
+@login_required
+@HR_required
 def getEditCompetenceType(request):
     name = request.GET.get('type', None)
     type = getCompetenceTypeStrict(name)
     dic_type = type.as_json()
     return JsonResponse(data=dic_type, safe=False)
 
+@login_required
+@HR_required
 def getEditCompetences(request):
     id = request.GET.get('id', None)
     editCompetence = getCompetenceByIdOnly(id)
     dic_editCompetence = editCompetence.as_json()
     return JsonResponse(data=dic_editCompetence, safe=False)
 
+@login_required
+@HR_required
 def getEditWorkplaces(request):
     name = request.GET.get('name', None)
     editWorkplace = findWorkplaceByName(name)
     dic_editWorkplace = editWorkplace.as_json()
     return JsonResponse(data=dic_editWorkplace, safe=False)
 
+@login_required
 def getEditEducation(request):
     id = request.GET.get('id_education', None)
     by = request.GET.get('by', None)
@@ -578,7 +989,8 @@ def getEditEducation(request):
     }
     return JsonResponse(data=dataDic, safe=False)
 
-
+@login_required
+@HR_required
 def sendEmployee(request):
     information = request.GET.get('information', None)
     devide = information.split('|')
@@ -592,6 +1004,29 @@ def sendEmployee(request):
 
     return JsonResponse(False,safe=False)
 
+@login_required
+@HR_required
+def resendInvitation(request):
+    information = request.GET.get('information', None)
+    party = request.GET.get('participation', None)
+    if party is not None:
+        if resendParticipationByParticipation(party):
+            return JsonResponse(True,safe=False)
+    else:
+        devide = information.split('|')
+        worker = devide[0].split(' ')
+        first_name = worker[0]
+        last_name = worker[1]
+        training = devide[1]
+        if resendParticipation(first_name,last_name,training):
+            return JsonResponse(True,safe=False)
+
+    return JsonResponse(False, safe=False)
+
+
+
+@login_required
+@HR_required
 def resetPassword(request):
     username = request.GET.get('username', None)
     if changePassword(username):
@@ -599,6 +1034,8 @@ def resetPassword(request):
 
     return JsonResponse(False, safe=False)
 
+@login_required
+@HR_required
 def analyticsCompute(request):
     listOfEmployees = request.POST.getlist('employeesSelect',None)
     postRequest = request.POST.copy()
@@ -656,7 +1093,9 @@ def analyticsCompute(request):
                     id = i.id_competence_relevance
 
             #If the employee doesn't have a competence for his workplace
+            print(i)
             if len(name) == 0:
+                print("hello")
                 value = 0
                 relevance = i.minimum_required
                 name = i.id_competence.slo_name
@@ -696,6 +1135,7 @@ def analyticsCompute(request):
         #get information based off the results
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
+            print(idsOfRelevance)
             competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
@@ -812,6 +1252,39 @@ def analyticsCompute(request):
     selects['algorithem2'] = algorithemSelect2
     selects['algorithem3'] = algorithemSelect3
     selects['algorithem4'] = algorithemSelect4
-    return render(request, 'html/admin/analytics.html', {"main_pick": main_pick, "user": user, "employees": employees,"competency":competency,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4,"selects":selects})
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    return render(request, 'html/admin/analytics.html', {'notifications':notifications,'number':nrOfNotifications,"main_pick": main_pick, "usr": user, "employees": employees,"competency":competency,"ALG1":ALG1,"ALG2":ALG2,"ALG3":ALG3,"ALG4":ALG4,"selects":selects})
 
+### GENERAL AJAX ###
+@login_required
+def editMyself(request):
+    username = request.GET.get('employee', None)
+    worker = getEmployeeByUsername(username)
+    hr = getHRUserByUsername(username)
+    if worker is not None:
+        data_dic = worker.as_json()
+        return JsonResponse(data=data_dic,safe=False)
+    data_dic = hr.as_json()
+    return JsonResponse(data=data_dic, safe=False)
+@login_required
+def deleteNotifications(request):
+    user = get_user(request)
+    deleteUserNotifications(user.username)
+    return JsonResponse(True, safe=False)
+
+### GENERAL API ###
+@login_required
+def saveEditMyself(request):
+    user = get_user(request)
+    notifications = getAllNotifications(user)
+    nrOfNotifications = len(notifications)
+    if saveHRorEmployee(request):
+        alert = {"show": "inline", "type": "success", "message": "Successfully changed!"}
+        return render(request, 'html/index.html',{'notifications':notifications,'number':nrOfNotifications,'alert':alert})
+
+    alert = {"show": "inline", "type": "danger",
+                 "message": "User was not edited, keep in mind you cannot change username and email at the same time."}
+    return render(request, 'html/index.html',{'notifications':notifications,'number':nrOfNotifications,'alert':alert})
 

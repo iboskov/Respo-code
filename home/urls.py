@@ -17,7 +17,7 @@ from django.conf.urls.static import static
 from . import views
 
 urlpatterns = [
-    path('login', views.login, name='login'),
+    #path('login', views.login, name='login'),
     path('upload', views.upload, name='upload'),
     path("employees", views.employees, name="employees"),
     path('competencies', views.competencies, name='competencies'),
@@ -28,6 +28,8 @@ urlpatterns = [
     path('analytics', views.analytics, name='analytics'),
     path('status', views.status, name='status'),
     #API
+    path('authenticate/createHR', views.createHR, name="createHR"),
+    path('authenticate/user', views.authenticationOfUser, name="authenticateUser"),
     path('employees/add', views.employeeAdd, name="add"),
     path('employees/edit', views.employeeEdit, name="edit"),
     path('competencies/add', views.competencyAdd, name="competencyAdd"),
@@ -46,8 +48,12 @@ urlpatterns = [
     path('user_competencies', views.user_competencies, name='user_competencies'),
     path('user_status', views.user_status, name='user_status'),
     path('user_trainings', views.user_trainings, name='user_trainings'),
+    #API GENERAL
+    url('edit/myself', views.saveEditMyself, name='saveEditMyself'),
     #AJAX ADMIN
     url(r'^ajax/findemployee/$', views.findEmployees, name="findEmployees"),
+    url(r'^ajax/getEmployeeCompetenceHistory/$', views.getEmployeeCompetenceHistory, name="getEmployeeCompetenceHistory"),
+    url(r'^ajax/getGraphAdmin/$', views.getGraphAdmin, name="getGraphAdmin"),
     url(r'^ajax/findCompetenceType/$', views.findCompetenceType, name="findCompetenceType"),
     url(r'^ajax/deleteCompType/$', views.deleteCompetenceType, name="deleteCompetenceType"),
     url(r'^ajax/findCompetences/$',views.findCompetencesByType, name="findCompetencesByType"),
@@ -71,8 +77,18 @@ urlpatterns = [
     url(r'^ajax/findTrainingsByKey/$', views.findTrainingsByKey, name="findtrainingsByKey"),
     url(r'^ajax/deleteTrainingByName/$', views.deleteTrainingByName, name="deleteTrainingByName"),
     url(r'^ajax/getParticipationEmployee/$', views.getParticipationEmployee, name="getParticipationEmployee"),
+    url(r'^ajax/resendInv/$', views.resendInvitation, name="resendInvitation"),
     url(r'^ajax/findEmployeeForOption/$', views.getEmployeeForOption, name="getEmployeeForOption"),
     url(r'^ajax/resetPassword/$', views.resetPassword, name="resetPassword"),
+    url(r'^ajax/logout/$', views.logoutUser, name='logoutUser'),
+    #AJAX USER
+    url(r'^ajax/getCompetenceTypeUser/$', views.getCompetencesByUser, name='getCompetencesByUser'),
+    url(r'^ajax/trainingResponse/$', views.respondToTraining, name='trainingResponse'),
+    url(r'^ajax/changeDecision/$', views.changeDecision, name='changeDecision'),
+    url(r'^ajax/getGraphUser/$', views.getGraphUser, name='getGraphUser'),
+    #AJAX GENERAL
+    url(r'^ajax/myInformation/$', views.editMyself, name='editMyself'),
+    url(r'^ajax/deleteNotifications/$', views.deleteNotifications, name='deleteNotifications'),
     url('', views.index, name='index'),
 
 

@@ -18,30 +18,61 @@
                         <thead class="bg-primary text-white" style="font-size: .65rem;">
                             <tr>
                                 <th scope="col" width="1%">#</th>
-                                <th scope="col" width="30%">TRAINING</th>
-                                <th scope="col" width="30%">STATUS</th>
-                                <th scope="col" width="30%">CANCEL</th>
+                                <th scope="col" width="20%">TRAINING</th>
+                                <th scope="col" width="20%">FROM</th>
+                                <th scope="col" width="20%">TO</th>
+                                <th scope="col" width="10%">STATUS</th>
+                                <th scope="col" width="15%">RESPONSE</th>
+                                <th scope="col" width="20%">CANCEL</th>
                             </tr>
                         </thead>
                         <tbody style="font-size: .875rem; color:#525f7f; word-break: break-all;">
+                        {% for obj in participation %}
                             <tr>
-                                <th scope="row">1</th>
-                                <td>English 1</td>
-                                <td>Finished</td>
-                                <td>-</td>
+                                <th scope="row">{{forloop.counter}}</th>
+                                <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{obj.id_education.name}}" data-target="#editModal">{{obj.id_education.name}}</a></td>
+                                <td>{{obj.id_education.date_from}}</td>
+                                <td>{{obj.id_education.date_to}}</td>
+                                {% if obj.participated == False%}
+                                    {% now "Y-m-d" as todays_date %}
+                                    {% if obj.id_education.date_from|date:"Y-m-d" > todays_date %}
+                                        <td><span class="badge badge-primary">SCHEDULED</span></td>
+                                        {% if obj.status == 'Waiting' %}
+                                            <td><span class="badge badge-secondary">{{obj.status}}</span></td>
+                                            <td>-</td>
+                                        {% elif obj.status == 'Accepted' %}
+                                            <td><span class="badge badge-success">{{obj.status}}</span></td>
+                                            <td><a href="#" data-id="{{obj.id_participation}}" class="badge badge-primary cancelDecision">CANCEL</a></td>
+                                        {% else %}
+                                            <td><span class="badge badge-danger">{{obj.status}}</span></td>
+                                            <td><a href="#" data-id="{{obj.id_participation}}" class="badge badge-primary cancelDecision">CANCEL</a></td>
+                                        {% endif %}
+                                    {% else%}
+                                        <td><span class="badge badge-success">ONGOING</span></td>
+                                        {% if obj.status == 'Waiting' %}
+                                            <td><span class="badge badge-secondary">{{obj.status}}</span></td>
+                                            <td>-</td>
+                                        {% elif obj.status == 'Accepted' %}
+                                            <td><span class="badge badge-success">{{obj.status}}</span></td>
+                                            <td><a href="#" data-id="{{obj.id_participation}}" class="badge badge-primary declineTraining">CANCEL</a></td>
+                                        {% else %}
+                                            <td><span class="badge badge-danger">{{obj.status}}</span></td>
+                                            <td><a href="#" data-id="{{obj.id_participation}}" class="badge badge-primary declineTraining">CANCEL</a></td>
+                                        {% endif %}
+                                    {% endif %}
+                                {% else %}
+                                    <td><span class="badge badge-secondary">FINISHED</span></td>
+                                    {% if obj.status == 'Waiting' %}
+                                        <td><span class="badge badge-secondary">{{obj.status}}</span></td>
+                                    {% elif obj.status == 'Accepted' %}
+                                        <td><span class="badge badge-success">{{obj.status}}</span></td>
+                                    {% else %}
+                                        <td><span class="badge badge-danger">{{obj.status}}</span></td>
+                                    {% endif %}
+                                    <td>-</td>
+                                {% endif %}
                             </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>English 2</td>
-                                <td>Ongoing</td>
-                                <td><a href="#" class="badge badge-primary">CANCEL</a></td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>German 1</td>
-                                <td>Canceled</td>
-                                <td><a href="#" class="badge badge-primary">RESEND</a></td>
-                            </tr>
+                        {% endfor %}
                         </tbody>
                     </table>
                 </div>
@@ -49,5 +80,112 @@
         </div>
     </div>
 </div>
-
+<div class="myAlert-bottom2 alert text-center alert-danger d-none alert-dismissable"></div>
+<div class="modal" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editTrainingTitle">Training</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit-training-form" method="post" action="{% url 'editTraining' %}">
+          {% csrf_token %}
+            <div class="modal-body">
+                <input type="text" class="form-control" name="edit_training_id" hidden id="edit-training-id">
+                <div class="form-group">
+                    <label for="edit-training-name">Training Name:</label>
+                    <input type="text" class="form-control" name="edit_training_name" id="edit-training-name" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit-training-desc">Training description:</label>
+                    <input type="text" class="form-control" name="edit_training_desc" id="edit-training-desc" required readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit-training-fromInput">From:</label>
+                    <input type="date" class="form-control" name="edit_training_date_from" id="edit-training-fromInput" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit-training-toInput">To:</label>
+                    <input type="date" class="form-control" name="edit_training_date_to" id="edit-training-toInput" readonly>
+                </div>
+                <div class="form-group">
+                    <label for="edit-target-comp">Target competence:</label>
+                    <select style="width:100%" class="js-example-basic-multiple js-states form-control" name="edit_training_competence" name="edit_target_comp" id="edit-target-comp" multiple="multiple" disabled required>
+                        {% for obj in competency %}
+                            <option class="showTraining">{{ obj.slo_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
 {% endblock main_content %}
+{% block scripts %}
+<script>
+    $(document).on('click','.showTraining', function(){
+         id_education = $(this).attr("data-id");
+         $.ajax({
+            url: '/ajax/getEditEducation/',
+            data: {
+                'id_education': id_education,
+                'by':'name'
+            },
+            dataType: 'json',
+            success: function(data){
+                $('#edit-training-id').val(data['education'].id_education);
+                $('#edit-training-name').val(data['education'].name);
+                $('#edit-training-desc').val(data['education'].desc);
+                $('#edit-training-fromInput').val(data['education'].date_from);
+                $('#edit-training-toInput').val(data['education'].date_to);
+                $('#edit-target-comp').val(data['competences']);
+                $('#edit-target-comp').select2().trigger('change');
+            }
+         });
+    });
+
+    function sendInfo(info,decision){
+        $.ajax({
+            url: '/ajax/changeDecision/',
+            data:{
+                'info':info,
+                'decision':decision,
+            },
+            dataType: 'json',
+            success: function(data){
+                $('.myAlert-bottom2').removeClass('alert-danger').addClass('alert-success');
+                $('.myAlert-bottom2').removeClass('d-none').addClass('d-inline');
+                $('.myAlert-bottom2').text('Successfully canceled decision');
+                $('.myAlert-bottom2').show();
+                setTimeout(function() {
+                  $('.myAlert-bottom2').removeClass('d-inline').addClass('d-none');
+                  $('.myAlert-bottom2').removeClass('alert-success').addClass('alert-danger');
+                  window.location='/user_status'
+                }, 2000);
+            }
+        });
+    }
+    $(document).on('click','.declineTraining', function(){
+        info = $(this).attr('data-id');
+        decision = "Declined";
+        $(this).removeAttr('href');
+        $(this).removeClass('declineTraining');
+        $(this).removeClass('badge-primary').addClass('badge-danger');
+        $(this).text("CANCELED");
+        sendInfo(info,decision);
+
+    });
+    $(document).on('click', '.cancelDecision', function(){
+        info = $(this).attr('data-id');
+        decision = "Waiting";
+        $(this).removeAttr('href');
+        $(this).removeClass('cancelDecision');
+        $(this).removeClass('badge-primary').addClass('badge-danger');
+        $(this).text("CANCELED");
+        sendInfo(info,decision);
+    });
+</script>
+{% endblock %}

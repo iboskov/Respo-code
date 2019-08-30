@@ -118,6 +118,7 @@ function removeAttrOfButtons(){
         }
     });
 }
+window.onload = removeAttrOfButtons();
 
 $(document).on('click','.sendAll', function(){
     algorithem = $(this).attr("data-id");

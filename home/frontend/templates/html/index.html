@@ -4,17 +4,17 @@
 {% block content %}
 <div class="d-flex flex-row">
     <ul class="navbar-nav bg-primary sidebar min-vh-100 d-md-block">
-        <a class="sidebar-brand d-flex flex-row align-items-center" href="index.html">
+        <a class="sidebar-brand d-flex flex-row align-items-center saveMyself" data-id="{{user.username}}" data-toggle="modal" data-target="#editModalmyself" href="#">
             <div>
-                <img src="{% static 'img/user.png' %}" class="img-thumbnail rounded-circle p-0 mb-1" width="50">
+                <img src="/static/img/{{user.image}}" class="img-thumbnail rounded-circle p-0 mb-1" width="50">
             </div>
             <div class="pl-2 sidebar-brand-text">
-                <span>Adem Kikaj</span><br>
-                <small>Admin</small>
+                <span>{{ user.first_name }} {{ user.last_name }}</span><br>
+                <small>{{ user.workplaceName }}</small>
             </div>
         </a>
         <hr class="sidebar-divider">
-        {% if user == "admin" %}
+        {% if user.is_HR %}
             <li class="nav-item {% if main_pick == 'upload' %} active{% endif %}">
                 <a class="nav-link" href="{%url 'upload'%}" ><i class="fas fa-upload"></i> <span>Upload</span></a>
             </li>
@@ -39,7 +39,7 @@
             <li class="nav-item {% if main_pick == 'options' %} active{% endif %}">
                 <a class="nav-link" href="{%url 'options'%}" ><i class="fas fa-filter"></i> <span>Options</span></a>
             </li>
-            {% elif user == "user" %}
+        {% elif user.is_employee %}
             <li class="nav-item {% if main_pick == 'user_history' %} active{% endif %}">
                 <a class="nav-link" href="{%url 'user_history'%}" ><i class="fas fa-history"></i> <span>History</span></a>
             </li>
@@ -69,11 +69,20 @@
             <span class="navbar-toggler" data-toggle="collapse" data-target="#topNavbar"><i class="fa fa-bars"></i></span>
             <div class="collapse navbar-collapse" id="topNavbar">
                 <div class="navbar-nav ml-auto">
-                    <a class="nav-item nav-link" href="#" style="color:white;" data-container="body" data-html="true" data-toggle="popover" data-placement="left"
-                       data-content="You have new training to attend. <hr> Your training <i>English 1</i> has finished.">
-                        <i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1" style="position: relative; top: -10px; left:-7px;">2</span>
-                    </a>
-                    <a class="nav-item nav-link" href="#" style="color:white;"><i class="fas fa-sign-out-alt fa-lg"></i></a>
+                    {% if number != 0 %}
+                        <a class="nav-item nav-link " id="deleteNotifications" href="#" style="color:white;" data-container="body" data-html="true" data-toggle="popover" data-placement="left"
+                            data-content="{% for obj in notifications %} {{obj.desc}} <hr> {% endfor %}">
+                        {% if number != 0 %}
+                            <i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1 nrOfNotifications" style="position: relative; top: -10px; left:-7px;">{{number}}</span>
+                        {% endif %}
+                        </a>
+                    {% else %}
+                        <a class="nav-item nav-link " href="#" style="color:white;" data-container="body" data-html="true" data-toggle="popover" data-placement="left"
+                            data-content="{% for obj in notifications %} {{obj.desc}} <hr> {% endfor %}">
+                            <i class="far fa-bell fa-lg"></i><span class="badge badge-pill badge-warning p-1 nrOfNotifications" style="position: relative; top: -10px; left:-7px;"></span>
+                        </a>
+                    {% endif %}
+                    <a class="nav-item nav-link signOut" title="Logout" href="{% url 'logoutUser' %}" style="color:white;"><i class="fas fa-sign-out-alt fa-lg signOut"></i></a>
                 </div>
             </div>
         </nav>
@@ -86,4 +95,62 @@
 <div class="myAlert-bottom alert text-center alert-{{alert.type}} d-{{alert.show}}">
     {{alert.message}}
 </div>
+<div class="modal" id="editModalmyself" tabindex="-1" role="dialog" aria-labelledby="editModal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="editModalTitle">Edit employee</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="edit-employee-form" method="post" action="{% url 'saveEditMyself' %}" enctype="multipart/form-data">
+          {% csrf_token %}
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="edit-myself-id" hidden></label>
+                    <input type="text" class="form-control" name="my-edit_id" id="edit-myself-id" required hidden="True">
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-name">First Name:</label>
+                    <input type="text" class="form-control" name="my-edit_name" id="edit-myself-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-lastname">Last Name:</label>
+                    <input type="text" class="form-control" name="my-edit_lastname" id="edit-myself-lastname" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-Phone">Phone (format: xxx-xxx-xxx):</label>
+                    <input type="tel" pattern="^\d{3}-\d{3}-\d{3}$" name="my-edit_phone" class="form-control" id="edit-myself-phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-city">City:</label>
+                    <input type="text" class="form-control" name="my-edit_city" id="edit-myself-city" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-country">Country:</label>
+                    <input type="text" class="form-control" name="my-edit_country" id="edit-myself-country" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-email">Email:</label>
+                    <input type="email" class="form-control" name="my-edit_email" id="edit-myself-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="edit-myself-username">Username:</label>
+                    <input type="text" class="form-control" name="my-edit_username" id="edit-myself-username" required>
+                </div>
+                <div class="form-group">
+                    <label for="user_edit_image">Personal Image</label>
+                    <input type="file" name="user_edit_image" id="user_edit_image">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+            </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 {% endblock content %}

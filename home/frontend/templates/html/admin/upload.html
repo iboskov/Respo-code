@@ -3,31 +3,11 @@
 {% block main_content %}
 <div class="row">
     <div class="col mt-2">
-        <form id="uploaderForm" class="" method="post" action="file/upload">
+        <form id="uploaderForm" class="" method="post" enctype="multipart/form-data" action="{% url 'uploadFile' %}">
         {% csrf_token %}
         <h2 class="text-primary">Upload Excel Files</h2>
-            <div class="form-row mt-4">
-                <div class="col">
-                    <label for="compTypeRP">Competence type - Row Position</label>
-                    <input type="number" class="form-control" id="compTypeRP" placeholder="Competence Type Row Position">
-                </div>
-                <div class="col">
-                    <label for="compTypeCP">Competence type - Column Position</label>
-                    <input type="number" class="form-control" id="compTypeCP" placeholder="Competence Type Column Position">
-                </div>
-            </div>
-            <div class="form-row mt-4">
-                <div class="col">
-                    <label for="compRP">Competencies - Row Position</label>
-                    <input type="number" class="form-control" id="compRP" placeholder="Competence Row Position">
-                </div>
-                <div class="col">
-                    <label for="compCP">Competencies - Column Position</label>
-                    <input type="number" class="form-control" id="compCP" placeholder="Competence Column Position">
-                </div>
-            </div>
             <div class="custom-file mt-4">
-                <input type="file" class="custom-file-input" id="excelOne">
+                <input type="file" class="custom-file-input" name="excel_One" id="excelOne">
                 <label class="custom-file-label" for="excelOne">Excel one - Competencies</label>
             </div>
             <div class="custom-file mt-4">

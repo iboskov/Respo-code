@@ -1,0 +1,6 @@
+{% for obj in types %}
+<tr>
+    <th scope="row">{{ forloop.counter }}</th>
+    <td><a class="selectType" data-id="{{ obj }}" href="#">{{ obj }}</a></td>
+</tr>
+{% endfor %}

@@ -1,9 +1,19 @@
 {% for obj in participations %}
 <tr>
     <th scope="row">{{ forloop.counter }}</th>
-    <td>{{obj.id_education.name}}</td>
+    <td><a href="#" class="showTraining" data-toggle="modal" data-id="{{obj.id_education.name}}" data-target="#editModal">{{obj.id_education.name}}</a></td>
     <td>{{obj.id_education.date_from}}</td>
     <td>{{obj.id_education.date_to}}</td>
+    {% if obj.participated == True %}
+        <td><span class="badge badge-secondary">FINISHED</span></td>
+    {% else %}
+        {% now "Y-m-d" as todays_date %}
+        {% if todays_date < obj.id_education.date_from|date:"Y-m-d" %}
+            <td><span class="badge badge-primary">SCHEDULED</span></td>
+        {% else %}
+            <td><span class="badge badge-success">ONGOING</span></td>
+        {% endif %}
+    {% endif %}
     {% if obj.status == 'Accepted' %}
         <td><span class="badge badge-success">{{obj.status}}</span></td>
     {% elif obj.status == 'Declined' %}
@@ -12,11 +22,15 @@
         <td><span class="badge badge-secondary">{{obj.status}}</span></td>
     {% endif %}
     {% if obj.status == 'Declined' %}
-            {% if obj.id_education.date_from|date > now|date %}
+            {% if obj.id_education.date_from|date < now|date %}
                 <td>-</td>
-            {% else %}
-                <td><a href="#" class="badge badge-primary">Resend</a></td>
             {% endif %}
+            {% if obj.participated == False  %}
+                <td><a href="#" data-id="{{obj.id_participation}}" class="badge badge-primary resendInv">Resend</a></td>
+            {% else %}
+                <td>-</td>
+            {% endif %}
+
     {% else %}
         <td>-</td>
     {% endif %}

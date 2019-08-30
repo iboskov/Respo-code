@@ -4,20 +4,22 @@ from django.utils.timezone import now
 from django.conf import settings
 from django.db.models import Q
 import json
+import pandas as pd
+from django.core.files.storage import FileSystemStorage
 from django.http import JsonResponse
 from django.http.request import HttpRequest
 from home.models import *
-
+import os
 
 ###USER###
-def createUser(username,email,type):
+def createUser(username,email,first_name,last_name,work):
     while True:
         password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
-        if user.objects.filter(password=password).exists():
+        if myuser.objects.filter(password=password).exists():
             continue
         break
 
-    new_user = user(user_name=username,email=email,password=password,type=type)
+    new_user = myuser(username=username,email=email,password=password,first_name=first_name,last_name=last_name,is_employee=True,workplaceName=work)
     new_user.save()
     #send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
     subject = 'Account on Respo project app'
@@ -25,22 +27,65 @@ def createUser(username,email,type):
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
     send_mail(subject,message,from_email,to_list,fail_silently=False)
+    return new_user
 
-def changePassword(username):
+def createAdministrator(username,email,first_name,last_name):
     while True:
-        password = get_random_string(length=10,
-                                     allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
-        if user.objects.filter(password=password).exists():
+        password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
+        if myuser.objects.filter(password=password).exists():
             continue
         break
+
+    new_user = myuser(username=username, email=email, password=password, is_HR=True,first_name=first_name,last_name=last_name,workplaceName="Human Resource")
+    new_user.save()
+
+    subject = 'Account on Respo project app'
+    message = 'Welcome to the Respo project App.\n you are seeing this email because you created an administrator account.\n Here is your username and password for logging into the respo application, remember do not share your username or password.\n \n Username: ' + username + '\n Password: ' + password + '\n \n best wishes the Respo team'
+    from_email = settings.EMAIL_HOST_USER
+    to_list = [email]
+    send_mail(subject, message, from_email, to_list, fail_silently=False)
+    return new_user
+
+def changePassword(username):
+
+    password = get_random_string(length=10,allowed_chars='abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ123456789@*=?%$#()+')
+
+
     worker = employee.objects.filter(username=username)[0]
-    user.objects.filter(user_name=username).update(password=password)
+    myuser.objects.filter(username=username).update(password=password)
     #send email
     subject = 'Account on Respo project app'
     message = 'Hello '+worker.first_name+' '+worker.last_name+',\n you are seeing this email because an administrator changed your password. \n Here is your new password for logging into the respo application, remember do not share your username or password.\n \n Username: '+username+'\n Password: '+password+'\n \n best wishes the Respo team'
     from_email = settings.EMAIL_HOST_USER
     to_list = [worker.email]
     send_mail(subject, message, from_email, to_list, fail_silently=False)
+    return True
+
+def findUser(username,password):
+    if myuser.objects.filter(username=username,password=password).exists():
+        return myuser.objects.filter(username=username,password=password)[0]
+    return None
+
+def addHR_user(request):
+    worker = request.POST.copy()
+    code = worker.get("admin_code","")
+    if str(code) != str(settings.HR_AUTHORIZATION_CODE):
+        return 'not code'
+    first_name = worker.get("admin_name","")
+    last_name = worker.get("admin_lastname","")
+    phone = worker.get("admin_phone","")
+    city = worker.get("admin_city","")
+    country = worker.get("admin_country","")
+    email = worker.get("admin_email","")
+    username = worker.get("admin_username","")
+
+    if HR_user.objects.filter(email=email).exists() or HR_user.objects.filter(username=username).exists():
+        return False
+    else:
+        user = createAdministrator(username,email,first_name,last_name)
+        new_HR = HR_user(first_name=first_name,last_name=last_name,phone=phone,city=city,country=country,username=username,email=email,user=user)
+        new_HR.save()
+
     return True
 ###EMPLOYEE###
 def addEmployee(request):
@@ -60,10 +105,12 @@ def addEmployee(request):
     if employee.objects.filter(email=email).exists() or employee.objects.filter(username=username).exists():
         return False
     else:
-        new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country, email=email, username=username,id_workplace=new_workplace)
-        new_employee.save()
-        createUser(username,email,'user')
 
+
+        user = createUser(username,email,first_name,last_name,new_workplace.name)
+        new_employee = employee(first_name=first_name, last_name=last_name, phone=phone, city=city, country=country,
+                                email=email, username=username, id_workplace=new_workplace,user=user)
+        new_employee.save()
     return True
 
 def editEmployee(request):
@@ -98,9 +145,9 @@ def editEmployee(request):
 
     employee.objects.filter(id_employee=id_employee).update(first_name=first_name,last_name=last_name,phone=phone,city=city,country=country,email=email,username=username,id_workplace=new_workplace)
     if newUser == 1:
-        edit_user = user.objects.filter(email=email).update(user_name=username)
+        edit_user = myuser.objects.filter(email=email).update(username=username,workplaceName=new_workplace.name)
     if newEmail == 1:
-        edit_user = user.objects.filter(user_name=username).update(email=email)
+        edit_user = myuser.objects.filter(username=username).update(email=email,workplaceName=new_workplace.name)
 
     return True
 
@@ -108,6 +155,10 @@ def editEmployee(request):
 def getEmployees():
     return employee.objects.all()[0:10]
 
+def getEmployeeByUsername(username):
+    if employee.objects.filter(username=username).exists():
+        return employee.objects.filter(username=username)[0]
+    return None
 def getEmployeesByName(name):
     return employee.objects.filter(first_name__icontains=name)
 
@@ -117,7 +168,7 @@ def getEmployeesByNameOrUsername(name):
 def deleteEmployeeById(id):
     delete_emp = employee.objects.filter(id_employee=id)[0]
     employee_competence.objects.filter(id_employee=delete_emp.id_employee).delete()
-    user.objects.filter(user_name=delete_emp.username).delete()
+    myuser.objects.filter(username=delete_emp.username).delete()
     employee.objects.filter(id_employee=id).delete()
     return True
 
@@ -229,11 +280,40 @@ def getTrainingsByPartialName(name):
 def getTrainingsById(id):
     return education.objects.filter(id_education=id)[0]
 
+#TODO add notification for employees
 def deleteTrainingsById(id):
+    if participation.objects.filter(id_education=id).exists():
+        for i in participation.objects.filter(id_education=id):
+            user = myuser.objects.filter(username=i.id_employee.username)[0]
+            new_notification = notifications(for_user=user, seen=False, desc="Training "+i.id_education.name+" has been canceled/deleted")
+            new_notification.save()
+    HR = HR_user.objects.all()
+    edu = education.objects.filter(id_education=id)[0]
+    for i in HR:
+        user = myuser.objects.filter(username=i.username)[0]
+        new_notification = notifications(for_user=user, seen=False,
+                                         desc="Training " +edu.name+ "has been canceled/deleted")
+        new_notification.save()
     education.objects.filter(id_education=id).delete()
     return True
 
+#TODO add notification for employees
 def deleteTrainingByNameAPI(name):
+    if participation.objects.filter(id_education__name=name).exists():
+        for i in participation.objects.filter(id_education__name=name):
+            user = myuser.objects.filter(username=i.id_employee.username)[0]
+            new_notification = notifications(for_user=user, seen=False, desc="Training "+i.id_education.name+" has been canceled/deleted")
+            new_notification.save()
+
+    HR = HR_user.objects.all()
+    edu = education.objects.filter(name=name)[0]
+    for i in HR:
+        print(i.username)
+        user = myuser.objects.filter(username=i.username)[0]
+        new_notification = notifications(for_user=user, seen=False,
+                                         desc="Training " + edu.name + " has been canceled/deleted")
+        new_notification.save()
+
     education.objects.filter(name=name).delete()
     return True
 
@@ -268,6 +348,16 @@ def editTrainings(request):
         comp = competence.objects.filter(slo_name=i)[0]
         listOfCompetences.append(comp)
 
+    HR = HR_user.objects.all()
+    for i in HR:
+        user = myuser.objects.filter(username=i.username)[0]
+        new_notification = notifications(for_user=user, seen=False, desc="Training "+name+" has been changed")
+        new_notification.save()
+    party = participation.objects.filter(id_education=id)
+    for i in party:
+        user = myuser.objects.filter(username=i.id_employee.username)[0]
+        new_notification = notifications(for_user=user, seen=False, desc="Training " + name + " has been changed")
+        new_notification.save()
     education.objects.filter(id_education=id).update(name=name,desc=desc,date_from=date_from, date_to=date_to)
     education.objects.filter(id_education=id)[0].id_competence.set(listOfCompetences)
     return True
@@ -322,6 +412,7 @@ def addExtraCompetenceRelevance(request):
         if comp == None:
             i = i+1
             continue
+
         get_competence = competence.objects.filter(slo_name=comp)[0]
 
         if competence_relevance.objects.filter(id_competence=get_competence.id_competence,id_workplace=work.id_workplace).exists():
@@ -413,6 +504,14 @@ def saveEmployeeCompetence(id_competence,id_employee,score):
 def getAllEmployeeCompetence(id_employee):
     return employee_competence.objects.filter(id_employee=id_employee)
 
+def getEmployeeCompetenceByType(type):
+    comp_type = competence_type.objects.filter(name=type)[0]
+    return employee_competence.objects.filter(id_competence_type=comp_type.id_competence_type)
+
+def getEmployeeCompetenceByTypeAndKey(type,key):
+    comp_type = competence_type.objects.filter(name=type)[0]
+    return employee_competence.objects.filter(id_competence_type=comp_type.id_competence_type,id_competence__slo_name__icontains=key)
+
 ###COMPETENCE_RELEVANCE###
 def getAllCompetenceRelevanceForWorkplace(id_workplace):
     return competence_relevance.objects.filter(id_workplace=id_workplace)
@@ -438,6 +537,10 @@ def editCompetencyRelevance(nameOfCompetence,work,score):
     competence_relevance.objects.filter(id_workplace=selectedWorkplace.id_workplace,id_competence=selectedCompetence.id_competence).update(competence_weight=relevance,minimum_required=minReq)
     return True
 
+def getCompetenceRelevanceByWorkAndComp(comp,work):
+    return competence_relevance.objects.filter(id_workplace=work,id_competence__slo_name=comp)[0]
+
+
 ###PARTICIPATION###
 def getParticipationByEmployee(worker,competence):
     emp = employee.objects.filter(id_employee=worker)[0]
@@ -451,37 +554,261 @@ def getParticipationByEmployee(worker,competence):
         if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].participated:
             return False
         else:
-            if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].id_education.date_from <= now().date():
+            if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].id_education.date_from < now().date() and participation.objects.filter(id_employee=emp.id_employee, id_education__id_competence=competence)[0].status == 'Accepted':
+                return True
+            if participation.objects.filter(id_employee=emp.id_employee,id_education__id_competence=competence)[0].id_education.date_from < now().date() or participation.objects.filter(id_employee=emp.id_employee, id_education__id_competence=competence)[0].status == 'Declined':
                 return False
 
             return True
     else:
         False
-
+#TODO add notification for employees
 def sendEmployeeOnEducation(edu,worker):
     training = education.objects.filter(name=edu)[0]
     emp = employee.objects.filter(id_employee=worker)[0]
+    users = myuser.objects.filter(username=emp.username)[0]
     new_part = participation(participated=False,status="Waiting",id_employee=emp,id_education=training)
     new_part.save()
+    new_notification = notifications(for_user=users,seen=False,desc="An invitation for training has been received.")
+    new_notification.save()
     return True
 
 def getParticipationByEducation(edu_id,status):
      party = participation.objects.filter(id_education=edu_id)
      if len(party) > 0:
          if party[0].participated == False and status == 'Finished':
+             HR = HR_user.objects.all()
+             #SEND HR NOTIFICATION
+             for i in HR:
+                 users = myuser.objects.filter(username=i.username)[0]
+                 new_notification = notifications(for_user=users, seen=False,
+                                                  desc="Training " + party[0].id_education.name + " has Finished")
+                 new_notification.save()
              for i in party:
                  if i.status == 'Accepted':
                     participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(participated=True)
                  if i.status == 'Waiting':
-                    participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(status='Declined')
+                    participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(status='Declined',participated=True)
+                 if i.status == 'Declined':
+                     participation.objects.filter(id_employee=i.id_employee.id_employee, id_education=edu_id).update(
+                         status='Declined', participated=True)
          elif party[0].participated == False and status == 'Ongoing':
-
                 for i in party:
                     if i.status == 'Waiting':
                         participation.objects.filter(id_employee=i.id_employee.id_employee,id_education=edu_id).update(status='Declined')
+                        part = participation.objects.filter(id_employee=i.id_employee.id_employee, id_education=edu_id)
+                        # SEND EMPLOYEE NOTIFICATION
+                        users = myuser.objects.filter(username=part.id_employee.username)[0]
+                        new_notification = notifications(for_user=users, seen=False,
+                                                         desc="Your response to training "+part.id_education.name+" has been set to Declined")
+                        new_notification.save()
 
      return participation.objects.filter(id_education=edu_id)
 
 def getParticipationByEmployeeUsername(username):
     worker = employee.objects.filter(username=username)[0]
     return participation.objects.filter(id_employee=worker.id_employee).order_by('-id_education__date_from')
+
+#TODO add notification for HRs
+def setResponseToParticipation(username,response,nameOfEducation):
+    HR = HR_user.objects.all()
+    training = education.objects.filter(name=nameOfEducation)[0]
+    worker = employee.objects.filter(username=username)[0]
+    participation.objects.filter(id_employee=worker.id_employee,id_education=training.id_education).update(status=response)
+    for i in HR:
+        user = myuser.objects.filter(username=i.username)[0]
+        new_notifciation = notifications(for_user=user,seen=False,desc=""+worker.first_name+" "+worker.last_name+" has responded to a training invitation.")
+        new_notifciation.save()
+
+    return True
+
+#TODO add notification for employees
+def resendParticipation(first_name,last_name,training):
+    worker = employee.objects.filter(first_name=first_name,last_name=last_name)[0]
+    user = myuser.objects.filter(username=worker.username)[0]
+    train = education.objects.filter(name=training)[0]
+    participation.objects.filter(id_employee=worker.id_employee,id_education=train.id_education).update(status="Waiting")
+    new_notification = notifications(for_user=user,seen=False,desc="A training invite has been received")
+    new_notification.save()
+    return True
+
+#TODO add notification for employees
+def resendParticipationByParticipation(id_participate):
+    participation.objects.filter(id_participation=id_participate).update(status="Waiting")
+    part = participation.objects.filter(id_participation=id_participate)[0]
+    user = myuser.objects.filter(username=part.id_employee.username)[0]
+    new_notification = notifications(for_user=user,seen=False,desc="A training invite has been received")
+    new_notification.save()
+    return True
+
+#TODO add notification for HRs
+def resetResponseParticipation(id_participation,response):
+    participation.objects.filter(id_participation=id_participation).update(status=response)
+    employ = participation.objects.filter(id_participation=id_participation)[0]
+    HR = HR_user.objects.all();
+    for i in HR:
+        user = myuser.objects.filter(username=i.username)[0]
+        new_notifications = notifications(for_user=user,seen=False,desc=""+employ.id_employee.first_name+" "+employ.id_employee.last_name+" has canceled their response")
+        new_notifications.save()
+    return True
+
+###HR_user###
+
+def getHRUserByUsername(username):
+    if HR_user.objects.filter(username=username).exists():
+        return HR_user.objects.filter(username=username)[0]
+    return None
+
+###GENERAL###
+def saveHRorEmployee(request):
+    worker = request.POST.copy()
+    isImage = False
+
+    id_employee = worker.get("my-edit_id", "")
+    first_name = worker.get("my-edit_name", "")
+    last_name = worker.get("my-edit_lastname", "")
+    phone = worker.get("my-edit_phone", "")
+    city = worker.get("my-edit_city", "")
+    country = worker.get("my-edit_country", "")
+    email = worker.get("my-edit_email", "")
+    username = worker.get("my-edit_username", "")
+    if request.FILES['user_edit_image']:
+        fs = FileSystemStorage()
+        myFile = request.FILES['user_edit_image']
+        fileDevide = myFile.name.split('.')
+        name_of_file = username+"."+fileDevide[1]
+        if fs.exists(name_of_file):
+            fs.delete(name_of_file)
+        fileName = fs.save(name_of_file, myFile)
+        uploadedFileUrl = fs.url(fileName)
+        isImage = True
+    exists = False
+    if employee.objects.filter(id_employee=id_employee).exists():
+        exists = True
+    # check when username and email are different
+    newUser = 0
+    newEmail = 0
+    if exists:
+        new_worker = employee.objects.filter(id_employee=id_employee)[0]
+        if new_worker.username != username:
+            if employee.objects.filter(username=username).exists() or HR_user.objects.filter(username=username).exists():
+                return False
+            else:
+                newUser = 1
+
+        if new_worker.email != email:
+            if employee.objects.filter(email=email).exists():
+                return False
+            else:
+                newEmail = 1
+        if newUser == 1 and newEmail == 1:
+            return False
+
+        employee.objects.filter(id_employee=id_employee).update(first_name=first_name, last_name=last_name, phone=phone,
+                                                                city=city, country=country, email=email, username=username)
+        if newUser == 1:
+            if isImage:
+                myuser.objects.filter(email=email).update(username=username, first_name=first_name, last_name=last_name,
+                                                          image=uploadedFileUrl)
+            else:
+                myuser.objects.filter(email=email).update(username=username,first_name=first_name,last_name=last_name)
+        if newEmail == 1:
+            if isImage:
+                myuser.objects.filter(username=username).update(email=email, first_name=first_name, last_name=last_name,image=uploadedFileUrl)
+            else:
+                myuser.objects.filter(username=username).update(email=email,first_name=first_name,last_name=last_name)
+        if newUser == 0 and newEmail == 0:
+            if isImage:
+                myuser.objects.filter(username=username).update(first_name=first_name, last_name=last_name,image=uploadedFileUrl)
+            else:
+                myuser.objects.filter(username=username).update(first_name=first_name, last_name=last_name)
+        return True
+
+    newUser = 0
+    newEmail = 0
+    print(username)
+    print(first_name)
+    new_worker = HR_user.objects.filter(HR_user_id=id_employee)[0]
+    if new_worker.username != username:
+        if HR_user.objects.filter(username=username).exists() or employee.objects.filter(username=username).exists():
+            return False
+        else:
+            newUser = 1
+    if new_worker.email != email:
+        if employee.objects.filter(email=email).exists() or HR_user.objects.filter(email=email).exists():
+            return False
+        else:
+            newEmail = 1
+
+        if newUser == 1 and newEmail == 1:
+            return False
+    HR_user.objects.filter(HR_user_id=id_employee).update(first_name=first_name, last_name=last_name, phone=phone,
+                                                                city=city, country=country, email=email, username=username)
+    if newUser == 1:
+        if isImage:
+            myuser.objects.filter(email=email).update(username=username, first_name=first_name, last_name=last_name,image=uploadedFileUrl)
+        else:
+            myuser.objects.filter(email=email).update(username=username,first_name=first_name,last_name=last_name)
+    if newEmail == 1:
+        if isImage:
+            myuser.objects.filter(username=username).update(email=email, first_name=first_name, last_name=last_name,image=uploadedFileUrl)
+        else:
+            myuser.objects.filter(username=username).update(email=email,first_name=first_name,last_name=last_name)
+    if newUser == 0 and newEmail == 0:
+        if isImage:
+            myuser.objects.filter(username=username).update(first_name=first_name, last_name=last_name,image=uploadedFileUrl)
+        else:
+            myuser.objects.filter(username=username).update(first_name=first_name, last_name=last_name)
+
+    return True
+
+###NOTIFICATIONS###
+def getAllNotifications(user):
+    return notifications.objects.filter(for_user__email=user.email)
+
+def deleteUserNotifications(username):
+    notifications.objects.filter(for_user__username=username).delete()
+
+###EMPLOYEE_HISTORY###
+
+def getEmployeeHistoryFromTimeCompetenceAndEmployee(username,date_from,date_to,competence):
+    if date_from is not None and date_to is not None:
+        return employee_history.objects.filter(id_employee__username=username,dateOfChange__gte=date_from,dateOfChange__lte=date_to,id_competence__slo_name=competence).order_by('dateOfChange')
+    elif date_from is not None and date_to is None:
+        return employee_history.objects.filter(id_employee__username=username,dateOfChange__gte=date_from,id_competence__slo_name=competence).order_by('dateOfChange')
+    elif date_from is None and date_to is not None:
+        return employee_history.objects.filter(id_employee__username=username,dateOfChange__lte=date_to,id_competence__slo_name=competence).order_by('dateOfChange')
+    else:
+        return employee_history.objects.filter(id_employee__username=username,id_competence__slo_name=competence).order_by('dateOfChange')
+
+###EXCEL###
+def setDatabase(jobs,xlsfile):
+    for i in xlsfile.columns:
+        if i == 'Hogan id' or i == 'kompetenca' or i == 'Tip kompetence':
+            continue
+        j = i.split(':')
+        if j[0] == 'Unnamed':
+            continue
+
+        jobs.append(i)
+    if len(jobs) == 0:
+        return False
+    for index, row in xlsfile.iterrows():
+        if str(row[0]) == "nan":
+            continue
+        hoganId = int(row[0])
+        compName = row[1]
+        compType = row[2]
+        new_type = competence_type.objects.get_or_create(name=compType)[0]
+        new_comp = competence.objects.get_or_create(hoegen_id=hoganId,slo_name=compName,eng_name="",desc="",id_competence_type=new_type)[0]
+        counter = 0
+        start = 3
+        while counter < len(jobs):
+            new_workplace = workplace.objects.get_or_create(name=jobs[counter])[0]
+            new_relevance = competence_relevance.objects.get_or_create(id_competence=new_comp,id_workplace=new_workplace)[0]
+            new_relevance.minimum_required = row[start+1]
+            new_relevance.competence_weight = row[start]
+            new_relevance.save()
+            start = start+2
+            counter = counter+1
+    return True

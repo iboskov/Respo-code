@@ -9,7 +9,6 @@
 </div>
 <div class="row">
         <div class="col-xl-4">
-            <form id="form-from-to" method="post" action="#">
                 <div class="form-group">
                     <label for="fromInput">From:</label>
                     <input type="date" class="form-control" id="fromInput">
@@ -18,8 +17,15 @@
                     <label for="toInput">To:</label>
                     <input type="date" class="form-control" id="toInput">
                 </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
+                <div class="form-group">
+                    <label for="competenceInput">Competence:</label>
+                    <select class="js-example-basic-multiple js-states form-control" name="competence_input" id="competenceInput">
+                        {% for obj in competences %}
+                            <option>{{obj.id_competence.slo_name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-primary onSelect">Submit</button>
         </div>
         <div class="col-xl-8 text-center">
             <canvas id="myChart"></canvas>
@@ -32,23 +38,58 @@
 var ctx = document.getElementById('myChart');
 var myLineChart = new Chart(ctx, {
     type: 'line',
-    data: {
-        labels: ['Competence 1', 'Competence 2', 'Competence 3', 'Competence 4', 'Competence 5', 'Competence 6', 'Competence 7'],
-        datasets: [{
-            label: 'Before Training',
-            backgroundColor: 'rgba(255, 0, 0, 1)',
-            borderColor: 'rgba(255, 0, 0, 1)',
-            data: [4, 3, 2, 5, 2, 6, 8],
-            fill: false,
-        }, {
-            label: 'After Training',
-            fill: false,
-            backgroundColor: 'rgba(0, 0, 255, 1)',
-            borderColor: 'rgba(0, 0, 255, 1)',
-            data: [7, 5, 5, 8, 3, 7, 10],
-            fill: false
-        }]
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                }
+            }]
+        },
+        title: {
+            display: true,
+            text: 'Your competence over time'
+        }
     }
 });
+$(document).on('click','.onSelect', function(){
+    var competences = $('#competenceInput').val();
+    var from = $('#fromInput').val();
+    var to = $('#toInput').val();
+    $.ajax({
+        url: '/ajax/getGraphUser/',
+        data:{
+            'competences':competences,
+            'from':from,
+            'to':to
+        },
+        dataType: 'json',
+        success: function(data){
+            var times = data['Times'];
+            var myLineChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: times,
+                    datasets: data['information']
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Your competence over time'
+                    }
+                }
+            });
+        }
+    });
+});
+var data = [];
+$("#competenceInput").select2({data: data});
 </script>
 {% endblock %}

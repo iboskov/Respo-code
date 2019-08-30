@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils.timezone import now
+from django.contrib.auth.models import AbstractUser
+from django.conf import settings
 import json
 from django.db import transaction
 from django.contrib.postgres.search import SearchQuery, SearchRank, SearchVector
@@ -32,7 +34,7 @@ class employee(models.Model):
     email = models.CharField(max_length=100,blank=False, default="",unique=True)
     username = models.CharField(max_length=100,blank=False, default="",unique=True)
     id_workplace = models.ForeignKey(workplace,on_delete=models.CASCADE,default="")
-
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,default="",on_delete=models.CASCADE)
     def __str__(self):
         return self.first_name
 
@@ -47,6 +49,31 @@ class employee(models.Model):
             email=self.email,
             username=self.username,
             workplace=self.id_workplace.name)
+
+class HR_user(models.Model):
+    HR_user_id = models.AutoField(primary_key=True)
+    first_name = models.CharField(max_length=100,blank=False, default="")
+    last_name = models.CharField(max_length=100,blank=False, default="")
+    phone = models.CharField(max_length=100,blank=False, default="")
+    city = models.CharField(max_length=100,blank=False, default="")
+    country = models.CharField(max_length=100, blank=False, default="")
+    email = models.CharField(max_length=100,blank=False, default="",unique=True)
+    username = models.CharField(max_length=100,blank=False, default="",unique=True)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,default="",on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.first_name
+
+    def as_json(self):
+        return dict(
+            id_employee=self.HR_user_id,
+            first_name=self.first_name,
+            last_name=self.last_name,
+            phone=self.phone,
+            city=self.city,
+            country=self.country,
+            email=self.email,
+            username=self.username)
 
 class competence_type(models.Model):
     id_competence_type = models.AutoField(primary_key=True)
@@ -82,13 +109,11 @@ class competence(models.Model):
 
 class competence_relevance(models.Model):
     id_competence_relevance = models.AutoField(primary_key=True)
-    competence_weight = models.IntegerField(blank=False)
+    competence_weight = models.IntegerField(blank=False, default=0)
     minimum_required = models.IntegerField(blank=False,default=0)
     id_competence = models.ForeignKey(competence, on_delete=models.CASCADE)
     id_workplace = models.ForeignKey(workplace, on_delete=models.CASCADE)
 
-    def __int__(self):
-        return self.competence_weight
 
 class education(models.Model):
     id_education = models.AutoField(primary_key=True)
@@ -138,24 +163,33 @@ class employee_history(models.Model):
 
     def __int__(self):
         return self.level
+    def as_json(self):
+        return dict(
+        id_employee_history=self.id_employee_history,
+        level=self.level,
+        dateOfChange=self.dateOfChange,
+        id_competence=self.id_competence.slo_name,
+        id_employee=self.id_employee.username)
 
 #Users for login
-class user(models.Model):
+class myuser(AbstractUser):
     id_user = models.AutoField(primary_key=True)
-    user_name = models.CharField(max_length=100,blank=False,unique=True)
     email = models.CharField(max_length=100,blank=False,unique=True)
     password = models.CharField(max_length=500, blank=False)
-    user_image = models.ImageField(max_length=100, default=0)
-    type=models.CharField(max_length=10, blank=False, default="user")
+    is_employee = models.BooleanField(default=False)
+    is_HR = models.BooleanField(default=False)
+    workplaceName = models.CharField(max_length=100, blank=False,default="")
+    image = models.CharField(max_length=100,blank=False,default="user_icon.png")
+
     def __str__(self):
-        return self.user_name
+        return self.username
 
 class notifications(models.Model):
     id_notification = models.AutoField(primary_key=True)
-    for_user = models.ForeignKey(user,on_delete=models.CASCADE)
+    for_user = models.ForeignKey(myuser,default="",on_delete=models.CASCADE)
     seen = models.BooleanField(default=False)
-    id_education = models.ForeignKey(education, on_delete=models.CASCADE)
+    desc = models.CharField(max_length=100, blank=False,default="")
 
     def __str__(self):
-        return self.id_notification
+        return self.desc
 

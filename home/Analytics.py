@@ -116,6 +116,7 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
         :param potrebno: required competences file
         :param view: optimistic or pessimistic
         """
+
     maximal_lack = 1
     p = []
     o = []
@@ -149,6 +150,8 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
                 o.append("no mark")
                 rows.append(i)
         else:
+            if a == 0:
+                a = 1
             if round(a / b, 2) <= maximal_lack:
                 maximal_lack = round(a / b, 2)
     if maximal_lack == 0:
@@ -156,6 +159,7 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
                 "improve row: " + list_out(rows))
         return (list_out(p),list_out(o),str(maximal_lack),list_out(rows))
     elif maximal_lack == 1:
+        print("hello")
         print("All competences satisfy the requirements.")
         return 0
     else:
@@ -163,6 +167,8 @@ def maximal_relative_lack(job_column_index, ocene, potrebno, view):
             a = ocene[i, job_column_index]
             b = potrebno[i, job_column_index]
             try:
+                if a == 0:
+                    a = 1
                 if round(a / b, 2) == maximal_lack:
                     p.append(b)
                     o.append(a)
