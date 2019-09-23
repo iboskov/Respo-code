@@ -1135,8 +1135,15 @@ def analyticsCompute(request):
         #get information based off the results
         if alg1 != 0 and alg1 is not None:
             ids = alg1[3]
-            print(idsOfRelevance)
-            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            # Fix for multiple competence lack
+            newId = 0
+            if ',' in ids:
+                table = ids.split(',')
+                newId = table[0]
+            else:
+                newId = ids
+            print(newId)
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(newId)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
@@ -1161,7 +1168,14 @@ def analyticsCompute(request):
 
         if alg2 != 0 and alg2 is not None:
             ids = alg2[3]
-            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            #Fix for multiple competence lack
+            newId = 0
+            if ',' in ids:
+                table = ids.split(',')
+                newId = table[0]
+            else:
+                newId = ids
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(newId)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
@@ -1188,7 +1202,15 @@ def analyticsCompute(request):
 
         if alg3 != 0 and alg3 is not None:
             ids = alg3[3]
-            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            # Fix for multiple competence lack
+            newId = 0
+            if ',' in ids:
+                table = ids.split(',')
+                newId = table[len(table)-1]
+            else:
+                newId = ids
+            print(newId)
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(newId)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
@@ -1214,7 +1236,14 @@ def analyticsCompute(request):
 
         if alg4 != 0 and alg4 is not None:
             ids = alg4[3]
-            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(ids)][0])[0]
+            # Fix for multiple competence lack
+            newId = 0
+            if ',' in ids:
+                table = ids.split(',')
+                newId = table[0]
+            else:
+                newId = ids
+            competence_rele = getSpecificCompetenceOfRelevanceById(idsOfRelevance[int(newId)][0])[0]
             theGottenCompetence = getCompetenceOnlyByNameAPI(competence_rele.id_competence.slo_name)
             possibleTraining = getTrainingByCompetenceAPI(theGottenCompetence.id_competence)
             if possibleTraining is not False:
