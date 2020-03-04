@@ -23,7 +23,7 @@ HR_AUTHORIZATION_CODE = "9&>+Xtu/RDrPg}Di[-$9m8]vA`674vT@3%Y%i*"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'respoproject@gmail.com'
-EMAIL_HOST_PASSWORD = '9k3BDBac8Xr6CtCa'
+EMAIL_HOST_PASSWORD = '9k3BDBac8Xr6CtCa12'
 EMAIL_PORT = 587
 
 

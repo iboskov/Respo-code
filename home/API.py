@@ -19,14 +19,16 @@ def createUser(username,email,first_name,last_name,work):
             continue
         break
 
-    new_user = myuser(username=username,email=email,password=password,first_name=first_name,last_name=last_name,is_employee=True,workplaceName=work)
-    new_user.save()
-    #send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
+    # send_mail(subject, message, from_email, to_list(or single), fail_silently=True)
     subject = 'Account on Respo project app'
-    message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application, remember do not share your username or password.\n \n Username: '+username+'\n Password: '+password+'\n \n best wishes the Respo team'
+    message = 'Welcome to the Respo project App.\n you are seeing this email because an administrator added you on the list of employees\n Here is your username and password for logging into the respo application, remember do not share your username or password.\n \n Username: ' + username + '\n Password: ' + password + '\n \n best wishes the Respo team'
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
-    send_mail(subject,message,from_email,to_list,fail_silently=False)
+    send_mail(subject, message, from_email, to_list, fail_silently=False)
+
+    new_user = myuser(username=username,email=email,password=password,first_name=first_name,last_name=last_name,is_employee=True,workplaceName=work)
+    new_user.save()
+
     return new_user
 
 def createAdministrator(username,email,first_name,last_name):
@@ -36,14 +38,16 @@ def createAdministrator(username,email,first_name,last_name):
             continue
         break
 
-    new_user = myuser(username=username, email=email, password=password, is_HR=True,first_name=first_name,last_name=last_name,workplaceName="Human Resource")
-    new_user.save()
-
     subject = 'Account on Respo project app'
     message = 'Welcome to the Respo project App.\n you are seeing this email because you created an administrator account.\n Here is your username and password for logging into the respo application, remember do not share your username or password.\n \n Username: ' + username + '\n Password: ' + password + '\n \n best wishes the Respo team'
     from_email = settings.EMAIL_HOST_USER
     to_list = [email]
     send_mail(subject, message, from_email, to_list, fail_silently=False)
+
+    new_user = myuser(username=username, email=email, password=password, is_HR=True,first_name=first_name,last_name=last_name,workplaceName="Human Resource")
+    new_user.save()
+
+
     return new_user
 
 def changePassword(username):
@@ -79,7 +83,7 @@ def addHR_user(request):
     email = worker.get("admin_email","")
     username = worker.get("admin_username","")
 
-    if HR_user.objects.filter(email=email).exists() or HR_user.objects.filter(username=username).exists():
+    if HR_user.objects.filter(email=email).exists() or HR_user.objects.filter(username=username).exists() or myuser.objects.filter(email=email).exists() or myuser.objects.filter(email=username).exists():
         return False
     else:
         user = createAdministrator(username,email,first_name,last_name)
@@ -102,7 +106,7 @@ def addEmployee(request):
 
 
     new_workplace = workplace.objects.get_or_create(name=worker_workplace)[0]
-    if employee.objects.filter(email=email).exists() or employee.objects.filter(username=username).exists():
+    if employee.objects.filter(email=email).exists() or employee.objects.filter(username=username).exists() or HR_user.objects.filter(email=email).exists() or HR_user.objects.filter(username=username).exists():
         return False
     else:
 
