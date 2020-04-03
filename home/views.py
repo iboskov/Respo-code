@@ -852,7 +852,7 @@ def uploadFile(request):
             return render(request, 'html/admin/upload.html',
                           {"alert": alert})
         excel = pd.read_excel(myFile,sheet_name=x1.sheet_names[0])
-        if not excel.columns.contains('Hogan id'):
+        if not excel.columns.str.contains('Hogan id').any():
             alert = {"show": "inline", "type": "danger",
                      "message": "The file you uploaded for competences does not have Hogan id column."}
             return render(request, 'html/admin/upload.html',
